@@ -2,8 +2,9 @@
  * Gramatica da linguagem LA.
  *
  * Grupo:
- * Lucas Oliveira David
- *
+ *Lucas Hauptmann Pereira 
+ *Lucas Oliveira David
+ * 
  */
 
 grammar la;
