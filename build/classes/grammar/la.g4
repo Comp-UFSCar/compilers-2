@@ -2,9 +2,10 @@
  * Gramatica da linguagem LA.
  *
  * Grupo:
+ *Arieh Cangiani Fabbro
  *Lucas Hauptmann Pereira 
  *Lucas Oliveira David
- * 
+ *
  */
 
 grammar la;
