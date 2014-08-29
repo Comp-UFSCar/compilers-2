@@ -3,9 +3,9 @@
  *
  * Grupo:
  *Arieh Cangiani Fabbro
+ *Felipe Fantoni
  *Lucas Hauptmann Pereira 
  *Lucas Oliveira David
- *
  */
 
 grammar la;
@@ -15,8 +15,7 @@ programa
     ;
 
 declaracoes
-    : decl_local_global declaracoes
-    | 'ε'
+    : (decl_local_global declaracoes)?
     ;
 
 decl_local_global
@@ -35,8 +34,7 @@ variavel
     ;
 
 mais_var
-    : ',' IDENT dimensao mais_var
-    | 'ε'
+    : (',' IDENT dimensao mais_var)?
     ;
 
 identificador
@@ -44,18 +42,15 @@ identificador
     ;
 
 ponteiros_opcionais
-    : '^' ponteiros_opcionais
-    | 'ε'
+    : ('^' ponteiros_opcionais)?
     ;
  
 outros_ident
-    : '.' identificador
-    | 'ε'
+    : ('.' identificador)?
     ;
 
 dimensao
-    : '[' exp_aritmetica ']' dimensao
-    | 'ε'
+    : ('[' exp_aritmetica ']' dimensao)?
     ;
 
 tipo
@@ -64,13 +59,11 @@ tipo
     ;
 
 mais_ident
-    : ',' identificador mais_ident
-    | 'ε'
+    : (',' identificador mais_ident)?
     ;
 
 mais_variaveis
-    : variavel mais_variaveis
-    | 'ε'
+    : (variavel mais_variaveis)?
     ;
 
 tipo_basico
@@ -107,8 +100,7 @@ declaracao_global
     ;
 
 parametros_opcional
-    : parametro
-    | 'ε'
+    : (parametro)?
     ;
 
 parametro
@@ -116,18 +108,15 @@ parametro
     ;
 
 var_opcional
-    : 'var'
-    | 'ε'
+    : ('var')?
     ;
 
 mais_parametros
-    : parametro
-    | 'ε'
+    : (parametro)?
     ;
 
 declaracoes_locais
-    : declaracao_local declaracoes_locais
-    | 'ε'
+    : (declaracao_local declaracoes_locais)?
     ;
 
 corpo
@@ -136,8 +125,7 @@ corpo
 
 
 comandos
-    : cmd comandos
-    | 'ε'
+    : (cmd comandos)?
     ;
 
 cmd 
@@ -154,13 +142,11 @@ cmd
     ;
 
 mais_expressao
-    : ',' expressao mais_expressao
-    | 'ε'
+    : (',' expressao mais_expressao)?
     ;
 
 senao_opcional
-    : 'senao' comandos
-    | 'ε'
+    : ('senao' comandos)?
     ;
 
 chamada_atribuicao
@@ -169,8 +155,7 @@ chamada_atribuicao
     ;
 
 argumentos_opcional
-    : expressao mais_expressao
-    | 'ε'
+    : (expressao mais_expressao)?
     ;
 
 selecao
@@ -178,8 +163,7 @@ selecao
     ;
 
 mais_selecao
-    : selecao
-    | 'ε'
+    : (selecao)?
     ;
 
 constantes
@@ -187,20 +171,17 @@ constantes
     ;
 
 mais_constantes
-    : ',' constantes
-    | 'ε'
+    : (',' constantes)?
     ;
 numero_intervalo
     : op_unario NUM_INT intervalo_opcional
     ;
 
 intervalo_opcional
-    : '..' op_unario NUM_INT
-    | 'ε'
+    : ('..' op_unario NUM_INT)?
     ;
 op_unario
-    : '-'
-    | 'ε'
+    : ('-')?
     ;
 
 exp_aritmetica
@@ -222,8 +203,7 @@ termo
     ;
 
 outros_termos
-    : op_adicao termo outros_termos
-    | 'ε'
+    : (op_adicao termo outros_termos)?
     ;
 
 fator
@@ -231,8 +211,7 @@ fator
     ;
 
 outros_fatores
-    : op_multiplicacao fator outros_fatores
-    | 'ε'
+    : (op_multiplicacao fator outros_fatores)?
     ;
 
 parcela
@@ -254,14 +233,12 @@ parcela_nao_unario
     ;
 
 outras_parcelas
-    : '%' parcela outras_parcelas
-    | 'ε'
+    : ('%' parcela outras_parcelas)?
     ;
 
 chamada_partes
-    : '(' expressao mais_expressao ')' 
-    | outros_ident dimensao
-    | 'ε'
+    : ('(' expressao mais_expressao ')')? 
+    | (outros_ident dimensao)?
     ;
 
 exp_relacional
@@ -269,8 +246,7 @@ exp_relacional
     ;
 
 op_opcional
-    : op_relacional exp_aritmetica
-    | 'ε'
+    : (op_relacional exp_aritmetica)?
     ;
 
 op_relacional
@@ -287,8 +263,7 @@ expressao
     ;
 
 op_nao 
-    : 'nao'
-    | 'ε'
+    : ('nao')?
     ;
 
 termo_logico
@@ -296,13 +271,11 @@ termo_logico
     ;
 
 outros_termos_logicos
-    : 'ou' termo_logico outros_termos_logicos
-    | 'ε'
+    : ('ou' termo_logico outros_termos_logicos)?
     ;
 
 outros_fatores_logicos
-    : 'e' fator_logico outros_fatores_logicos
-    | 'ε'
+    : ('e' fator_logico outros_fatores_logicos)?
     ;
 
 fator_logico
