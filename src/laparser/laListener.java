@@ -1,4 +1,5 @@
 // Generated from D:\Repositories\Compilers-2-assignment-1\src\grammar\La.g4 by ANTLR 4.1
+package laparser;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -160,17 +161,6 @@ public interface LaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitOp_opcional(@NotNull LaParser.Op_opcionalContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link LaParser#chamada_partes}.
-	 * @param ctx the parse tree
-	 */
-	void enterChamada_partes(@NotNull LaParser.Chamada_partesContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LaParser#chamada_partes}.
-	 * @param ctx the parse tree
-	 */
-	void exitChamada_partes(@NotNull LaParser.Chamada_partesContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link LaParser#mais_ident}.

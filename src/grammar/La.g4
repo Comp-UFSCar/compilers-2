@@ -15,7 +15,7 @@ programa
     ;
 
 declaracoes
-    : (decl_local_global declaracoes)?
+    : decl_local_global*
     ;
 
 decl_local_global
@@ -38,7 +38,7 @@ mais_var
     ;
 
 identificador
-    : ponteiros_opcionais IDENT dimensao outros_ident
+    : ponteiros_opcionais IDENT ('.' IDENT)* dimensao
     ;
 
 ponteiros_opcionais
@@ -221,9 +221,10 @@ parcela
 
 parcela_unario
     : '^' IDENT outros_ident dimensao
-    | IDENT chamada_partes
+    | IDENT outros_ident dimensao
+    | IDENT '(' expressao mais_expressao ')'
     | NUM_INT
-    | NUM_REAL 
+    | NUM_REAL
     | '(' expressao ')'
     ;
 
@@ -234,11 +235,6 @@ parcela_nao_unario
 
 outras_parcelas
     : ('%' parcela outras_parcelas)?
-    ;
-
-chamada_partes
-    : ('(' expressao mais_expressao ')')? 
-    | (outros_ident dimensao)?
     ;
 
 exp_relacional
@@ -305,10 +301,13 @@ NUM_REAL
     | '.' ('0'..'9')+
     ;
 
-fragment
 COMENTARIO
-    : '--' ~('\n' | '\r')* '\r'? '\n' {skip();}
+    : '{' ~('\n' | '\r' | '}')* '}' {skip();}
     ;
 WS
     : (' ' | '\t' | '\r' | '\n') {skip();}
+    ;
+
+ERRO
+    : .
     ;

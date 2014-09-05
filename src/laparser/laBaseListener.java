@@ -1,4 +1,5 @@
 // Generated from D:\Repositories\Compilers-2-assignment-1\src\grammar\La.g4 by ANTLR 4.1
+package laparser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -192,19 +193,6 @@ public class LaBaseListener implements LaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitOp_opcional(@NotNull LaParser.Op_opcionalContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterChamada_partes(@NotNull LaParser.Chamada_partesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitChamada_partes(@NotNull LaParser.Chamada_partesContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
