@@ -2,13 +2,13 @@
  * Gramatica da linguagem LA.
  *
  * Grupo:
- *Arieh Cangiani Fabbro
- *Felipe Fantoni
- *Lucas Hauptmann Pereira 
- *Lucas Oliveira David
+ * Arieh Cangiani Fabbro
+ * Felipe Fantoni
+ * Lucas Hauptmann Pereira 
+ * Lucas Oliveira David
  */
 
-grammar la;
+grammar La;
 
 programa
     : declaracoes 'algoritmo' corpo 'fim_algoritmo'
@@ -286,4 +286,29 @@ parcela_logica
     : 'verdadeiro'
     | 'falso'
     | exp_relacional
+    ;
+
+IDENT
+    : ('a'..'z' | 'A'..'Z' | '_') ('a'..'z' | 'A'..'Z' | '0'..'9' | '_')*
+    ;
+
+CADEIA
+    : '"' ~('\n' | '\r' | '"')* '"'
+    ;
+
+NUM_INT
+    : ('0'..'9')+
+    ;
+
+NUM_REAL
+    : ('0'..'9')+ '.' ('0'..'9')*
+    | '.' ('0'..'9')+
+    ;
+
+fragment
+COMENTARIO
+    : '--' ~('\n' | '\r')* '\r'? '\n' {skip();}
+    ;
+WS
+    : (' ' | '\t' | '\r' | '\n') {skip();}
     ;
