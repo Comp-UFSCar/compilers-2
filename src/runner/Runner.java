@@ -1,7 +1,7 @@
 package runner;
 
 import infrastructure.SaidaParser;
-import infrastructure.T1ErrorListener;
+import infrastructure.ErrorListener;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -18,16 +18,16 @@ public class Runner {
         LaLexer lexer = new LaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LaParser parser = new LaParser(tokens);
-        
+             
         parser.removeErrorListeners();
         lexer.removeErrorListeners();
         
         SaidaParser out = new SaidaParser();
-        T1ErrorListener listener = new T1ErrorListener(out);
+        ErrorListener listener = new ErrorListener(out);
 
         parser.addErrorListener(listener);
         lexer.addErrorListener(listener);
-
+        
         parser.programa();
 
         out.println("Fim da compilacao");

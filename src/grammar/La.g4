@@ -150,7 +150,7 @@ senao_opcional
     ;
 
 chamada_atribuicao
-    : argumentos_opcional ')'
+    : '(' argumentos_opcional ')'
     | outros_ident dimensao '<-' expressao
     ;
 

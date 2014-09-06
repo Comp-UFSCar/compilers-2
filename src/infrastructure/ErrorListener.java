@@ -9,18 +9,26 @@ import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 
-public class T1ErrorListener implements ANTLRErrorListener {
+public class ErrorListener implements ANTLRErrorListener {
+
     SaidaParser sp;
-    
-    public T1ErrorListener(SaidaParser sp) {
+
+    public ErrorListener(SaidaParser sp) {
         this.sp = sp;
     }
 
     @Override
     public void syntaxError(Recognizer<?, ?> rcgnzr, Object o, int i, int i1, String string, RecognitionException re) {
-        CommonToken token = (CommonToken)o;
-        
-        sp.println("Linha " + i + ": erro sintatico proximo a " + token.getText());
+        CommonToken token = (CommonToken) o;
+
+        // lexics
+        if (string.contains("extraneous input")) {
+            sp.println("Linha " + i + ": " + token.getText() + " - simbolo nao identificado");
+            
+        // syntatics
+        } else {
+            sp.println("Linha " + i + ": erro sintatico proximo a " + token.getText());
+        }
     }
 
     @Override
