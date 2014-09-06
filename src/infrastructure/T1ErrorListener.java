@@ -17,7 +17,7 @@ public class T1ErrorListener implements ANTLRErrorListener {
 
     @Override
     public void syntaxError(Recognizer<?, ?> rcgnzr, Object o, int i, int i1, String string, RecognitionException re) {
-        sp.println("Erro: linha " + i + ":" + i1 + " " + string);
+        sp.println("Linha " + i + ": erro sintatico proximo a " + o);
     }
 
     @Override

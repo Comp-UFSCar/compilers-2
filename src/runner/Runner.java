@@ -14,16 +14,16 @@ public class Runner {
 
     public static void main(String[] args) throws Exception {
 
-        SaidaParser out = new SaidaParser();
-        
-        T1ErrorListener listener = new T1ErrorListener(out);
-
         ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(args[0]));
         LaLexer lexer = new LaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LaParser parser = new LaParser(tokens);
+        
         parser.removeErrorListeners();
         lexer.removeErrorListeners();
+        
+        SaidaParser out = new SaidaParser();
+        T1ErrorListener listener = new T1ErrorListener(out);
 
         parser.addErrorListener(listener);
         lexer.addErrorListener(listener);
@@ -32,7 +32,6 @@ public class Runner {
 
         if (!out.isModificado()) {
             out.println("Fim da analise. Sem erros sintaticos.");
-
 //            TabelaDeSimbolos.imprimirTabela(out);
             System.out.print(out);
         } else {
