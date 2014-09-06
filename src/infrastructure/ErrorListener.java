@@ -20,15 +20,15 @@ public class ErrorListener implements ANTLRErrorListener {
     @Override
     public void syntaxError(Recognizer<?, ?> rcgnzr, Object o, int i, int i1, String string, RecognitionException re) {
         CommonToken token = (CommonToken) o;
-
+        
         // lexics
-        if (string.contains("extraneous input")) {
-            sp.println("Linha " + i + ": " + token.getText() + " - simbolo nao identificado");
-            
-        // syntatics
-        } else {
+//        if (string.contains("extraneous input")) {
+//            sp.println("Linha " + i + ": " + token.getText() + " - simbolo nao identificado");
+//            
+//        // syntatics
+//        } else {
             sp.println("Linha " + i + ": erro sintatico proximo a " + token.getText());
-        }
+//        }
     }
 
     @Override

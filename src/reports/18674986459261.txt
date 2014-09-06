@@ -1,0 +1,2 @@
+Linha 10: leia - simbolo nao identificado
+Fim da compilacao
