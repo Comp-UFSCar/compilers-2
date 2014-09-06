@@ -1,0 +1,7 @@
+Linha 21: erro sintatico proximo a lado2
+Linha 21: erro sintatico proximo a ou
+Linha 21: erro sintatico proximo a =
+Linha 21: erro sintatico proximo a ou
+Linha 21: erro sintatico proximo a =
+Linha 21: erro sintatico proximo a )
+Fim da compilacao

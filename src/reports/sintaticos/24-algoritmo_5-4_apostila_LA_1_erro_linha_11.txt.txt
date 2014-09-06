@@ -1,0 +1,4 @@
+Linha 11: erro sintatico proximo a escreva
+Linha 12: erro sintatico proximo a 1.
+Linha 13: erro sintatico proximo a 11.
+Fim da compilacao

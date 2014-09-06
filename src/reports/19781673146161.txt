@@ -1,3 +1,0 @@
-Linha 10: leia - simbolo nao identificado
-extraneous input 'leia' expecting {'algoritmo', 'constante', 'declare', 'procedimento', 'tipo', 'funcao'}
-Fim da compilacao
