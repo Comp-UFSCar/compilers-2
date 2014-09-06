@@ -27,19 +27,13 @@ public class Runner {
 
         parser.addErrorListener(listener);
         lexer.addErrorListener(listener);
-        
+
         parser.programa();
 
-        if (!out.isModificado()) {
-            out.println("Fim da analise. Sem erros sintaticos.");
-//            TabelaDeSimbolos.imprimirTabela(out);
-            System.out.print(out);
-        } else {
-            out.println("Fim da analise. Com erros sintaticos.");
-        }
+        out.println("Fim da compilacao");
 
         PrintWriter saida = new PrintWriter(new FileWriter(args[1]));
-        saida.println(out);
+        saida.print(out);
         saida.flush();
         saida.close();
     }
