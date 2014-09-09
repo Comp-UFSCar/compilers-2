@@ -32,9 +32,9 @@ public class Runner {
         ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(inputFile));
         LaLexer lexer = new LaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        
-        LaParser parser = new LaParser(tokens);
 
+        LaParser parser = new LaParser(tokens);
+        
         parser.removeErrorListeners();
         lexer.removeErrorListeners();
 

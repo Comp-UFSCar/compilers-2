@@ -5,9 +5,9 @@ Assignment-1: LA Parser project
 
 ## Execution instructions
 
-The code should be tested with the following command: `java -jar CORRETOR_PATH "java -jar LA_PARSER_PATH" gcc TEMP TEST_CASES_PATH "407917, 510360" MODE`
+The code should be tested with the following command: `java -jar CORRETOR_PATH "java -jar LA_PARSER_PATH" gcc TEMP TEST_CASES_PATH "LIST OF STUDENTS" MODE`
 
-Example: `java -jar D:\Projects\comp\CorretorTrabalho1\CorretorTrabalho1.jar "java -jar D:\Repositories\Compilers-2-assignment-1\dist\LaParser.jar" gcc c:\Temporary D:\Projects\comp\casosDeTesteT1 "407917, 510360" sintatico`
+Example: `java -jar D:\Repositories\Compilers-2-assignment-1\src\Corretor\CorretorTrabalho1.jar "java -jar D:\Repositories\Compilers-2-assignment-1\dist\LaParser.jar" gcc D:\Repositories\Compilers-2-assignment-1\src\reports D:\Repositories\Compilers-2-assignment-1\src\testcases "407917, 510360" sintatico`
 
 ## Tests
 
