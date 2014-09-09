@@ -1,4 +1,1 @@
-Linha 30: erro sintatico proximo a |
-Linha 30: erro sintatico proximo a /
-Linha 30: erro sintatico proximo a )
 Fim da compilacao

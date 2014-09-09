@@ -18,8 +18,8 @@ public class ErrorListener implements ANTLRErrorListener {
 
     public ErrorListener(SaidaParser sp) {
         this.sp = sp;
+
         tokens = new HashMap<>();
-        
         tokens.put("<EOF>", "EOF");
     }
 
@@ -40,7 +40,7 @@ public class ErrorListener implements ANTLRErrorListener {
         sp.println("Linha " + i + ": erro sintatico proximo a " + token);
 //        }
     }
-
+    
     @Override
     public void reportAmbiguity(Parser parser, DFA dfa, int i, int i1, boolean bln, BitSet bitset, ATNConfigSet atncs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
