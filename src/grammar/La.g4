@@ -307,7 +307,3 @@ COMENTARIO
 WS
     : (' ' | '\t' | '\r' | '\n') {skip();}
     ;
-
-ERRO
-    : .
-    ;

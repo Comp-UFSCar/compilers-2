@@ -1,16 +1,16 @@
 package runner;
 
+import infrastructure.LexicalErrorListener;
 import infrastructure.SaidaParser;
-import infrastructure.ErrorListener;
+import infrastructure.SyntaticErrorListener;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import laparser.LaLexer;
 import laparser.LaParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 /**
  * Runs the LaParser on a inputFile and outputs the result in an outputFile.
@@ -31,35 +31,34 @@ public class Runner {
      */
     public void start(String inputFile, String outputFile) throws Exception {
 
-        ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(inputFile));
-        LaLexer lexer = new LaLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-        LaParser parser = new LaParser(tokens);
-
+        ANTLRInputStream in = new ANTLRInputStream(new FileInputStream(inputFile));
+        SaidaParser  output = new SaidaParser();
+        
+        LaLexer  lexer  = new  LaLexer(in);
+        LaParser parser = new LaParser(new CommonTokenStream(lexer));
+        
         parser.removeErrorListeners();
-        lexer.removeErrorListeners();
+        lexer .removeErrorListeners();
+        
+        SyntaticErrorListener syntatic = new SyntaticErrorListener(output);
+        LexicalErrorListener   lexical = new  LexicalErrorListener(output);
 
-        SaidaParser out = new SaidaParser();
-        ErrorListener listener = new ErrorListener(out);
-
-        parser.setErrorHandler(new BailErrorStrategy());
-
-        parser.addErrorListener(listener);
-        lexer .addErrorListener(listener);
+        parser.addErrorListener(syntatic);
+        lexer .addErrorListener(lexical);
 
         try {
             parser.programa();
-        } catch (RecognitionException e) {
+        }
+        catch (ParseCancellationException e) {
             if (e.getMessage() != null) {
-                out.println(e.getMessage());
+                output.println(e.getMessage());
             }
         }
 
-        out.println("Fim da compilacao");
+        output.println("Fim da compilacao");
 
         PrintWriter saida = new PrintWriter(new FileWriter(outputFile));
-        saida.print(out);
+        saida.print(output);
         saida.flush();
         saida.close();
     }
