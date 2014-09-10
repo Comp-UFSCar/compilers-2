@@ -1,7 +1,6 @@
 package infrastructure;
 
 import java.util.BitSet;
-import java.util.HashMap;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Parser;
@@ -30,14 +29,7 @@ public class SyntaticErrorListener implements ANTLRErrorListener {
             token = tokens.value(token);
         }
         
-//        lexics
-//        if (string.contains("extraneous input")) {
-//            sp.println("Linha " + i + ": " + token.getText() + " - simbolo nao identificado");
-//            
-//        // syntatics
-//        } else {
         throw new ParseCancellationException("Linha " + i + ": erro sintatico proximo a " + token);
-//        }
     }
     
     @Override
