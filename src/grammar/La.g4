@@ -55,7 +55,7 @@ other_identifiers
     ;
 
 size
-    : ('[' exp_aritmetica ']')+
+    : ('[' arithmetic_expression ']')+
     ;
 
 basic_type
@@ -110,8 +110,8 @@ cmd
     : 'leia' '(' identifier more_identifier ')'
     | 'escreva' '(' expression more_expression ')'
     | 'se' expression 'entao' comands optional_else 'fim_se'
-    | 'caso' exp_aritmetica 'seja' selection optional_else 'fim_caso'
-    | 'para' IDENT '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' comands 'fim_para'
+    | 'caso' arithmetic_expression 'seja' selection optional_else 'fim_caso'
+    | 'para' IDENT '<-' arithmetic_expression 'ate' arithmetic_expression 'faca' comands 'fim_para'
     | 'enquanto' expression 'faca' comands 'fim_enquanto'
     | 'faca' comands 'ate' expression
     | '^' IDENT other_identifiers size '<-' expression
@@ -141,22 +141,15 @@ selection
     ;
 
 constants
-    : interval_number mais_constants
+    : unary_op INTEGER ('..' unary_op INTEGER)?
+    ( ',' constants ) ?
     ;
 
-mais_constants
-    : (',' constants)?
-    ;
-
-interval_number
-    : op_unario INTEGER ('..' op_unario INTEGER)?
-    ;
-
-op_unario
+unary_op
     : ('-')?
     ;
 
-exp_aritmetica
+arithmetic_expression
     : term other_terms
     ;
 
@@ -171,7 +164,7 @@ add_op
     ;
 
 term
-    : factor outros_factores
+    : factor other_factors
     ;
 
 other_terms
@@ -179,19 +172,19 @@ other_terms
     ;
 
 factor
-    : parcela outras_parcelas
+    : portion other_portions
     ;
 
-outros_factores
-    : (op_multiplicacao factor outros_factores)?
+other_factors
+    : (op_multiplicacao factor other_factors)?
     ;
 
-parcela
-    : op_unario parcela_unario
-    | parcela_nao_unario
+portion
+    : unary_op unary_portion
+    | portion_nao_unario
     ;
 
-parcela_unario
+unary_portion
     : '^' IDENT other_identifiers size
     | IDENT other_identifiers size
     | IDENT '(' expression more_expression ')'
@@ -200,13 +193,13 @@ parcela_unario
     | '(' expression ')'
     ;
 
-parcela_nao_unario
+portion_nao_unario
     : '&' IDENT other_identifiers size
     | STRING
     ;
 
-outras_parcelas
-    : ('%' parcela outras_parcelas)?
+other_portions
+    : ('%' portion other_portions)?
     ;
 
 relational_operator
@@ -231,7 +224,7 @@ logical_factor
     (
         'verdadeiro'
         | 'falso'
-        | exp_aritmetica (relational_operator exp_aritmetica)?
+        | arithmetic_expression (relational_operator arithmetic_expression)?
     )
     ;
 
