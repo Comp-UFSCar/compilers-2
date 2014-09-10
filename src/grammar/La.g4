@@ -104,15 +104,12 @@ parametros_opcional
     ;
 
 parametro
-    : var_opcional identificador mais_ident ':' tipo_estendido mais_parametros
+    : var_opcional identificador mais_ident ':' tipo_estendido
+      (',' parametro)?
     ;
 
 var_opcional
-    : ('var')?
-    ;
-
-mais_parametros
-    : (parametro)?
+    : 'var'?
     ;
 
 declaracoes_locais

@@ -407,19 +407,6 @@ public class LaBaseListener implements LaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterMais_parametros(@NotNull LaParser.Mais_parametrosContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitMais_parametros(@NotNull LaParser.Mais_parametrosContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterParcela(@NotNull LaParser.ParcelaContext ctx) { }
 	/**
 	 * {@inheritDoc}

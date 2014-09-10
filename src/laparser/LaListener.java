@@ -339,17 +339,6 @@ public interface LaListener extends ParseTreeListener {
 	void exitOp_unario(@NotNull LaParser.Op_unarioContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link LaParser#mais_parametros}.
-	 * @param ctx the parse tree
-	 */
-	void enterMais_parametros(@NotNull LaParser.Mais_parametrosContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LaParser#mais_parametros}.
-	 * @param ctx the parse tree
-	 */
-	void exitMais_parametros(@NotNull LaParser.Mais_parametrosContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link LaParser#parcela}.
 	 * @param ctx the parse tree
 	 */
