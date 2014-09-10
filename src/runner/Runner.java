@@ -47,7 +47,7 @@ public class Runner {
         lexer .addErrorListener(lexical);
 
         try {
-            parser.program();
+            parser.programa();
         }
         catch (ParseCancellationException e) {
             if (e.getMessage() != null) {

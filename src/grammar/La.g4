@@ -10,147 +10,182 @@
 
 grammar La;
 
-program
-    : declarations 'algoritmo' body 'fim_algoritmo'
+programa
+    : declaracoes 'algoritmo' corpo 'fim_algoritmo'
     ;
 
-declarations
-    : ( local_declaration | global_declaration ) *
+declaracoes
+    : decl_local_global*
     ;
 
-local_declaration
-    : 'declare' variable
-    | 'constante' IDENT ':' basic_type '=' const_value
-    | 'type' IDENT ':' type
+decl_local_global
+    : declaracao_local
+    | declaracao_global
     ;
 
-global_declaration
-    : 'procedimento' IDENT '(' optional_params ')' local_declarations comands 'fim_procedimento'
-    | 'funcao' IDENT '(' optional_params '):' extended_type local_declarations comands 'fim_funcao'
+declaracao_local
+    : 'declare' variavel
+    | 'constante' IDENT ':' tipo_basico '=' valor_constante
+    | 'tipo' IDENT ':' tipo
     ;
 
-type
-    : register
-    | extended_type
+variavel
+    : IDENT dimensao mais_var ':' tipo
     ;
 
-variable
-    : IDENT size (',' IDENT size)* ':' type
+mais_var
+    : (',' IDENT dimensao mais_var)?
     ;
 
-identifier
-    : optional_pointers IDENT ('.' IDENT)* size
+identificador
+    : ponteiros_opcionais IDENT ('.' IDENT)* dimensao
     ;
 
-extended_type
-    : optional_pointers (basic_type | IDENT)
-    ;
-
-optional_pointers
-    : ('^' optional_pointers)?
+ponteiros_opcionais
+    : ('^' ponteiros_opcionais)?
     ;
  
-other_identifiers
-    : ('.' identifier)?
+outros_ident
+    : ('.' identificador)?
     ;
 
-size
-    : ('[' arithmetic_expression ']')+
+dimensao
+    : ('[' exp_aritmetica ']' dimensao)?
     ;
 
-basic_type
+tipo
+    : registro
+    | tipo_estendido
+    ;
+
+mais_ident
+    : (',' identificador mais_ident)?
+    ;
+
+mais_variaveis
+    : (variavel mais_variaveis)?
+    ;
+
+tipo_basico
     : 'literal'
     | 'inteiro'
     | 'real'
     | 'logico'
     ;
 
-const_value
-    : STRING
-    | INTEGER
-    | REAL
+tipo_basico_ident
+    : tipo_basico
+    | IDENT
+    ;
+
+tipo_estendido
+    : ponteiros_opcionais tipo_basico_ident
+    ;
+
+valor_constante
+    : CADEIA
+    | NUM_INT
+    | NUM_REAL
     | 'verdadeiro'
     | 'falso'
     ;
 
-register
-    : 'register' variable+ 'fim_register'
+registro
+    : 'registro' variavel mais_variaveis 'fim_registro'
     ;
 
-optional_params
-    : ( parameter ) ?
+declaracao_global
+    : 'procedimento' IDENT '(' parametros_opcional ')' declaracoes_locais comandos 'fim_procedimento'
+    | 'funcao' IDENT '(' parametros_opcional '):' tipo_estendido declaracoes_locais comandos 'fim_funcao'
     ;
 
-parameter
-    : var_opcional identifier more_identifier ':' extended_type
-    ( ', ' parameter ) ?
+parametros_opcional
+    : (parametro)?
+    ;
+
+parametro
+    : var_opcional identificador mais_ident ':' tipo_estendido mais_parametros
     ;
 
 var_opcional
-    : 'var'?
+    : ('var')?
     ;
 
-more_identifier
-    : (',' identifier)*
+mais_parametros
+    : (parametro)?
     ;
 
-local_declarations
-    : local_declaration+
+declaracoes_locais
+    : (declaracao_local declaracoes_locais)?
     ;
 
-body
-    : local_declarations comands
+corpo
+    : declaracoes_locais comandos
     ;
 
-comands
-    : cmd+
+
+comandos
+    : (cmd comandos)?
     ;
 
-cmd
-    : 'leia' '(' identifier more_identifier ')'
-    | 'escreva' '(' expression more_expression ')'
-    | 'se' expression 'entao' comands optional_else 'fim_se'
-    | 'caso' arithmetic_expression 'seja' selection optional_else 'fim_caso'
-    | 'para' IDENT '<-' arithmetic_expression 'ate' arithmetic_expression 'faca' comands 'fim_para'
-    | 'enquanto' expression 'faca' comands 'fim_enquanto'
-    | 'faca' comands 'ate' expression
-    | '^' IDENT other_identifiers size '<-' expression
+cmd 
+    : 'leia' '(' identificador mais_ident ')'
+    | 'escreva' '(' expressao mais_expressao ')'
+    | 'se' expressao 'entao' comandos senao_opcional 'fim_se'
+    | 'caso' exp_aritmetica 'seja' selecao senao_opcional 'fim_caso'
+    | 'para' IDENT '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' comandos 'fim_para'
+    | 'enquanto' expressao 'faca' comandos 'fim_enquanto'
+    | 'faca' comandos 'ate' expressao
+    | '^' IDENT outros_ident dimensao '<-' expressao
     | IDENT chamada_atribuicao
-    | 'retorne' expression
+    | 'retorne' expressao
     ;
 
-more_expression
-    : (',' expression more_expression)?
+mais_expressao
+    : (',' expressao mais_expressao)?
     ;
 
-optional_else
-    : ('senao' comands)?
+senao_opcional
+    : ('senao' comandos)?
     ;
 
 chamada_atribuicao
-    : '(' optional_arguments ')'
-    | other_identifiers size '<-' expression
+    : '(' argumentos_opcional ')'
+    | outros_ident dimensao '<-' expressao
     ;
 
-optional_arguments
-    : (expression more_expression)?
+argumentos_opcional
+    : (expressao mais_expressao)?
     ;
 
-selection
-    : (constants ':' comands)+
+selecao
+    : constantes ':' comandos mais_selecao
     ;
 
-constants
-    : unary_op INTEGER ('..' unary_op INTEGER)?
-    ( ',' constants ) ?
+mais_selecao
+    : (selecao)?
     ;
 
-unary_op
+constantes
+    : numero_intervalo mais_constantes
+    ;
+
+mais_constantes
+    : (',' constantes)?
+    ;
+numero_intervalo
+    : op_unario NUM_INT intervalo_opcional
+    ;
+
+intervalo_opcional
+    : ('..' op_unario NUM_INT)?
+    ;
+op_unario
     : ('-')?
     ;
 
-arithmetic_expression
-    : term other_terms
+exp_aritmetica
+    : termo outros_termos
     ;
 
 op_multiplicacao
@@ -158,51 +193,59 @@ op_multiplicacao
     | '/'
     ;
 
-add_op
+op_adicao
     : '+'
     | '-'
     ;
 
-term
-    : factor other_factors
+termo
+    : fator outros_fatores
     ;
 
-other_terms
-    : (add_op term other_terms)?
+outros_termos
+    : (op_adicao termo outros_termos)?
     ;
 
-factor
-    : portion other_portions
+fator
+    : parcela outras_parcelas
     ;
 
-other_factors
-    : (op_multiplicacao factor other_factors)?
+outros_fatores
+    : (op_multiplicacao fator outros_fatores)?
     ;
 
-portion
-    : unary_op unary_portion
-    | portion_nao_unario
+parcela
+    : op_unario parcela_unario
+    | parcela_nao_unario
     ;
 
-unary_portion
-    : '^' IDENT other_identifiers size
-    | IDENT other_identifiers size
-    | IDENT '(' expression more_expression ')'
-    | INTEGER
-    | REAL
-    | '(' expression ')'
+parcela_unario
+    : '^' IDENT outros_ident dimensao
+    | IDENT outros_ident dimensao
+    | IDENT '(' expressao mais_expressao ')'
+    | NUM_INT
+    | NUM_REAL
+    | '(' expressao ')'
     ;
 
-portion_nao_unario
-    : '&' IDENT other_identifiers size
-    | STRING
+parcela_nao_unario
+    : '&' IDENT outros_ident dimensao
+    | CADEIA
     ;
 
-other_portions
-    : ('%' portion other_portions)?
+outras_parcelas
+    : ('%' parcela outras_parcelas)?
     ;
 
-relational_operator
+exp_relacional
+    : exp_aritmetica op_opcional
+    ;
+
+op_opcional
+    : (op_relacional exp_aritmetica)?
+    ;
+
+op_relacional
     : '='
     | '<>'
     | '>=' 
@@ -211,40 +254,54 @@ relational_operator
     | '<'
     ;
 
-expression
-    : logical_term ('ou' logical_term)*
+expressao
+    : termo_logico outros_termos_logicos
     ;
 
-logical_term
-    : logical_factor ('e' logical_factor)*
+op_nao 
+    : ('nao')?
     ;
 
-logical_factor
-    : 'nao'?
-    (
-        'verdadeiro'
-        | 'falso'
-        | arithmetic_expression (relational_operator arithmetic_expression)?
-    )
+termo_logico
+    : fator_logico outros_fatores_logicos
+    ;
+
+outros_termos_logicos
+    : ('ou' termo_logico outros_termos_logicos)?
+    ;
+
+outros_fatores_logicos
+    : ('e' fator_logico outros_fatores_logicos)?
+    ;
+
+fator_logico
+    : op_nao parcela_logica
+    ;
+
+parcela_logica 
+    : 'verdadeiro'
+    | 'falso'
+    | exp_relacional
     ;
 
 IDENT
     : ('a'..'z' | 'A'..'Z' | '_') ('a'..'z' | 'A'..'Z' | '0'..'9' | '_')*
     ;
 
-STRING
+CADEIA
     : '"' ~('\n' | '\r' | '"')* '"'
     ;
 
-INTEGER
+NUM_INT
     : ('0'..'9')+
     ;
 
-REAL
+NUM_REAL
     : ('0'..'9')+ '.' ('0'..'9')+
+    // | '.' ('0'..'9')+
     ;
 
-COMMENT
+COMENTARIO
     : '{' ~('\n' | '\r' | '}')* '}' {skip();}
     ;
 WS

@@ -17,6 +17,19 @@ public class LaBaseListener implements LaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterTipo(@NotNull LaParser.TipoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitTipo(@NotNull LaParser.TipoContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterVar_opcional(@NotNull LaParser.Var_opcionalContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -30,130 +43,65 @@ public class LaBaseListener implements LaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterPortion_nao_unario(@NotNull LaParser.Portion_nao_unarioContext ctx) { }
+	@Override public void enterFator_logico(@NotNull LaParser.Fator_logicoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitPortion_nao_unario(@NotNull LaParser.Portion_nao_unarioContext ctx) { }
+	@Override public void exitFator_logico(@NotNull LaParser.Fator_logicoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterOptional_pointers(@NotNull LaParser.Optional_pointersContext ctx) { }
+	@Override public void enterParcela_logica(@NotNull LaParser.Parcela_logicaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitOptional_pointers(@NotNull LaParser.Optional_pointersContext ctx) { }
+	@Override public void exitParcela_logica(@NotNull LaParser.Parcela_logicaContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterPortion(@NotNull LaParser.PortionContext ctx) { }
+	@Override public void enterDeclaracoes_locais(@NotNull LaParser.Declaracoes_locaisContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitPortion(@NotNull LaParser.PortionContext ctx) { }
+	@Override public void exitDeclaracoes_locais(@NotNull LaParser.Declaracoes_locaisContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterOther_portions(@NotNull LaParser.Other_portionsContext ctx) { }
+	@Override public void enterPrograma(@NotNull LaParser.ProgramaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitOther_portions(@NotNull LaParser.Other_portionsContext ctx) { }
+	@Override public void exitPrograma(@NotNull LaParser.ProgramaContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterAdd_op(@NotNull LaParser.Add_opContext ctx) { }
+	@Override public void enterExpressao(@NotNull LaParser.ExpressaoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitAdd_op(@NotNull LaParser.Add_opContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterProgram(@NotNull LaParser.ProgramContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitProgram(@NotNull LaParser.ProgramContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterLocal_declarations(@NotNull LaParser.Local_declarationsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitLocal_declarations(@NotNull LaParser.Local_declarationsContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterType(@NotNull LaParser.TypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitType(@NotNull LaParser.TypeContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterBody(@NotNull LaParser.BodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitBody(@NotNull LaParser.BodyContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterUnary_portion(@NotNull LaParser.Unary_portionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitUnary_portion(@NotNull LaParser.Unary_portionContext ctx) { }
+	@Override public void exitExpressao(@NotNull LaParser.ExpressaoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -173,364 +121,195 @@ public class LaBaseListener implements LaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterOther_identifiers(@NotNull LaParser.Other_identifiersContext ctx) { }
+	@Override public void enterDeclaracoes(@NotNull LaParser.DeclaracoesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitOther_identifiers(@NotNull LaParser.Other_identifiersContext ctx) { }
+	@Override public void exitDeclaracoes(@NotNull LaParser.DeclaracoesContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterOptional_else(@NotNull LaParser.Optional_elseContext ctx) { }
+	@Override public void enterPonteiros_opcionais(@NotNull LaParser.Ponteiros_opcionaisContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitOptional_else(@NotNull LaParser.Optional_elseContext ctx) { }
+	@Override public void exitPonteiros_opcionais(@NotNull LaParser.Ponteiros_opcionaisContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterOther_terms(@NotNull LaParser.Other_termsContext ctx) { }
+	@Override public void enterTermo(@NotNull LaParser.TermoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitOther_terms(@NotNull LaParser.Other_termsContext ctx) { }
+	@Override public void exitTermo(@NotNull LaParser.TermoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterParameter(@NotNull LaParser.ParameterContext ctx) { }
+	@Override public void enterOutros_fatores(@NotNull LaParser.Outros_fatoresContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitParameter(@NotNull LaParser.ParameterContext ctx) { }
+	@Override public void exitOutros_fatores(@NotNull LaParser.Outros_fatoresContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterExtended_type(@NotNull LaParser.Extended_typeContext ctx) { }
+	@Override public void enterTipo_basico_ident(@NotNull LaParser.Tipo_basico_identContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitExtended_type(@NotNull LaParser.Extended_typeContext ctx) { }
+	@Override public void exitTipo_basico_ident(@NotNull LaParser.Tipo_basico_identContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterTerm(@NotNull LaParser.TermContext ctx) { }
+	@Override public void enterOp_opcional(@NotNull LaParser.Op_opcionalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitTerm(@NotNull LaParser.TermContext ctx) { }
+	@Override public void exitOp_opcional(@NotNull LaParser.Op_opcionalContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterConstants(@NotNull LaParser.ConstantsContext ctx) { }
+	@Override public void enterMais_ident(@NotNull LaParser.Mais_identContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitConstants(@NotNull LaParser.ConstantsContext ctx) { }
+	@Override public void exitMais_ident(@NotNull LaParser.Mais_identContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterFactor(@NotNull LaParser.FactorContext ctx) { }
+	@Override public void enterCorpo(@NotNull LaParser.CorpoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitFactor(@NotNull LaParser.FactorContext ctx) { }
+	@Override public void exitCorpo(@NotNull LaParser.CorpoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterComands(@NotNull LaParser.ComandsContext ctx) { }
+	@Override public void enterDeclaracao_local(@NotNull LaParser.Declaracao_localContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitComands(@NotNull LaParser.ComandsContext ctx) { }
+	@Override public void exitDeclaracao_local(@NotNull LaParser.Declaracao_localContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterMore_expression(@NotNull LaParser.More_expressionContext ctx) { }
+	@Override public void enterExp_relacional(@NotNull LaParser.Exp_relacionalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitMore_expression(@NotNull LaParser.More_expressionContext ctx) { }
+	@Override public void exitExp_relacional(@NotNull LaParser.Exp_relacionalContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterIdentifier(@NotNull LaParser.IdentifierContext ctx) { }
+	@Override public void enterSenao_opcional(@NotNull LaParser.Senao_opcionalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitIdentifier(@NotNull LaParser.IdentifierContext ctx) { }
+	@Override public void exitSenao_opcional(@NotNull LaParser.Senao_opcionalContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterOptional_params(@NotNull LaParser.Optional_paramsContext ctx) { }
+	@Override public void enterTermo_logico(@NotNull LaParser.Termo_logicoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitOptional_params(@NotNull LaParser.Optional_paramsContext ctx) { }
+	@Override public void exitTermo_logico(@NotNull LaParser.Termo_logicoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterExpression(@NotNull LaParser.ExpressionContext ctx) { }
+	@Override public void enterDimensao(@NotNull LaParser.DimensaoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitExpression(@NotNull LaParser.ExpressionContext ctx) { }
+	@Override public void exitDimensao(@NotNull LaParser.DimensaoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterLogical_term(@NotNull LaParser.Logical_termContext ctx) { }
+	@Override public void enterMais_selecao(@NotNull LaParser.Mais_selecaoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitLogical_term(@NotNull LaParser.Logical_termContext ctx) { }
+	@Override public void exitMais_selecao(@NotNull LaParser.Mais_selecaoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterConst_value(@NotNull LaParser.Const_valueContext ctx) { }
+	@Override public void enterVariavel(@NotNull LaParser.VariavelContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitConst_value(@NotNull LaParser.Const_valueContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterBasic_type(@NotNull LaParser.Basic_typeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitBasic_type(@NotNull LaParser.Basic_typeContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterUnary_op(@NotNull LaParser.Unary_opContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitUnary_op(@NotNull LaParser.Unary_opContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterRelational_operator(@NotNull LaParser.Relational_operatorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitRelational_operator(@NotNull LaParser.Relational_operatorContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterDeclarations(@NotNull LaParser.DeclarationsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitDeclarations(@NotNull LaParser.DeclarationsContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterOptional_arguments(@NotNull LaParser.Optional_argumentsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitOptional_arguments(@NotNull LaParser.Optional_argumentsContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterLocal_declaration(@NotNull LaParser.Local_declarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitLocal_declaration(@NotNull LaParser.Local_declarationContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterOther_factors(@NotNull LaParser.Other_factorsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitOther_factors(@NotNull LaParser.Other_factorsContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterGlobal_declaration(@NotNull LaParser.Global_declarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitGlobal_declaration(@NotNull LaParser.Global_declarationContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterSize(@NotNull LaParser.SizeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitSize(@NotNull LaParser.SizeContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterSelection(@NotNull LaParser.SelectionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitSelection(@NotNull LaParser.SelectionContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterArithmetic_expression(@NotNull LaParser.Arithmetic_expressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitArithmetic_expression(@NotNull LaParser.Arithmetic_expressionContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterVariable(@NotNull LaParser.VariableContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitVariable(@NotNull LaParser.VariableContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterLogical_factor(@NotNull LaParser.Logical_factorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitLogical_factor(@NotNull LaParser.Logical_factorContext ctx) { }
+	@Override public void exitVariavel(@NotNull LaParser.VariavelContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -550,6 +329,409 @@ public class LaBaseListener implements LaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterDeclaracao_global(@NotNull LaParser.Declaracao_globalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitDeclaracao_global(@NotNull LaParser.Declaracao_globalContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterParcela_nao_unario(@NotNull LaParser.Parcela_nao_unarioContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitParcela_nao_unario(@NotNull LaParser.Parcela_nao_unarioContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterSelecao(@NotNull LaParser.SelecaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitSelecao(@NotNull LaParser.SelecaoContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterTipo_estendido(@NotNull LaParser.Tipo_estendidoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitTipo_estendido(@NotNull LaParser.Tipo_estendidoContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterParametro(@NotNull LaParser.ParametroContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitParametro(@NotNull LaParser.ParametroContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterOp_unario(@NotNull LaParser.Op_unarioContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitOp_unario(@NotNull LaParser.Op_unarioContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterMais_parametros(@NotNull LaParser.Mais_parametrosContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitMais_parametros(@NotNull LaParser.Mais_parametrosContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterParcela(@NotNull LaParser.ParcelaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitParcela(@NotNull LaParser.ParcelaContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterOp_adicao(@NotNull LaParser.Op_adicaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitOp_adicao(@NotNull LaParser.Op_adicaoContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterIntervalo_opcional(@NotNull LaParser.Intervalo_opcionalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitIntervalo_opcional(@NotNull LaParser.Intervalo_opcionalContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterDecl_local_global(@NotNull LaParser.Decl_local_globalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitDecl_local_global(@NotNull LaParser.Decl_local_globalContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterOutros_ident(@NotNull LaParser.Outros_identContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitOutros_ident(@NotNull LaParser.Outros_identContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterMais_variaveis(@NotNull LaParser.Mais_variaveisContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitMais_variaveis(@NotNull LaParser.Mais_variaveisContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterOutros_fatores_logicos(@NotNull LaParser.Outros_fatores_logicosContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitOutros_fatores_logicos(@NotNull LaParser.Outros_fatores_logicosContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterMais_expressao(@NotNull LaParser.Mais_expressaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitMais_expressao(@NotNull LaParser.Mais_expressaoContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterValor_constante(@NotNull LaParser.Valor_constanteContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitValor_constante(@NotNull LaParser.Valor_constanteContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterParcela_unario(@NotNull LaParser.Parcela_unarioContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitParcela_unario(@NotNull LaParser.Parcela_unarioContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterParametros_opcional(@NotNull LaParser.Parametros_opcionalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitParametros_opcional(@NotNull LaParser.Parametros_opcionalContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterOutros_termos_logicos(@NotNull LaParser.Outros_termos_logicosContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitOutros_termos_logicos(@NotNull LaParser.Outros_termos_logicosContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterTipo_basico(@NotNull LaParser.Tipo_basicoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitTipo_basico(@NotNull LaParser.Tipo_basicoContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterComandos(@NotNull LaParser.ComandosContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitComandos(@NotNull LaParser.ComandosContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterOutros_termos(@NotNull LaParser.Outros_termosContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitOutros_termos(@NotNull LaParser.Outros_termosContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterExp_aritmetica(@NotNull LaParser.Exp_aritmeticaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitExp_aritmetica(@NotNull LaParser.Exp_aritmeticaContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterMais_var(@NotNull LaParser.Mais_varContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitMais_var(@NotNull LaParser.Mais_varContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterRegistro(@NotNull LaParser.RegistroContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitRegistro(@NotNull LaParser.RegistroContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterConstantes(@NotNull LaParser.ConstantesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitConstantes(@NotNull LaParser.ConstantesContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterMais_constantes(@NotNull LaParser.Mais_constantesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitMais_constantes(@NotNull LaParser.Mais_constantesContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterOutras_parcelas(@NotNull LaParser.Outras_parcelasContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitOutras_parcelas(@NotNull LaParser.Outras_parcelasContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterFator(@NotNull LaParser.FatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitFator(@NotNull LaParser.FatorContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterOp_relacional(@NotNull LaParser.Op_relacionalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitOp_relacional(@NotNull LaParser.Op_relacionalContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterArgumentos_opcional(@NotNull LaParser.Argumentos_opcionalContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitArgumentos_opcional(@NotNull LaParser.Argumentos_opcionalContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterChamada_atribuicao(@NotNull LaParser.Chamada_atribuicaoContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -563,26 +745,39 @@ public class LaBaseListener implements LaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterRegister(@NotNull LaParser.RegisterContext ctx) { }
+	@Override public void enterIdentificador(@NotNull LaParser.IdentificadorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitRegister(@NotNull LaParser.RegisterContext ctx) { }
+	@Override public void exitIdentificador(@NotNull LaParser.IdentificadorContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterMore_identifier(@NotNull LaParser.More_identifierContext ctx) { }
+	@Override public void enterNumero_intervalo(@NotNull LaParser.Numero_intervaloContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitMore_identifier(@NotNull LaParser.More_identifierContext ctx) { }
+	@Override public void exitNumero_intervalo(@NotNull LaParser.Numero_intervaloContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterOp_nao(@NotNull LaParser.Op_naoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitOp_nao(@NotNull LaParser.Op_naoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
