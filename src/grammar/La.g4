@@ -38,7 +38,8 @@ mais_var
     ;
 
 identificador
-    : ponteiros_opcionais IDENT ('.' IDENT)* dimensao
+    : ponteiros_opcionais IDENT dimensao outros_ident
+    //: ponteiros_opcionais IDENT ('.' IDENT)* dimensao
     ;
 
 ponteiros_opcionais
