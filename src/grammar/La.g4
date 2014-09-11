@@ -43,7 +43,7 @@ identificador
     ;
 
 ponteiros_opcionais
-    : ('^' ponteiros_opcionais)?
+    : '^'*
     ;
  
 outros_ident
@@ -57,6 +57,10 @@ dimensao
 tipo
     : registro
     | tipo_estendido
+    ;
+
+tipo_estendido
+    : ponteiros_opcionais tipo_basico_ident
     ;
 
 mais_ident
@@ -77,10 +81,6 @@ tipo_basico
 tipo_basico_ident
     : tipo_basico
     | IDENT
-    ;
-
-tipo_estendido
-    : ponteiros_opcionais tipo_basico_ident
     ;
 
 valor_constante
@@ -105,8 +105,7 @@ parametros_opcional
     ;
 
 parametro
-    : var_opcional identificador mais_ident ':' tipo_estendido
-      (',' parametro)?
+    : var_opcional identificador mais_ident ':' tipo_estendido (',' parametro)?
     ;
 
 var_opcional
@@ -120,7 +119,6 @@ declaracoes_locais
 corpo
     : declaracoes_locais comandos
     ;
-
 
 comandos
     : (cmd comandos)?
@@ -178,8 +176,9 @@ numero_intervalo
 intervalo_opcional
     : ('..' op_unario NUM_INT)?
     ;
+
 op_unario
-    : ('-')?
+    : '-'?
     ;
 
 exp_aritmetica
@@ -235,10 +234,6 @@ outras_parcelas
     : ('%' parcela outras_parcelas)?
     ;
 
-exp_relacional
-    : exp_aritmetica op_opcional
-    ;
-
 op_opcional
     : (op_relacional exp_aritmetica)?
     ;
@@ -256,16 +251,12 @@ expressao
     : termo_logico outros_termos_logicos
     ;
 
-op_nao 
-    : ('nao')?
+outros_termos_logicos
+    : ('ou' termo_logico outros_termos_logicos)?
     ;
 
 termo_logico
     : fator_logico outros_fatores_logicos
-    ;
-
-outros_termos_logicos
-    : ('ou' termo_logico outros_termos_logicos)?
     ;
 
 outros_fatores_logicos
@@ -276,10 +267,18 @@ fator_logico
     : op_nao parcela_logica
     ;
 
+op_nao
+    : ('nao')?
+    ;
+
 parcela_logica 
     : 'verdadeiro'
     | 'falso'
     | exp_relacional
+    ;
+
+exp_relacional
+    : exp_aritmetica op_opcional
     ;
 
 IDENT
