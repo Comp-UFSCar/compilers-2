@@ -1,4 +1,4 @@
-// Generated from C:\Users\Usuario\Documents\GitHub\Compilers-2-assignment-1\src\grammar\La.g4 by ANTLR 4.1
+// Generated from D:\Repositories\Compilers-2-assignment-1\src\grammar\La.g4 by ANTLR 4.1
 package laparser;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
