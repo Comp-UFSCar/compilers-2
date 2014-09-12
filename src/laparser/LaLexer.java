@@ -53,6 +53,9 @@ public class LaLexer extends Lexer {
 		"WS"
 	};
 
+	 //Cria um objeto pilhaDeTabelas 
+	infrastructure.PilhaDeTabelas pilhaDeTabelas = new infrastructure.PilhaDeTabelas();
+
 
 	public LaLexer(CharStream input) {
 		super(input);
