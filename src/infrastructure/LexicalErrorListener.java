@@ -22,13 +22,17 @@ public class LexicalErrorListener implements ANTLRErrorListener {
 
     @Override
     public void syntaxError(Recognizer<?, ?> rcgnzr, Object o, int i, int i1, String string, RecognitionException re) {
-        String token = ((CommonToken) o).getText();
         
-        if (tokens.containsKey(token)) {
-            token = tokens.value(token);
-        }
+//        String token = ((CommonToken) o).getText();
+//        
+//        if (tokens.containsKey(token)) {
+//            token = tokens.value(token);
+//        }
         
-        throw new ParseCancellationException("Linha " + i + ": " + token + " - simbolo nao identificado");
+        int ii = string.indexOf('\'');
+        int i2 = string.lastIndexOf('\'');
+        
+        throw new ParseCancellationException("Linha " + i + ": " + string.substring(ii, i2) + " - simbolo nao identificado");
     }
     
     @Override
