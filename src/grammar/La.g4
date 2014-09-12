@@ -10,6 +10,10 @@
 
 grammar La;
 
+@members{ //Cria um objeto pilhaDeTabelas 
+infrastructure.PilhaDeTabelas pilhaDeTabelas = new infrastructure.PilhaDeTabelas();
+}
+
 programa
     : declaracoes 'algoritmo' corpo 'fim_algoritmo'
     ;
@@ -25,20 +29,34 @@ decl_local_global
 
 declaracao_local
     : 'declare' variavel
-    | 'constante' IDENT ':' tipo_basico '=' valor_constante
+      {
+          pilhaDeTabelas.topo().adicionarSimbolo($variavel.nome, "variavel");
+      }
+    | 'constante' IDENT 
+      {
+          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "constante");
+      }
+      ':' tipo_basico '=' valor_constante
     | 'tipo' IDENT ':' tipo
     ;
 
-variavel
-    : IDENT dimensao mais_var ':' tipo
+variavel returns [ String nome, int linha, int coluna ]
+    : IDENT { $nome = $IDENT.getText(); $linha = $IDENT.line; $coluna = $IDENT.pos; }
+      dimensao mais_var ':' tipo
     ;
 
 mais_var
-    : (',' IDENT dimensao mais_var)?
+    : (',' IDENT dimensao 
+      {
+          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "variavel");
+      }
+      mais_var)?
     ;
 
-identificador
-    : ponteiros_opcionais IDENT dimensao outros_ident
+identificador returns [ String nome, int linha, int coluna ]
+    : ponteiros_opcionais IDENT
+      { $nome = $IDENT.getText(); $linha = $IDENT.line; $coluna = $IDENT.pos; }
+      dimensao outros_ident
     //: ponteiros_opcionais IDENT ('.' IDENT)* dimensao
     ;
 
@@ -64,7 +82,13 @@ mais_ident
     ;
 
 mais_variaveis
-    : (variavel mais_variaveis)?
+    : (variavel 
+       {
+           if (!pilhaDeTabelas.existeSimbolo($variavel.nome)) {
+                infrastructure.Mensagens.erroVariavelNaoExiste($variavel.linha,$variavel.coluna,$variavel.nome);
+           }
+       }
+    mais_variaveis)?
     ;
 
 tipo_basico
@@ -92,12 +116,28 @@ valor_constante
     ;
 
 registro
-    : 'registro' variavel mais_variaveis 'fim_registro'
+    : 'registro' variavel 
+      {
+          //pilhaDeTabelas.topo().adicionarSimbolo($variavel.nome, "registro");
+      }
+      mais_variaveis 'fim_registro'
     ;
 
 declaracao_global
-    : 'procedimento' IDENT '(' parametros_opcional ')' declaracoes_locais comandos 'fim_procedimento'
-    | 'funcao' IDENT '(' parametros_opcional '):' tipo_estendido declaracoes_locais comandos 'fim_funcao'
+    : { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("global")); }
+      'procedimento' IDENT
+      {
+          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "procedimento");
+      }
+      '(' parametros_opcional ')' declaracoes_locais comandos 'fim_procedimento'
+      { pilhaDeTabelas.desempilhar(); }
+    | { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("global")); }
+      'funcao' IDENT
+      {
+          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "funcao");
+      }
+      '(' parametros_opcional '):' tipo_estendido declaracoes_locais comandos 'fim_funcao'
+      { pilhaDeTabelas.desempilhar(); }
     ;
 
 parametros_opcional
@@ -127,11 +167,28 @@ comandos
     ;
 
 cmd 
-    : 'leia' '(' identificador mais_ident ')'
+    : 'leia' '(' identificador mais_ident
+      {   //Lanca um erro quando nao encontra a variavel na pilha de tabelas
+           if (!pilhaDeTabelas.existeSimbolo($identificador.nome)) {
+                infrastructure.Mensagens.erroVariavelNaoExiste($identificador.linha,$identificador.coluna,$identificador.nome);
+           }
+      }
+      ')'
     | 'escreva' '(' expressao mais_expressao ')'
     | 'se' expressao 'entao' comandos senao_opcional 'fim_se'
     | 'caso' exp_aritmetica 'seja' selecao senao_opcional 'fim_caso'
-    | 'para' IDENT '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' comandos 'fim_para'
+    | 'para'
+      {   //Empilha (Cria) um novo escopo para o FOR
+          pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("para"));
+      }
+      IDENT 
+      {
+          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "variavel");
+      }
+      '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' comandos 'fim_para'
+      {   //Desempilha o escopo do FOR
+          pilhaDeTabelas.desempilhar();
+      }
     | 'enquanto' expressao 'faca' comandos 'fim_enquanto'
     | 'faca' comandos 'ate' expressao
     | '^' IDENT outros_ident dimensao '<-' expressao
