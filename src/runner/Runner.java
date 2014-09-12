@@ -67,6 +67,7 @@ public class Runner {
      * Executes Runner.start() method with the arguments given.
      *
      * @param args array that contains the names of the input and output files
+     * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
         new Runner().start(args[0], args[1]);
