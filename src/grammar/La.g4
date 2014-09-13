@@ -11,7 +11,7 @@
 grammar La;
 
 @members{ //Cria um objeto pilhaDeTabelas 
-infrastructure.PilhaDeTabelas pilhaDeTabelas = new infrastructure.PilhaDeTabelas();
+    infrastructure.PilhaDeTabelas pilhaDeTabelas = new infrastructure.PilhaDeTabelas();
 }
 
 programa
@@ -54,10 +54,9 @@ mais_var
     ;
 
 identificador returns [ String nome, int linha, int coluna ]
-    : ponteiros_opcionais IDENT
+    : ponteiros_opcionais IDENT ('.' IDENT)*
       { $nome = $IDENT.getText(); $linha = $IDENT.line; $coluna = $IDENT.pos; }
       dimensao outros_ident
-    //: ponteiros_opcionais IDENT ('.' IDENT)* dimensao
     ;
 
 ponteiros_opcionais

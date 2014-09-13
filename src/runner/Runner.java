@@ -54,9 +54,6 @@ public class Runner {
                 output.println(e.getMessage());
             }
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
 
         output.println("Fim da compilacao");
 
