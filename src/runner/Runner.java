@@ -55,13 +55,23 @@ public class Runner {
                 output.println(e.getMessage());
             }
         }
-
-        output.println("Fim da compilacao");
-
-        PrintWriter saida = new PrintWriter(new FileWriter(outputFile));
-        saida.print(output);
-        saida.flush();
-        saida.close();
+        
+        Saida.println("Fim da compilacao");
+        
+        if (output.isModificado()){
+            output.println("Fim da compilacao");
+            PrintWriter saida = new PrintWriter(new FileWriter(outputFile));
+            saida.print(output);
+            saida.flush();
+            saida.close();
+        }
+        else {
+            
+            PrintWriter saida = new PrintWriter(new FileWriter(outputFile));
+            saida.print(Saida.getTexto());
+            saida.flush();
+            saida.close();
+        }
     }
 
     /**
