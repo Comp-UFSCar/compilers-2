@@ -615,13 +615,13 @@ public class LaBaseListener implements LaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterMais_var(@NotNull LaParser.Mais_varContext ctx) { }
+	//@Override public void enterMais_var(@NotNull LaParser.Mais_varContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitMais_var(@NotNull LaParser.Mais_varContext ctx) { }
+	//@Override public void exitMais_var(@NotNull LaParser.Mais_varContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

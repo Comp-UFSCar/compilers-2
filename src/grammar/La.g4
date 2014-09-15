@@ -1,4 +1,4 @@
-/**
+/*
  * Gramatica da linguagem LA.
  *
  * Grupo:
@@ -7,7 +7,7 @@
  * Lucas Hauptmann Pereira 
  * Lucas Oliveira David
 */
- 
+
 grammar La;
 
 @members{ //Cria um objeto pilhaDeTabelas 
@@ -29,47 +29,46 @@ decl_local_global
 
 declaracao_local
     : 'declare' variavel
-      
     | 'constante' IDENT 
+      ':' tipo_basico 
       {
-          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "constante");
+          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "constante", $tipo_basico.nomeTipo);
       }
-      ':' tipo_basico '=' valor_constante
+      '=' valor_constante
     | 'tipo' IDENT ':' tipo
     ;
 
-variavel //returns [ String nome, int linha, int coluna ]
+variavel 
     : { java.util.List<String> vars = new java.util.ArrayList<String>(); }
-        
-        IDENT //{ $nome = $IDENT.getText(); $linha = $IDENT.line; $coluna = $IDENT.pos; }
-        { vars.add($IDENT.getText()); }
-      dimensao 
-      (',' IDENT dimensao 
+      IDENT
       {
-       
-          vars.add($IDENT.getText());
+         String varASerComparada = $IDENT.getText();
+         for (String varDaLista:vars) {
+            if (varASerComparada.equals(varDaLista)){
+                infrastructure.Mensagens.erroVariavelJaExiste($IDENT.line, varASerComparada);
+            }
+         }
+         vars.add($IDENT.getText());
       }
-      )*
+      dimensao (',' IDENT 
+      {
+         varASerComparada = $IDENT.getText();
+         for (String varDaLista:vars) {
+            if (varASerComparada.equals(varDaLista)){
+                infrastructure.Mensagens.erroVariavelJaExiste($IDENT.line, varASerComparada);
+            }
+         }
+         vars.add($IDENT.getText());
+      }
+      dimensao)*
       ':' tipo
-      {
-          for(String v:vars) {
-          pilhaDeTabelas.topo().adicionarSimbolo(v, "variavel", $tipo.nomeTipo);
-          }
-       }
     ;
 
-mais_var
-    : (',' IDENT dimensao 
-      {
-          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "variavel");
-      }
-      mais_var)?
-    ;
-
-identificador returns [ String nome, int linha, int coluna ]
+identificador returns [ String nome, int linha ]
     : ponteiros_opcionais IDENT ('.' IDENT)*
-      { $nome = $IDENT.getText(); $linha = $IDENT.line; $coluna = $IDENT.pos; }
+      { $nome = $IDENT.getText(); $linha = $IDENT.line; }
       dimensao outros_ident
+      //: ponteiros_opcionais IDENT ('.' IDENT)* dimensao
     ;
 
 ponteiros_opcionais
@@ -97,26 +96,20 @@ mais_ident
     : (',' identificador mais_ident)?
     ;
 
-//mais_variaveis
-//    : (variavel 
-//       {
-//           if (!pilhaDeTabelas.existeSimbolo($variavel.nome)) {
-//                infrastructure.Mensagens.erroVariavelNaoExiste($variavel.linha,$variavel.coluna,$variavel.nome);
-//           }
-//       }
-//    mais_variaveis)?
-//    ;
-
-tipo_basico
-    : 'literal'
-    | 'inteiro'
-    | 'real'
-    | 'logico'
+mais_variaveis
+    : (variavel mais_variaveis)?
     ;
 
-tipo_basico_ident
-    : tipo_basico
-    | IDENT
+tipo_basico returns [ String nomeTipo, int linha ]
+    : 'literal' { $nomeTipo = "literal"; }
+    | 'inteiro' { $nomeTipo = "inteiro"; }
+    | 'real' { $nomeTipo = "real"; }
+    | 'logico' { $nomeTipo = "logico"; }
+    ;
+
+tipo_basico_ident returns [ String nomeTipo ]
+    : tipo_basico { $nomeTipo = $tipo_basico.nomeTipo; }
+    | IDENT { $nomeTipo = $IDENT.getText(); }
     ;
 
 valor_constante
@@ -128,27 +121,32 @@ valor_constante
     ;
 
 registro
-    : 'registro' variavel *
-      //{
-          //pilhaDeTabelas.topo().adicionarSimbolo($variavel.nome, "registro");
-      //}
-      //mais_variaveis 
-      'fim_registro'
+    : 'registro' variavel* mais_variaveis 'fim_registro'
     ;
 
 declaracao_global
     : { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("global")); }
       'procedimento' IDENT
-      {
-          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "procedimento");
-      }
+     /*  {   //Nao tenho certeza
+          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+              Mensagens.erroVariavelJaExiste($IDENT.line,$IDENT.getText());
+          }
+          else {
+              pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "procedimento");
+          }
+      }  */
       '(' parametros_opcional ')' declaracoes_locais comandos 'fim_procedimento'
       { pilhaDeTabelas.desempilhar(); }
     | { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("global")); }
       'funcao' IDENT
-      {
-          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "funcao");
-      }
+    /*  {   //Nao tenho certeza
+          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+              Mensagens.erroVariavelJaExiste($IDENT.line,$IDENT.getText());
+          }
+          else {
+              pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "funcao");
+          }
+      }  */
       '(' parametros_opcional '):' tipo_estendido declaracoes_locais comandos 'fim_funcao'
       { pilhaDeTabelas.desempilhar(); }
     ;
@@ -181,7 +179,7 @@ cmd
     : 'leia' '(' identificador mais_ident
       {   //Lanca um erro quando nao encontra a variavel na pilha de tabelas
            if (!pilhaDeTabelas.existeSimbolo($identificador.nome)) {
-                infrastructure.Mensagens.erroVariavelNaoExiste($identificador.linha,$identificador.coluna,$identificador.nome);
+                infrastructure.Mensagens.erroVariavelNaoExiste($identificador.linha,$identificador.nome);
            }
       }
       ')'
@@ -193,8 +191,10 @@ cmd
           pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("para"));
       }
       IDENT 
-      {
-          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "variavel");
+      {   //Lanca um erro quando nao encontra a variavel na pilha de tabelas
+          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+               infrastructure.Mensagens.erroVariavelNaoExiste($IDENT.line,$IDENT.getText());
+          }
       }
       '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' comandos 'fim_para'
       {   //Desempilha o escopo do FOR
@@ -287,16 +287,40 @@ parcela
     ;
 
 parcela_unario
-    : '^' IDENT outros_ident dimensao
-    | IDENT outros_ident dimensao
-    | IDENT '(' expressao mais_expressao ')'
+    : '^' IDENT 
+      {
+         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+            infrastructure.Mensagens.erroVariavelNaoExiste($IDENT.line,$IDENT.getText());
+         }
+      }
+      outros_ident dimensao
+    | IDENT 
+      {
+         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+            infrastructure.Mensagens.erroVariavelNaoExiste($IDENT.line,$IDENT.getText());
+         }
+      }
+      outros_ident dimensao
+    | IDENT 
+      {
+         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+            infrastructure.Mensagens.erroVariavelNaoExiste($IDENT.line,$IDENT.getText());
+         }
+      }
+      '(' expressao mais_expressao ')'
     | NUM_INT
     | NUM_REAL
     | '(' expressao ')'
     ;
 
 parcela_nao_unario
-    : '&' IDENT outros_ident dimensao
+    : '&' IDENT
+      {
+         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+            infrastructure.Mensagens.erroVariavelNaoExiste($IDENT.line,$IDENT.getText());
+         }
+      }
+      outros_ident dimensao
     | CADEIA
     ;
 

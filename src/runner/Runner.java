@@ -1,6 +1,7 @@
 package runner;
 
 import infrastructure.LexicalErrorListener;
+import infrastructure.Saida;
 import infrastructure.SaidaParser;
 import infrastructure.SyntaticErrorListener;
 import java.io.FileInputStream;
@@ -34,14 +35,14 @@ public class Runner {
         ANTLRInputStream in = new ANTLRInputStream(new FileInputStream(inputFile));
         SaidaParser  output = new SaidaParser();
         
-        LaLexer  lexer  = new  LaLexer(in);
+        LaLexer  lexer  = new LaLexer(in);
         LaParser parser = new LaParser(new CommonTokenStream(lexer));
         
         parser.removeErrorListeners();
         lexer .removeErrorListeners();
         
         SyntaticErrorListener syntatic = new SyntaticErrorListener(output);
-        LexicalErrorListener   lexical = new  LexicalErrorListener(output);
+        LexicalErrorListener   lexical = new LexicalErrorListener(output);
 
         parser.addErrorListener(syntatic);
         lexer .addErrorListener(lexical);
