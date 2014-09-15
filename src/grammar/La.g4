@@ -29,9 +29,7 @@ decl_local_global
 
 declaracao_local
     : 'declare' variavel
-      {
-          pilhaDeTabelas.topo().adicionarSimbolo($variavel.nome, "variavel");
-      }
+      
     | 'constante' IDENT 
       {
           pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "constante");
@@ -40,9 +38,24 @@ declaracao_local
     | 'tipo' IDENT ':' tipo
     ;
 
-variavel returns [ String nome, int linha, int coluna ]
-    : IDENT { $nome = $IDENT.getText(); $linha = $IDENT.line; $coluna = $IDENT.pos; }
-      dimensao mais_var ':' tipo
+variavel //returns [ String nome, int linha, int coluna ]
+    : { java.util.List<String> vars = new java.util.ArrayList<String>(); }
+        
+        IDENT //{ $nome = $IDENT.getText(); $linha = $IDENT.line; $coluna = $IDENT.pos; }
+        { vars.add($IDENT.getText()); }
+      dimensao 
+      (',' IDENT dimensao 
+      {
+       
+          vars.add($IDENT.getText());
+      }
+      )*
+      ':' tipo
+      {
+          for(String v:vars) {
+          pilhaDeTabelas.topo().adicionarSimbolo(v, "variavel", $tipo.nomeTipo);
+          }
+       }
     ;
 
 mais_var
@@ -71,9 +84,9 @@ dimensao
     : ('[' exp_aritmetica ']' dimensao)?
     ;
 
-tipo
-    : registro
-    | tipo_estendido
+tipo returns [ String nomeTipo ]
+    : registro { $nomeTipo = "registro"; }
+    | tipo_estendido { $nomeTipo = "int"; }
     ;
 
 tipo_estendido
@@ -84,15 +97,15 @@ mais_ident
     : (',' identificador mais_ident)?
     ;
 
-mais_variaveis
-    : (variavel 
-       {
-           if (!pilhaDeTabelas.existeSimbolo($variavel.nome)) {
-                infrastructure.Mensagens.erroVariavelNaoExiste($variavel.linha,$variavel.coluna,$variavel.nome);
-           }
-       }
-    mais_variaveis)?
-    ;
+//mais_variaveis
+//    : (variavel 
+//       {
+//           if (!pilhaDeTabelas.existeSimbolo($variavel.nome)) {
+//                infrastructure.Mensagens.erroVariavelNaoExiste($variavel.linha,$variavel.coluna,$variavel.nome);
+//           }
+//       }
+//    mais_variaveis)?
+//    ;
 
 tipo_basico
     : 'literal'
@@ -115,11 +128,12 @@ valor_constante
     ;
 
 registro
-    : 'registro' variavel 
-      {
+    : 'registro' variavel *
+      //{
           //pilhaDeTabelas.topo().adicionarSimbolo($variavel.nome, "registro");
-      }
-      mais_variaveis 'fim_registro'
+      //}
+      //mais_variaveis 
+      'fim_registro'
     ;
 
 declaracao_global
