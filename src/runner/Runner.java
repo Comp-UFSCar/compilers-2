@@ -55,7 +55,7 @@ public class Runner {
                 output.println(e.getMessage());
             }
         }
-        
+
         if (output.isModificado()){
             output.println("Fim da compilacao");
             PrintWriter saida = new PrintWriter(new FileWriter(outputFile));

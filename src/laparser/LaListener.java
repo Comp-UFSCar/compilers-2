@@ -515,17 +515,6 @@ public interface LaListener extends ParseTreeListener {
 	void exitExp_aritmetica(@NotNull LaParser.Exp_aritmeticaContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link LaParser#mais_var}.
-	 * @param ctx the parse tree
-	 */
-	//void enterMais_var(@NotNull LaParser.Mais_varContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LaParser#mais_var}.
-	 * @param ctx the parse tree
-	 */
-	//void exitMais_var(@NotNull LaParser.Mais_varContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link LaParser#registro}.
 	 * @param ctx the parse tree
 	 */
