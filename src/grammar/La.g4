@@ -15,7 +15,9 @@ grammar La;
 }
 
 programa
-    : declaracoes 'algoritmo' corpo 'fim_algoritmo'
+    : {pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("global"));}
+      declaracoes 'algoritmo' corpo 'fim_algoritmo'
+      {pilhaDeTabelas.desempilhar();}
     ;
 
 declaracoes
@@ -43,30 +45,46 @@ variavel
       IDENT
       {
          String varASerComparada = $IDENT.getText();
-         for (String varDaLista:vars) {
-            if (varASerComparada.equals(varDaLista)){
-                infrastructure.Mensagens.erroVariavelJaExiste($IDENT.line, varASerComparada);
-            }
-         }
-         vars.add($IDENT.getText());
+         
+			         
+         if(vars.contains(varASerComparada)) {
+            infrastructure.Mensagens.erroVariavelJaExiste($IDENT.line, varASerComparada);
+	} else {
+             vars.add(varASerComparada);
+        }
       }
       dimensao (',' IDENT 
       {
          varASerComparada = $IDENT.getText();
-         for (String varDaLista:vars) {
-            if (varASerComparada.equals(varDaLista)){
-                infrastructure.Mensagens.erroVariavelJaExiste($IDENT.line, varASerComparada);
-            }
-         }
-         vars.add($IDENT.getText());
+         if(vars.contains(varASerComparada)) {
+            infrastructure.Mensagens.erroVariavelJaExiste($IDENT.line, varASerComparada);
+	} else {
+             vars.add(varASerComparada);
+        }
       }
       dimensao)*
       ':' tipo
+      {
+         for (String varDaLista:vars) {
+            pilhaDeTabelas.topo().adicionarSimbolo(varDaLista, "variavel", $tipo.nomeTipo);
+         }
+      }
     ;
 
-identificador returns [ String nome, int linha ]
-    : ponteiros_opcionais IDENT ('.' IDENT)*
-      { $nome = $IDENT.getText(); $linha = $IDENT.line; }
+identificador
+    : ponteiros_opcionais IDENT 
+      {
+          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+               infrastructure.Mensagens.erroVariavelNaoExiste($IDENT.line,$IDENT.getText());
+          }
+      }
+      ('.' IDENT
+      {
+          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+               infrastructure.Mensagens.erroVariavelNaoExiste($IDENT.line,$IDENT.getText());
+          }
+      }
+      )*
       dimensao outros_ident
       //: ponteiros_opcionais IDENT ('.' IDENT)* dimensao
     ;
@@ -125,7 +143,7 @@ registro
     ;
 
 declaracao_global
-    : { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("global")); }
+    : { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("procedimento")); }
       'procedimento' IDENT
      /*  {   //Nao tenho certeza
           if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
@@ -137,7 +155,7 @@ declaracao_global
       }  */
       '(' parametros_opcional ')' declaracoes_locais comandos 'fim_procedimento'
       { pilhaDeTabelas.desempilhar(); }
-    | { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("global")); }
+    | { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("funcao")); }
       'funcao' IDENT
     /*  {   //Nao tenho certeza
           if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
@@ -176,13 +194,7 @@ comandos
     ;
 
 cmd 
-    : 'leia' '(' identificador mais_ident
-      {   //Lanca um erro quando nao encontra a variavel na pilha de tabelas
-           if (!pilhaDeTabelas.existeSimbolo($identificador.nome)) {
-                infrastructure.Mensagens.erroVariavelNaoExiste($identificador.linha,$identificador.nome);
-           }
-      }
-      ')'
+    : 'leia' '(' identificador mais_ident ')'
     | 'escreva' '(' expressao mais_expressao ')'
     | 'se' expressao 'entao' comandos senao_opcional 'fim_se'
     | 'caso' exp_aritmetica 'seja' selecao senao_opcional 'fim_caso'
@@ -395,6 +407,7 @@ NUM_REAL
 COMENTARIO
     : '{' ~('\n' | '\r' | '}')* '}' {skip();}
     ;
+
 WS
     : (' ' | '\t' | '\r' | '\n') {skip();}
     ;

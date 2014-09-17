@@ -21,6 +21,7 @@ public class TabelaDeSimbolos {
     }
     
     public void adicionarSimbolo(String nome, String tipo1, String tipo2) {
+        //System.out.println(nome);
         simbolos.add(new EntradaTabelaDeSimbolos(nome,tipo1, tipo2));
     }
     

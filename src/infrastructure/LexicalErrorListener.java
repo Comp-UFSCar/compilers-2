@@ -23,14 +23,22 @@ public class LexicalErrorListener implements ANTLRErrorListener {
     @Override
     public void syntaxError(Recognizer<?, ?> rcgnzr, Object o, int i, int i1, String string, RecognitionException re) {
         
+        
         // extracting undentified token from message
-        String token = string.substring(string.indexOf('\''), string.lastIndexOf('\''));
+        String token = string.substring(string.indexOf('\'')+1, string.lastIndexOf('\''));
         
         if(tokens.containsKey(token)) {
             token = tokens.value(token);
+        } else {
+            token = token.substring(0,1);
         }
         
+        if(token.equals("{")) {
+            throw new ParseCancellationException("Linha " + (i+1) + ": comentario nao fechado");
+        }
+        else {
         throw new ParseCancellationException("Linha " + i + ": " + token + " - simbolo nao identificado");
+        }
     }
     
     @Override

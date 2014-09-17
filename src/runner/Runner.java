@@ -56,8 +56,6 @@ public class Runner {
             }
         }
         
-        Saida.println("Fim da compilacao");
-        
         if (output.isModificado()){
             output.println("Fim da compilacao");
             PrintWriter saida = new PrintWriter(new FileWriter(outputFile));
@@ -66,7 +64,7 @@ public class Runner {
             saida.close();
         }
         else {
-            
+            Saida.println("Fim da compilacao");
             PrintWriter saida = new PrintWriter(new FileWriter(outputFile));
             saida.print(Saida.getTexto());
             saida.flush();
