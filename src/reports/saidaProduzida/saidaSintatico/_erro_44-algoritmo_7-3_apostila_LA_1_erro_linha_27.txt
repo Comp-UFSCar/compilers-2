@@ -1,2 +1,2 @@
-Linha 16: identificador i nao declarado
+Linha 18: identificador i nao declarado
 Fim da compilacao

@@ -1,2 +1,2 @@
-Linha 16: identificador Preco nao declarado
+null
 Fim da compilacao

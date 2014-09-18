@@ -6,8 +6,6 @@ import infrastructure.ErrorListeners.SemanticErrorListener;
 import infrastructure.MessageBag;
 import infrastructure.ErrorListeners.SyntaticErrorListener;
 import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import laparser.LaLexer;
 import laparser.LaParser;
 import org.antlr.v4.runtime.ANTLRInputStream;

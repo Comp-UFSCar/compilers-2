@@ -19,7 +19,7 @@ grammar La;
 programa
     : { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("global")); }
       declaracoes 'algoritmo' corpo 'fim_algoritmo'
-      {pilhaDeTabelas.desempilhar();}
+      { pilhaDeTabelas.desempilhar(); }
     ;
 
 declaracoes
@@ -36,7 +36,7 @@ declaracao_local
     | 'constante' IDENT 
       ':' tipo_basico 
       {
-          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "constante", $tipo_basico.nomeTipo);
+          pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText().toLowerCase(), "constante", $tipo_basico.nomeTipo);
       }
       '=' valor_constante
     | 'tipo' IDENT ':' tipo
@@ -46,8 +46,7 @@ variavel
     : { java.util.List<String> vars = new java.util.ArrayList<String>(); }
       IDENT
       {
-         String varASerComparada = $IDENT.getText();
-         
+         String varASerComparada = $IDENT.getText().toLowerCase();
 			         
          if(vars.contains(varASerComparada)) {
             infrastructure.ErrorListeners.SemanticErrorListener.VariableAlreadyExists($IDENT.line, varASerComparada);
@@ -57,7 +56,7 @@ variavel
       }
       dimensao (',' IDENT 
       {
-         varASerComparada = $IDENT.getText();
+         varASerComparada = $IDENT.getText().toLowerCase();
          if(vars.contains(varASerComparada)) {
             infrastructure.ErrorListeners.SemanticErrorListener.VariableAlreadyExists($IDENT.line, varASerComparada);
 	} else {
@@ -76,19 +75,18 @@ variavel
 identificador
     : ponteiros_opcionais IDENT 
       {
-          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
-               infrastructure.ErrorListeners.SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
+          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
+               infrastructure.ErrorListeners.SemanticErrorListener.VariableDoesntExist($IDENT.line, $IDENT.getText());
           }
       }
       ('.' IDENT
       {
-          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
-               infrastructure.ErrorListeners.SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
+          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
+               infrastructure.ErrorListeners.SemanticErrorListener.VariableDoesntExist($IDENT.line, $IDENT.getText());
           }
       }
       )*
       dimensao outros_ident
-      //: ponteiros_opcionais IDENT ('.' IDENT)* dimensao
     ;
 
 ponteiros_opcionais
@@ -146,16 +144,7 @@ registro
 
 declaracao_global
     : { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("procedimento")); }
-      'procedimento' IDENT
-     /*  {   //Nao tenho certeza
-          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
-              ErrorListeners.SemanticErrorListener.VariableAlreadyExists($IDENT.line,$IDENT.getText());
-          }
-          else {
-              pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "procedimento");
-          }
-      }  */
-      '(' parametros_opcional ')' declaracoes_locais comandos 'fim_procedimento'
+      'procedimento' IDENT '(' parametros_opcional ')' declaracoes_locais comandos 'fim_procedimento'
       { pilhaDeTabelas.desempilhar(); }
     | { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("funcao")); }
       'funcao' IDENT
@@ -201,17 +190,11 @@ cmd
     | 'se' expressao 'entao' comandos senao_opcional 'fim_se'
     | 'caso' exp_aritmetica 'seja' selecao senao_opcional 'fim_caso'
     | 'para'
-      {   //Empilha (Cria) um novo escopo para o FOR
+      {   //Empilha um novo escopo para o 'para'
           pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("para"));
       }
-      IDENT 
-      {   //Lanca um erro quando nao encontra a variavel na pilha de tabelas
-          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
-               infrastructure.ErrorListeners.SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
-          }
-      }
-      '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' comandos 'fim_para'
-      {   //Desempilha o escopo do FOR
+      IDENT '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' comandos 'fim_para'
+      {   //Desempilha o escopo do 'para'
           pilhaDeTabelas.desempilhar();
       }
     | 'enquanto' expressao 'faca' comandos 'fim_enquanto'
@@ -303,25 +286,19 @@ parcela
 parcela_unario
     : '^' IDENT 
       {
-         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             infrastructure.ErrorListeners.SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
          }
       }
       outros_ident dimensao
     | IDENT 
       {
-         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             infrastructure.ErrorListeners.SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
          }
       }
       outros_ident dimensao
-    | IDENT 
-      {
-         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
-            infrastructure.ErrorListeners.SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
-         }
-      }
-      '(' expressao mais_expressao ')'
+    | IDENT '(' expressao mais_expressao ')'
     | NUM_INT
     | NUM_REAL
     | '(' expressao ')'
@@ -330,7 +307,7 @@ parcela_unario
 parcela_nao_unario
     : '&' IDENT
       {
-         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
+         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             infrastructure.ErrorListeners.SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
          }
       }

@@ -53,7 +53,9 @@ public class LaLexer extends Lexer {
 		"WS"
 	};
 
-	 //Cria um objeto pilhaDeTabelas 
+
+	    // Inicia a pilha de tabelas, responsavel por
+	    // conter as relacoes semanticas dos blocos estruturados
 	    infrastructure.PilhaDeTabelas pilhaDeTabelas = new infrastructure.PilhaDeTabelas();
 
 

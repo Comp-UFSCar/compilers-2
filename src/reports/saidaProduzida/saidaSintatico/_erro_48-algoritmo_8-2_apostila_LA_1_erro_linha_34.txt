@@ -1,2 +1,0 @@
-Linha 20: identificador raiz nao declarado
-Fim da compilacao

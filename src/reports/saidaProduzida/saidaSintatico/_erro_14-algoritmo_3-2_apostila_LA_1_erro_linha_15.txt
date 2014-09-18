@@ -1,2 +1,0 @@
-Linha 12: identificador subLiteral nao declarado
-Fim da compilacao
