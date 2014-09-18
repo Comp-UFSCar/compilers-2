@@ -44,14 +44,19 @@ public class Runner {
         SemanticErrorListener.DefineMessageBag(bag);
 
         parser.addErrorListener(syntatic);
-        lexer.addErrorListener(lexical);
+        lexer .addErrorListener(lexical);
 
         parser.programa();
 
         CompilationResultWriter writer = new CompilationResultWriter(outputFile);
-
+        
+        try {
+            writer.put(bag.first());
+        } catch(IndexOutOfBoundsException e) {
+            // does nothing
+        }
+        
         writer
-            .put(bag.first())
             .put("Fim da compilacao")
             .close();
     }

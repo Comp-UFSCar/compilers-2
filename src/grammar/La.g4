@@ -148,14 +148,6 @@ declaracao_global
       { pilhaDeTabelas.desempilhar(); }
     | { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("funcao")); }
       'funcao' IDENT
-    /*  {   //Nao tenho certeza
-          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText())) {
-              ErrorListeners.SemanticErrorListener.VariableAlreadyExists($IDENT.line,$IDENT.getText());
-          }
-          else {
-              pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "funcao");
-          }
-      }  */
       '(' parametros_opcional '):' tipo_estendido declaracoes_locais comandos 'fim_funcao'
       { pilhaDeTabelas.desempilhar(); }
     ;

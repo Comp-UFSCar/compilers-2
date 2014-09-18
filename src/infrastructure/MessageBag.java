@@ -24,7 +24,6 @@ public class MessageBag {
      */
     public MessageBag add(String message) {
         messages.add(message);
-
         return this;
     }
 
@@ -43,11 +42,7 @@ public class MessageBag {
      * 
      * @return message String
      */
-    public String first() {
-        try {
-            return messages.get(0);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+    public String first() throws IndexOutOfBoundsException {
+        return messages.get(0);
     }
 }
