@@ -1,29 +1,27 @@
-package infrastructure;
+package infrastructure.ErrorListeners;
 
+import infrastructure.MessageBag;
+import infrastructure.StringConversionMap;
 import java.util.BitSet;
 import org.antlr.v4.runtime.ANTLRErrorListener;
-import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 public class LexicalErrorListener implements ANTLRErrorListener {
 
-    SaidaParser sp;
+    MessageBag bag;
     StringConversionMap tokens;
 
-    public LexicalErrorListener(SaidaParser sp) {
-        this.sp = sp;
+    public LexicalErrorListener(MessageBag bag) {
+        this.bag = bag;
         tokens = new StringConversionMap();
     }
 
     @Override
     public void syntaxError(Recognizer<?, ?> rcgnzr, Object o, int i, int i1, String string, RecognitionException re) {
-        
-        
         // extracting undentified token from message
         String token = string.substring(string.indexOf('\'')+1, string.lastIndexOf('\''));
         
@@ -34,10 +32,10 @@ public class LexicalErrorListener implements ANTLRErrorListener {
         }
         
         if(token.equals("{")) {
-            throw new ParseCancellationException("Linha " + (i+1) + ": comentario nao fechado");
+            bag.add("Linha " + (i+1) + ": comentario nao fechado");
         }
         else {
-        throw new ParseCancellationException("Linha " + i + ": " + token + " - simbolo nao identificado");
+            bag.add("Linha " + i + ": " + token + " - simbolo nao identificado");
         }
     }
     

@@ -1,0 +1,2 @@
+Linha 26: identificador pot nao declarado
+Fim da compilacao

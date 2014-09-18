@@ -1,5 +1,7 @@
-package infrastructure;
+package infrastructure.ErrorListeners;
 
+import infrastructure.MessageBag;
+import infrastructure.StringConversionMap;
 import java.util.BitSet;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.CommonToken;
@@ -8,15 +10,14 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 public class SyntaticErrorListener implements ANTLRErrorListener {
 
-    SaidaParser sp;
+    MessageBag bag;
     StringConversionMap tokens;
 
-    public SyntaticErrorListener(SaidaParser sp) {
-        this.sp = sp;
+    public SyntaticErrorListener(MessageBag bag) {
+        this.bag = bag;
 
         tokens = new StringConversionMap();
     }
@@ -29,7 +30,7 @@ public class SyntaticErrorListener implements ANTLRErrorListener {
             token = tokens.value(token);
         }
         
-        throw new ParseCancellationException("Linha " + i + ": erro sintatico proximo a " + token);
+        bag.add("Linha " + i + ": erro sintatico proximo a " + token);
     }
     
     @Override

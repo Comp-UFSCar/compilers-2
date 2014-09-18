@@ -1,9 +1,10 @@
 package runner;
 
-import infrastructure.LexicalErrorListener;
-import infrastructure.Saida;
-import infrastructure.SaidaParser;
-import infrastructure.SyntaticErrorListener;
+import infrastructure.ErrorListeners.LexicalErrorListener;
+import infrastructure.CompilationResultWriter;
+import infrastructure.ErrorListeners.SemanticErrorListener;
+import infrastructure.MessageBag;
+import infrastructure.ErrorListeners.SyntaticErrorListener;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -11,7 +12,6 @@ import laparser.LaLexer;
 import laparser.LaParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 /**
  * Runs the LaParser on a inputFile and outputs the result in an outputFile.
@@ -33,49 +33,35 @@ public class Runner {
     public void start(String inputFile, String outputFile) throws Exception {
 
         ANTLRInputStream in = new ANTLRInputStream(new FileInputStream(inputFile));
-        SaidaParser  output = new SaidaParser();
-        
-        LaLexer  lexer  = new LaLexer(in);
+        MessageBag bag = new MessageBag();
+
+        LaLexer lexer = new LaLexer(in);
         LaParser parser = new LaParser(new CommonTokenStream(lexer));
-        
+
         parser.removeErrorListeners();
-        lexer .removeErrorListeners();
-        
-        SyntaticErrorListener syntatic = new SyntaticErrorListener(output);
-        LexicalErrorListener   lexical = new LexicalErrorListener(output);
+        lexer.removeErrorListeners();
+
+        LexicalErrorListener lexical = new LexicalErrorListener(bag);
+        SyntaticErrorListener syntatic = new SyntaticErrorListener(bag);
+        SemanticErrorListener.DefineMessageBag(bag);
 
         parser.addErrorListener(syntatic);
-        lexer .addErrorListener(lexical);
+        lexer.addErrorListener(lexical);
 
-        try {
-            parser.programa();
-        }
-        catch (ParseCancellationException e) {
-            if (e.getMessage() != null) {
-                output.println(e.getMessage());
-            }
-        }
+        parser.programa();
 
-        if (output.isModificado()){
-            output.println("Fim da compilacao");
-            PrintWriter saida = new PrintWriter(new FileWriter(outputFile));
-            saida.print(output);
-            saida.flush();
-            saida.close();
-        }
-        else {
-            Saida.println("Fim da compilacao");
-            PrintWriter saida = new PrintWriter(new FileWriter(outputFile));
-            saida.print(Saida.getTexto());
-            saida.flush();
-            saida.close();
-        }
+        CompilationResultWriter writer = new CompilationResultWriter(outputFile);
+
+        writer
+            .put(bag.first())
+            .put("Fim da compilacao")
+            .close();
     }
 
     /**
      * Executes Runner.start() method with the arguments given.
      *
-     * @param args array that contains the names of the input and output files
+     * @param args array that contains the names of the input and bag files
      * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {

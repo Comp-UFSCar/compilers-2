@@ -1,0 +1,2 @@
+Linha 17: identificador cos nao declarado
+Fim da compilacao
