@@ -83,6 +83,9 @@ variavel
     dimensao)*
     ':' tipo
     {
+       if ((!$tipo.nomeTipo.equals("literal"))&&(!$tipo.nomeTipo.equals("inteiro"))&&(!$tipo.nomeTipo.equals("real"))&&(!$tipo.nomeTipo.equals("logico"))){
+          infrastructure.ErrorListeners.SemanticErrorListener.TypeDoesntExist($tipo.linha, $tipo.nomeTipo);
+       }
        for (String el : declared) {
           pilhaDeTabelas.topo().adicionarSimbolo(el, "variavel", $tipo.nomeTipo);
        }
@@ -92,7 +95,7 @@ variavel
 identificador returns [ String ident, int line ]
     : ponteiros_opcionais IDENT { $ident = $IDENT.getText(); $line = $IDENT.line; }
     (
-        '.' IDENT               { $ident += "." + $IDENT.getText(); }
+        '.' IDENT { $ident += "." + $IDENT.getText(); $line = $IDENT.line; }
     )*
     dimensao outros_ident
     ;
@@ -109,13 +112,13 @@ dimensao
     : ('[' exp_aritmetica ']' dimensao)?
     ;
 
-tipo returns [ String nomeTipo ]
-    : registro       { $nomeTipo = "registro";               }
-    | tipo_estendido { $nomeTipo = $tipo_estendido.nomeTipo; }
+tipo returns [ String nomeTipo, int linha]
+    : registro       { $nomeTipo = "registro"; }
+    | tipo_estendido { $nomeTipo = $tipo_estendido.nomeTipo; $linha = $tipo_estendido.linha; }
     ;
 
-tipo_estendido returns [ String nomeTipo ]
-    : ponteiros_opcionais tipo_basico_ident { $nomeTipo = $tipo_basico_ident.nomeTipo; }
+tipo_estendido returns [ String nomeTipo, int linha ]
+    : ponteiros_opcionais tipo_basico_ident { $nomeTipo = $tipo_basico_ident.nomeTipo; $linha = $tipo_basico_ident.linha; }
     ;
 
 mais_ident returns [ List<String> identifiers ]
@@ -124,15 +127,12 @@ mais_ident returns [ List<String> identifiers ]
     ;
 
 tipo_basico returns [ String nomeTipo, int linha ]
-    : 'literal' { $nomeTipo = "literal"; }
-    | 'inteiro' { $nomeTipo = "inteiro"; }
-    | 'real'    { $nomeTipo = "real";    }
-    | 'logico'  { $nomeTipo = "logico";  }
+    : BASIC_TYPE { $nomeTipo = $BASIC_TYPE.getText(); $linha = $BASIC_TYPE.line; }
     ;
 
-tipo_basico_ident returns [ String nomeTipo ]
-    : tipo_basico { $nomeTipo = $tipo_basico.nomeTipo; }
-    | IDENT { $nomeTipo = $IDENT.getText(); }
+tipo_basico_ident returns [ String nomeTipo, int linha ]
+    : tipo_basico { $nomeTipo = $tipo_basico.nomeTipo; $linha = $tipo_basico.linha; }
+    | IDENT { $nomeTipo = $IDENT.getText(); $linha = $IDENT.line;}
     ;
 
 valor_constante
@@ -407,4 +407,11 @@ COMENTARIO
 
 WS
     : (' ' | '\t' | '\r' | '\n') {skip();}
+    ;
+
+BASIC_TYPE
+    : 'literal'
+    | 'inteiro'
+    | 'real'
+    | 'logico'
     ;

@@ -21,4 +21,8 @@ public class SemanticErrorListener {
     public static void VariableAlreadyExists(int numLinha, String variavel) {
         bag.add("Linha "+numLinha+": identificador "+variavel+" ja declarado anteriormente");
     }
+    
+    public static void TypeDoesntExist(int numLinha, String tipo) {
+        bag.add("Linha "+numLinha+": tipo "+tipo+" nao declarado");
+    }
 }
