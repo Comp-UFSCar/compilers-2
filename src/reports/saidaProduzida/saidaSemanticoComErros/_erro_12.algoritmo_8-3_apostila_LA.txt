@@ -1,2 +1,2 @@
-Linha 16: identificador vinho.nome nao declarado
+Linha 10: tipo tVinho nao declarado
 Fim da compilacao

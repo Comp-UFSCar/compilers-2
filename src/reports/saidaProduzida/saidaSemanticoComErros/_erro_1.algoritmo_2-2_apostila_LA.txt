@@ -1,2 +1,2 @@
-Linha 11: identificador idades nao declarado
+Linha 7: tipo inteir nao declarado
 Fim da compilacao

@@ -1,6 +1,7 @@
 package infrastructure;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Holds all messages during the program execution.
@@ -9,7 +10,7 @@ import java.util.LinkedList;
  *
  */
 public class MessageBag {
-
+    
     LinkedList<String> messages;
 
     public MessageBag() {
@@ -44,5 +45,9 @@ public class MessageBag {
      */
     public String first() throws IndexOutOfBoundsException {
         return messages.get(0);
+    }
+    
+    public List<String> all() {
+        return messages;
     }
 }

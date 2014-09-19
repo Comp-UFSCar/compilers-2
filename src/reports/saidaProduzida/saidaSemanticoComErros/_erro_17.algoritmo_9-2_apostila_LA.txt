@@ -1,2 +1,2 @@
-Linha 33: identificador numero1.numerador nao declarado
+Linha 28: tipo tRacional nao declarado
 Fim da compilacao

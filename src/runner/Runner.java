@@ -31,7 +31,8 @@ public class Runner {
     public void start(String inputFile, String outputFile) throws Exception {
 
         ANTLRInputStream in = new ANTLRInputStream(new FileInputStream(inputFile));
-        MessageBag bag = new MessageBag();
+        MessageBag sintaticBag = new MessageBag();
+        MessageBag semanticBag = new MessageBag();
 
         LaLexer lexer = new LaLexer(in);
         LaParser parser = new LaParser(new CommonTokenStream(lexer));
@@ -39,9 +40,9 @@ public class Runner {
         parser.removeErrorListeners();
         lexer.removeErrorListeners();
 
-        LexicalErrorListener lexical = new LexicalErrorListener(bag);
-        SyntaticErrorListener syntatic = new SyntaticErrorListener(bag);
-        SemanticErrorListener.DefineMessageBag(bag);
+        LexicalErrorListener lexical = new LexicalErrorListener(sintaticBag);
+        SyntaticErrorListener syntatic = new SyntaticErrorListener(sintaticBag);
+        SemanticErrorListener.DefineMessageBag(semanticBag);
 
         parser.addErrorListener(syntatic);
         lexer .addErrorListener(lexical);
@@ -50,12 +51,18 @@ public class Runner {
 
         CompilationResultWriter writer = new CompilationResultWriter(outputFile);
         
+        // put the first lexic/sintatic error in the writer's buffer
         try {
-            writer.put(bag.first());
+            writer.put(sintaticBag.first());
         } catch(IndexOutOfBoundsException e) {
-            // does nothing
+            // or, case there none lexic/sintatic error, put all semantic errors
+            // in the writer's buffer
+            for (String message : semanticBag.all()) {
+                writer.put(message);
+            }
         }
         
+        // close writer with standar message
         writer
             .put("Fim da compilacao")
             .close();

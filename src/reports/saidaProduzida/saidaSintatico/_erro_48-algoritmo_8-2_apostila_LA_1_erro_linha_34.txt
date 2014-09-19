@@ -1,2 +1,2 @@
-Linha 18: identificador ponto.x nao declarado
+Linha 0: tipo registro nao declarado
 Fim da compilacao
