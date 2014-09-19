@@ -1,2 +1,2 @@
-Linha 8: identificador racional nao declarado
+Linha 33: identificador numero1.numerador nao declarado
 Fim da compilacao

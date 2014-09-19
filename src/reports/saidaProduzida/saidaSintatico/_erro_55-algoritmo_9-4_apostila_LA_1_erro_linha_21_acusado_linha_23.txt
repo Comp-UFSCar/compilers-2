@@ -1,2 +1,0 @@
-Linha 3: identificador valor1 nao declarado
-Fim da compilacao

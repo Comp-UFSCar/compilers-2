@@ -1,2 +1,2 @@
-Linha 16: identificador vinho nao declarado
+Linha 20: identificador vinho.nome nao declarado
 Fim da compilacao

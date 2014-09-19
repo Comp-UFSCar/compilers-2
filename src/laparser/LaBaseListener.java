@@ -30,19 +30,6 @@ public class LaBaseListener implements LaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterVar_opcional(@NotNull LaParser.Var_opcionalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitVar_opcional(@NotNull LaParser.Var_opcionalContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterFator_logico(@NotNull LaParser.Fator_logicoContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -446,19 +433,6 @@ public class LaBaseListener implements LaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterDecl_local_global(@NotNull LaParser.Decl_local_globalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitDecl_local_global(@NotNull LaParser.Decl_local_globalContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterOutros_ident(@NotNull LaParser.Outros_identContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -466,19 +440,6 @@ public class LaBaseListener implements LaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitOutros_ident(@NotNull LaParser.Outros_identContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterMais_variaveis(@NotNull LaParser.Mais_variaveisContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitMais_variaveis(@NotNull LaParser.Mais_variaveisContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

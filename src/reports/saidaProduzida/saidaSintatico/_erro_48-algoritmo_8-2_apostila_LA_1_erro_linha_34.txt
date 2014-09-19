@@ -1,0 +1,2 @@
+Linha 18: identificador ponto.x nao declarado
+Fim da compilacao

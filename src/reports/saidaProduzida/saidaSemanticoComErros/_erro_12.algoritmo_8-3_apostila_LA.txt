@@ -1,2 +1,2 @@
-null
+Linha 16: identificador vinho.nome nao declarado
 Fim da compilacao

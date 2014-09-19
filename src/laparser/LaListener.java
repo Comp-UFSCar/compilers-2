@@ -20,17 +20,6 @@ public interface LaListener extends ParseTreeListener {
 	void exitTipo(@NotNull LaParser.TipoContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link LaParser#var_opcional}.
-	 * @param ctx the parse tree
-	 */
-	void enterVar_opcional(@NotNull LaParser.Var_opcionalContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LaParser#var_opcional}.
-	 * @param ctx the parse tree
-	 */
-	void exitVar_opcional(@NotNull LaParser.Var_opcionalContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link LaParser#fator_logico}.
 	 * @param ctx the parse tree
 	 */
@@ -372,17 +361,6 @@ public interface LaListener extends ParseTreeListener {
 	void exitIntervalo_opcional(@NotNull LaParser.Intervalo_opcionalContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link LaParser#decl_local_global}.
-	 * @param ctx the parse tree
-	 */
-	void enterDecl_local_global(@NotNull LaParser.Decl_local_globalContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LaParser#decl_local_global}.
-	 * @param ctx the parse tree
-	 */
-	void exitDecl_local_global(@NotNull LaParser.Decl_local_globalContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link LaParser#outros_ident}.
 	 * @param ctx the parse tree
 	 */
@@ -392,17 +370,6 @@ public interface LaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitOutros_ident(@NotNull LaParser.Outros_identContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link LaParser#mais_variaveis}.
-	 * @param ctx the parse tree
-	 */
-	void enterMais_variaveis(@NotNull LaParser.Mais_variaveisContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LaParser#mais_variaveis}.
-	 * @param ctx the parse tree
-	 */
-	void exitMais_variaveis(@NotNull LaParser.Mais_variaveisContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link LaParser#outros_fatores_logicos}.
