@@ -1,4 +1,4 @@
-/*
+    /*
  * Gramatica da linguagem LA.
  *
  * Grupo:
@@ -16,18 +16,21 @@ grammar La;
     infrastructure.PilhaDeTabelas pilhaDeTabelas = new infrastructure.PilhaDeTabelas();
 }
 
-programa
+programa returns [String codigo]
     : { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("global")); }
       declaracoes 'algoritmo' corpo 'fim_algoritmo'
       { pilhaDeTabelas.desempilhar(); }
+      {$codigo = $declaracoes.codigo;}
     ;
 
-declaracoes
-    : (declaracao_local | declaracao_global)*
+declaracoes returns [String codigo]
+    : (declaracao_local {$codigo = $declaracao_local.codigo; }
+      | declaracao_global)*
+      
     ;
 
-declaracao_local
-    : 'declare' variavel
+declaracao_local returns [String codigo]
+    : 'declare' variavel {$codigo = $variavel.codigo;}
     | 'constante' IDENT
       ':' tipo_basico
       {
@@ -38,7 +41,7 @@ declaracao_local
           }
       }
       '=' valor_constante
-    | 'tipo' IDENT ':' tipo
+    | 'tipo' IDENT ':' tipo 
     {
         if (pilhaDeTabelas.topo().existeSimbolo($IDENT.getText().toLowerCase())) {
             infrastructure.ErrorListeners.SemanticErrorListener.VariableAlreadyExists($IDENT.line, $IDENT.getText());
@@ -59,10 +62,11 @@ declaracao_global
       { pilhaDeTabelas.desempilhar(); }
     ;
 
-variavel
+variavel returns [String codigo]
     : IDENT
     {
         List<String> declared = new ArrayList<>();
+        List<String> gerador = new ArrayList<>();
         String current = $IDENT.getText().toLowerCase();
 
         if (declared.contains(current)) {
@@ -70,6 +74,7 @@ variavel
         } else {
             declared.add(current);
         }
+        gerador.add(current);
     }
     dimensao (',' IDENT
     {
@@ -79,6 +84,8 @@ variavel
         } else {
             declared.add(current);
         }
+        gerador.add(current);
+        
     }
     dimensao)*
     ':' tipo
@@ -89,6 +96,21 @@ variavel
        for (String el : declared) {
           pilhaDeTabelas.topo().adicionarSimbolo(el, "variavel", $tipo.nomeTipo);
        }
+       for (String el : gerador) {
+          if ($tipo.nomeTipo.equals("literal")) {
+                                             $codigo = "char " + el;
+                                             }
+        else if ($tipo.nomeTipo.equals("inteiro")) {
+                                             $codigo = "int " + el;
+                                             }
+        else if ($tipo.nomeTipo.equals("real")) {
+                                             $codigo = "float " + el;
+                                             }
+        else if ($tipo.nomeTipo.equals("logico")) {
+                                             $codigo = "int " + el;
+                                             }
+       }
+       
     }
     ;
 
@@ -183,7 +205,7 @@ comandos
     : cmd*
     ;
 
-cmd
+cmd returns [String codigo]
     : 'leia' '('
       identificador
       {
@@ -200,6 +222,8 @@ cmd
           }
       }
       ')'
+      //{$codigo = "scanf(%s, " + $identificador.codigo + ");";
+      // }
     | 'escreva' '(' expressao mais_expressao ')'
     | 'se' expressao 'entao' comandos senao_opcional 'fim_se'
     | 'caso' exp_aritmetica 'seja' selecao senao_opcional 'fim_caso'
