@@ -5,7 +5,13 @@ import infrastructure.CompilationResultWriter;
 import infrastructure.ErrorListeners.SemanticErrorListener;
 import infrastructure.MessageBag;
 import infrastructure.ErrorListeners.SyntaticErrorListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import laparser.LaLexer;
 import laparser.LaParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -47,7 +53,36 @@ public class Runner {
         parser.addErrorListener(syntatic);
         lexer .addErrorListener(lexical);
 
-        parser.programa();
+        //parser.programa();
+        LaParser.ProgramaContext resultado = parser.programa();
+        File arquivo = new File("/resultado/resultado1.txt");
+        
+        try {
+ 
+if (!arquivo.exists()) {
+//cria um arquivo (vazio)
+arquivo.createNewFile();
+}
+ 
+//caso seja um diretório, é possível listar seus arquivos e diretórios
+File[] arquivos = arquivo.listFiles();
+ 
+//escreve no arquivo
+FileWriter fw = new FileWriter(arquivo, true);
+ 
+BufferedWriter bw = new BufferedWriter(fw);
+ 
+bw.write("texto no arquivo");
+ 
+bw.newLine();
+ 
+bw.close();
+fw.close();
+
+ 
+} catch (IOException ex) {
+ex.printStackTrace();
+}
 
         CompilationResultWriter writer = new CompilationResultWriter(outputFile);
         
