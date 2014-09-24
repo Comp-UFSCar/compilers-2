@@ -1,4 +1,4 @@
-// Generated from C:\Users\Rafael\Documents\NetBeansProjects\Compilers-2-assignment-1-master\src\grammar\La.g4 by ANTLR 4.2.2
+// Generated from D:\Repositories\Compilers-2-assignment-1\src\grammar\La.g4 by ANTLR 4.1
 package laparser;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -18,6 +18,17 @@ public interface LaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTipo(@NotNull LaParser.TipoContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link LaParser#var_opcional}.
+	 * @param ctx the parse tree
+	 */
+	void enterVar_opcional(@NotNull LaParser.Var_opcionalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LaParser#var_opcional}.
+	 * @param ctx the parse tree
+	 */
+	void exitVar_opcional(@NotNull LaParser.Var_opcionalContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link LaParser#fator_logico}.
@@ -122,12 +133,12 @@ public interface LaListener extends ParseTreeListener {
 	 * Enter a parse tree produced by {@link LaParser#outros_fatores}.
 	 * @param ctx the parse tree
 	 */
-	void enterOutros_fatores(@NotNull LaParser.Outros_fatoresContext ctx);
+	//void enterOutros_fatores(@NotNull LaParser.Outros_fatoresContext ctx);
 	/**
 	 * Exit a parse tree produced by {@link LaParser#outros_fatores}.
 	 * @param ctx the parse tree
 	 */
-	void exitOutros_fatores(@NotNull LaParser.Outros_fatoresContext ctx);
+	//void exitOutros_fatores(@NotNull LaParser.Outros_fatoresContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link LaParser#tipo_basico_ident}.
@@ -361,6 +372,17 @@ public interface LaListener extends ParseTreeListener {
 	void exitIntervalo_opcional(@NotNull LaParser.Intervalo_opcionalContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link LaParser#decl_local_global}.
+	 * @param ctx the parse tree
+	 */
+	void enterDecl_local_global(@NotNull LaParser.Decl_local_globalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LaParser#decl_local_global}.
+	 * @param ctx the parse tree
+	 */
+	void exitDecl_local_global(@NotNull LaParser.Decl_local_globalContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link LaParser#outros_ident}.
 	 * @param ctx the parse tree
 	 */
@@ -372,15 +394,26 @@ public interface LaListener extends ParseTreeListener {
 	void exitOutros_ident(@NotNull LaParser.Outros_identContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link LaParser#mais_variaveis}.
+	 * @param ctx the parse tree
+	 */
+	//void enterMais_variaveis(@NotNull LaParser.Mais_variaveisContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LaParser#mais_variaveis}.
+	 * @param ctx the parse tree
+	 */
+	//void exitMais_variaveis(@NotNull LaParser.Mais_variaveisContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link LaParser#outros_fatores_logicos}.
 	 * @param ctx the parse tree
 	 */
-	void enterOutros_fatores_logicos(@NotNull LaParser.Outros_fatores_logicosContext ctx);
+	//void enterOutros_fatores_logicos(@NotNull LaParser.Outros_fatores_logicosContext ctx);
 	/**
 	 * Exit a parse tree produced by {@link LaParser#outros_fatores_logicos}.
 	 * @param ctx the parse tree
 	 */
-	void exitOutros_fatores_logicos(@NotNull LaParser.Outros_fatores_logicosContext ctx);
+	//void exitOutros_fatores_logicos(@NotNull LaParser.Outros_fatores_logicosContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link LaParser#mais_expressao}.
@@ -430,12 +463,12 @@ public interface LaListener extends ParseTreeListener {
 	 * Enter a parse tree produced by {@link LaParser#outros_termos_logicos}.
 	 * @param ctx the parse tree
 	 */
-	void enterOutros_termos_logicos(@NotNull LaParser.Outros_termos_logicosContext ctx);
+	//void enterOutros_termos_logicos(@NotNull LaParser.Outros_termos_logicosContext ctx);
 	/**
 	 * Exit a parse tree produced by {@link LaParser#outros_termos_logicos}.
 	 * @param ctx the parse tree
 	 */
-	void exitOutros_termos_logicos(@NotNull LaParser.Outros_termos_logicosContext ctx);
+	//void exitOutros_termos_logicos(@NotNull LaParser.Outros_termos_logicosContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link LaParser#tipo_basico}.
@@ -463,12 +496,12 @@ public interface LaListener extends ParseTreeListener {
 	 * Enter a parse tree produced by {@link LaParser#outros_termos}.
 	 * @param ctx the parse tree
 	 */
-	void enterOutros_termos(@NotNull LaParser.Outros_termosContext ctx);
+	//void enterOutros_termos(@NotNull LaParser.Outros_termosContext ctx);
 	/**
 	 * Exit a parse tree produced by {@link LaParser#outros_termos}.
 	 * @param ctx the parse tree
 	 */
-	void exitOutros_termos(@NotNull LaParser.Outros_termosContext ctx);
+	//void exitOutros_termos(@NotNull LaParser.Outros_termosContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link LaParser#exp_aritmetica}.
@@ -518,12 +551,12 @@ public interface LaListener extends ParseTreeListener {
 	 * Enter a parse tree produced by {@link LaParser#outras_parcelas}.
 	 * @param ctx the parse tree
 	 */
-	void enterOutras_parcelas(@NotNull LaParser.Outras_parcelasContext ctx);
+	//void enterOutras_parcelas(@NotNull LaParser.Outras_parcelasContext ctx);
 	/**
 	 * Exit a parse tree produced by {@link LaParser#outras_parcelas}.
 	 * @param ctx the parse tree
 	 */
-	void exitOutras_parcelas(@NotNull LaParser.Outras_parcelasContext ctx);
+	//void exitOutras_parcelas(@NotNull LaParser.Outras_parcelasContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link LaParser#fator}.

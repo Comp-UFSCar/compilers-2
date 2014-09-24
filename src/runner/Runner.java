@@ -5,13 +5,7 @@ import infrastructure.CompilationResultWriter;
 import infrastructure.ErrorListeners.SemanticErrorListener;
 import infrastructure.MessageBag;
 import infrastructure.ErrorListeners.SyntaticErrorListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import laparser.LaLexer;
 import laparser.LaParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -36,71 +30,44 @@ public class Runner {
      */
     public void start(String inputFile, String outputFile) throws Exception {
 
-        ANTLRInputStream in = new ANTLRInputStream(new FileInputStream(inputFile));
-        MessageBag sintaticBag = new MessageBag();
+        ANTLRInputStream in    = new ANTLRInputStream(new FileInputStream(inputFile));
+        MessageBag lexicalAndSintaticBag = new MessageBag();
         MessageBag semanticBag = new MessageBag();
 
-        LaLexer lexer = new LaLexer(in);
+        LaLexer lexer   = new LaLexer(in);
         LaParser parser = new LaParser(new CommonTokenStream(lexer));
 
         parser.removeErrorListeners();
-        lexer.removeErrorListeners();
+        lexer .removeErrorListeners();
 
-        LexicalErrorListener lexical = new LexicalErrorListener(sintaticBag);
-        SyntaticErrorListener syntatic = new SyntaticErrorListener(sintaticBag);
+        LexicalErrorListener  lexical  = new LexicalErrorListener(lexicalAndSintaticBag);
+        SyntaticErrorListener syntatic = new SyntaticErrorListener(lexicalAndSintaticBag);
         SemanticErrorListener.DefineMessageBag(semanticBag);
 
         parser.addErrorListener(syntatic);
         lexer .addErrorListener(lexical);
 
-        //parser.programa();
-        LaParser.ProgramaContext resultado = parser.programa();
-        File arquivo = new File("/resultado/resultado1.txt");
-        
-        try {
- 
-if (!arquivo.exists()) {
-//cria um arquivo (vazio)
-arquivo.createNewFile();
-}
- 
-//caso seja um diretório, é possível listar seus arquivos e diretórios
-File[] arquivos = arquivo.listFiles();
- 
-//escreve no arquivo
-FileWriter fw = new FileWriter(arquivo, true);
- 
-BufferedWriter bw = new BufferedWriter(fw);
- 
-bw.write("texto no arquivo");
- 
-bw.newLine();
- 
-bw.close();
-fw.close();
-
- 
-} catch (IOException ex) {
-ex.printStackTrace();
-}
+        LaParser.ProgramaContext result = parser.programa();
 
         CompilationResultWriter writer = new CompilationResultWriter(outputFile);
-        
+
         // put the first lexic/sintatic error in the writer's buffer
-        try {
-            writer.put(sintaticBag.first());
-        } catch(IndexOutOfBoundsException e) {
-            // or, case there none lexic/sintatic error, put all semantic errors
-            // in the writer's buffer
+        if (lexicalAndSintaticBag.all().size() > 0) {
+            writer
+                .put(lexicalAndSintaticBag.first())
+                .put("Fim da compilacao")
+                .close();
+        }
+        
+        // or, case there none lexic/sintatic error, put all semantic errors
+        // in the writer's buffer
+        else if (semanticBag.all().size() > 0) {
             for (String message : semanticBag.all()) {
                 writer.put(message);
             }
+
+            writer.put("Fim da compilacao").close();
         }
-        
-        // close writer with standar message
-        writer
-            .put("Fim da compilacao")
-            .close();
     }
 
     /**
