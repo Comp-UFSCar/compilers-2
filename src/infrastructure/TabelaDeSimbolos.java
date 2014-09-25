@@ -61,4 +61,12 @@ public class TabelaDeSimbolos {
         }
         return ret;
     }
+
+    public String retornaTipo(String nome) {
+        for (EntradaTabelaDeSimbolos current : simbolos) {
+            if (current.getNome().equals(nome))
+                return current.getTipo2();
+        }
+        return "vazio";
+    }
 }

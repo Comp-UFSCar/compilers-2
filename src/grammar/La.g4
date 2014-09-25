@@ -16,13 +16,22 @@ grammar La;
 }
 
 programa
-    : { pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("global")); }
-      declaracoes 'algoritmo' corpo 'fim_algoritmo'
-      { pilhaDeTabelas.desempilhar(); }
+    : {
+         pilhaDeTabelas.empilhar(new infrastructure.TabelaDeSimbolos("global"));
+      }
+      declaracoes 
+      {
+         infrastructure.Mensagens.addText("#include <stdio.h\n#include <stdlib.h>\n\nint main {\n");
+      }
+      'algoritmo' corpo 'fim_algoritmo'
+      { 
+         infrastructure.Mensagens.addText("return 0\n}");
+         pilhaDeTabelas.desempilhar();
+      }
     ;
 
 declaracoes
-    : decl_local_global*
+    : (decl_local_global)*
     ;
 
 decl_local_global
@@ -31,7 +40,7 @@ decl_local_global
     ;
 
 declaracao_local
-    : 'declare' variavel
+    : 'declare' variavel 
     | 'constante' IDENT 
       ':' tipo_basico
     {
@@ -80,14 +89,24 @@ variavel
             declared.add($IDENT.getText().toLowerCase());
         }
     }
-      dimensao)*
-      ':' tipo
-      {
-         // Add all variables to the nearest simbol table
-         for (String current : declared) {
-            pilhaDeTabelas.topo().adicionarSimbolo(current, "variavel", $tipo.nomeTipo);
-         }
-      }
+    dimensao)*
+    ':' tipo
+    {
+       for (String current : declared) {
+          if ($tipo.nomeTipo.equals("inteiro"))
+             infrastructure.Mensagens.addText("int " + current + ";\n");
+          else if ($tipo.nomeTipo.equals("real"))
+             infrastructure.Mensagens.addText("float " + current + ";\n");
+          else if ($tipo.nomeTipo.equals("literal"))
+             infrastructure.Mensagens.addText("char " + current + ";\n");
+          else if ($tipo.nomeTipo.equals("logico"))
+             infrastructure.Mensagens.addText("int " + current + ";\n");
+       }
+       // Add all variables to the nearest simbol table
+       for (String current : declared) {
+          pilhaDeTabelas.topo().adicionarSimbolo(current, "variavel", $tipo.nomeTipo);
+       }
+    }
     ;
 
 identificador returns [String name, int line]
@@ -201,8 +220,18 @@ cmd
                 infrastructure.ErrorListeners.SemanticErrorListener.VariableDoesntExist($identificador.line, ident);
             }
         }
+        
+        String variavel = $identificador.name;
+        String tipo2 = pilhaDeTabelas.retornaTipo(variavel);
+        if (tipo2.equals("inteiro"))
+           infrastructure.Mensagens.addText("scanf(\"%d\",&"+variavel+");\n");
+        else if (tipo2.equals("real"))
+           infrastructure.Mensagens.addText("scanf(\"%f\",&"+variavel+");\n");
+        else if (tipo2.equals("literal"))
+           infrastructure.Mensagens.addText("scanf(\"%s\",&"+variavel+");\n");
+        else if (tipo2.equals("logico"))
+           infrastructure.Mensagens.addText("scanf(\"%d\",&"+variavel+");\n");
     }
-      
       ')'
     | 'escreva' '(' expressao mais_expressao ')'
     | 'se' expressao 'entao' comandos senao_opcional 'fim_se'

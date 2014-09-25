@@ -8,16 +8,16 @@ package infrastructure;
  *
  * @author daniel
  */
+
 public class Mensagens {
-    public static void erroVariavelNaoExiste(int numLinha, String variavel) {
-        Saida.println("Linha "+numLinha+": identificador "+variavel+" nao declarado");
+    
+    private static String texto = new String();
+    
+    public static void addText(String str){
+        texto += str;
     }
     
-    public static void erroVariavelJaExiste(int numLinha, String variavel) {
-        Saida.println("Linha "+numLinha+": identificador "+variavel+" ja declarado anteriormente");
-    }
-    
-    public static void escopoProibido(int numLinha) {
-        Saida.println("Linha "+numLinha+": comando retorne nao permitido nesse escopo");
+    public static String getText(){
+        return texto;
     }
 }

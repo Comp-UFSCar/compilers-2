@@ -35,6 +35,16 @@ public class PilhaDeTabelas {
         }
         return false;
     }
+    
+    public String retornaTipo(String nome) {
+        for (TabelaDeSimbolos ts : pilha) {
+            String tipo = ts.retornaTipo(nome);
+            if (!tipo.equals("vazio")) {
+                return tipo;
+            }
+        }
+        return "vazio";
+    }
 
     /**
      * Gets simbol defined in the nearest (latest) scope.
