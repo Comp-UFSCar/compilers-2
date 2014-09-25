@@ -1,2 +1,8 @@
-Linha 0: tipo registro nao declarado
-Fim da compilacao
+#include <stdio.h
+#include <stdlib.h>
+
+int main {
+char nome;
+int idade;
+return 0
+}

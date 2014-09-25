@@ -1,1 +1,11 @@
-Fim da compilacao
+#include <stdio.h
+#include <stdlib.h>
+
+int main {
+float lado1;
+float lado2;
+float lado3;
+char classificacao;
+scanf("%f",&lado1);
+return 0
+}

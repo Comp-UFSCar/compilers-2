@@ -1,2 +1,9 @@
-Linha 0: tipo registro nao declarado
-Fim da compilacao
+#include <stdio.h
+#include <stdlib.h>
+
+int main {
+float x;
+float y;
+float z;
+return 0
+}

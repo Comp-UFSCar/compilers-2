@@ -1,2 +1,6 @@
-Linha 1: erro sintatico proximo a inteiro
-Fim da compilacao
+#include <stdio.h
+#include <stdlib.h>
+
+int main {
+return 0
+}

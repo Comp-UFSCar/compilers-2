@@ -1,1 +1,8 @@
-Fim da compilacao
+#include <stdio.h
+#include <stdlib.h>
+
+int main {
+float x;
+scanf("%f",&x);
+return 0
+}
