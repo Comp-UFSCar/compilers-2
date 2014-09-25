@@ -10,8 +10,8 @@ The code should be tested with the following command: `java -jar CORRETOR_PATH "
 Example:
 
 ```
-$ cd D:\Repositories\Compilers-2-assigment-1
-$ java -jar src\corretor\CorretorTrabalho1.jar "java -jar dist\LaParser.jar" gcc src\reports src\testcases "Our nice group called nice group." tudo
+$ cd D:/Repositories/Compilers-2-assigment-1
+$ java -jar src/corretor/CorretorTrabalho1.jar "java -jar dist/LaParser.jar" gcc src/reports src/testcases "Our nice group called nice group." tudo
 ```
 
 ## References
