@@ -237,7 +237,13 @@ cmd
         }
     }
       chamada_atribuicao
-    | 'retorne' expressao
+    | RETORNAR expressao
+      {
+         String escopo = pilhaDeTabelas.topo().getEscopo();
+         if (!escopo.equals("funcao")) {
+            infrastructure.ErrorListeners.SemanticErrorListener.ScopeNotAllowed($RETORNAR.line);
+         }
+      }
     ;
 
 mais_expressao
@@ -387,6 +393,10 @@ parcela_logica
 
 exp_relacional
     : exp_aritmetica op_opcional
+    ;
+
+RETORNAR
+    : 'retorne'
     ;
 
 IDENT

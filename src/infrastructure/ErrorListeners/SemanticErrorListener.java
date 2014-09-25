@@ -25,4 +25,8 @@ public class SemanticErrorListener {
     public static void TypeDoesntExist(int numLinha, String tipo) {
         bag.add("Linha "+numLinha+": tipo "+tipo+" nao declarado");
     }
+    
+    public static void ScopeNotAllowed(int numLinha) {
+        bag.add("Linha "+numLinha+": comando retorne nao permitido nesse escopo");
+    }
 }

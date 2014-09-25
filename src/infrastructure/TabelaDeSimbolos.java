@@ -40,6 +40,10 @@ public class TabelaDeSimbolos {
         return false;
     }
     
+    public String getEscopo() {
+        return escopo;
+    }
+    
     public EntradaTabelaDeSimbolos getSimbol(String name) {
         for (EntradaTabelaDeSimbolos current : simbolos) {
             if (current.getNome().equals(name))
