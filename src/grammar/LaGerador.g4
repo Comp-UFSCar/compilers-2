@@ -68,7 +68,7 @@ variavel
           else if ($tipo.type.equals("real"))
              Gerador.addText("float " + current + ";\n");
           else if ($tipo.type.equals("literal"))
-             Gerador.addText("char " + current + ";\n");
+             Gerador.addText("char " + current + "[80];\n");
           else if ($tipo.type.equals("logico"))
              Gerador.addText("int " + current + ";\n");
        }
@@ -174,7 +174,7 @@ cmd
         else if (tipo2.equals("real"))
            Gerador.addText("scanf(\"%f\",&"+variavel+");\n");
         else if (tipo2.equals("literal"))
-           Gerador.addText("scanf(\"%s\",&"+variavel+");\n");
+           Gerador.addText("gets("+variavel+");\n");
         else if (tipo2.equals("logico"))
            Gerador.addText("scanf(\"%d\",&"+variavel+");\n");
     }

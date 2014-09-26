@@ -303,7 +303,6 @@ cmd
             if ($dimensao.index != null) {
                 fullName += "[" + $dimensao.index + "]";
             }
-            
             SemanticErrorListener.AttributionNotAllowed($IDENT.getLine(), fullName);
         }
       }
