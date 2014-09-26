@@ -4,6 +4,5 @@
 int main {
 vazio;
 vazio;
-vazio;
 return 0;
 }

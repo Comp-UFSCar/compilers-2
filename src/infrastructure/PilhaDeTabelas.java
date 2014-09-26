@@ -35,25 +35,27 @@ public class PilhaDeTabelas {
         }
         return false;
     }
-    
+
     public String retornaTipo(String nome) {
         try {
             for (TabelaDeSimbolos ts : pilha) {
                 String tipo = ts.retornaTipo(nome);
-                if (!tipo.equals("vazio")) {
+                if (tipo != null) {
                     return tipo;
                 }
             }
         } catch (NullPointerException e) {
+            // returns null
         }
-        return "vazio";
+        return null;
     }
 
     /**
      * Gets simbol defined in the nearest (latest) scope.
-     * 
+     *
      * @param name of the simbol
-     * @return simbol with the a name as defined in @name
+     * @return simbol with the a name as defined in
+     * @name
      */
     public EntradaTabelaDeSimbolos getSimbol(String name) {
 

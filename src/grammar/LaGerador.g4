@@ -166,7 +166,8 @@ cmd
     {
         String variavel = $identificador.name;
         String tipo2 = pilhaDeTabelas.retornaTipo(variavel);
-        if (tipo2.equals("inteiro"))
+        if (tipo2 == null);
+        else if (tipo2.equals("inteiro"))
            Gerador.addText("scanf(\"%d\",&"+variavel+");\n");
         else if (tipo2.equals("real"))
            Gerador.addText("scanf(\"%f\",&"+variavel+");\n");

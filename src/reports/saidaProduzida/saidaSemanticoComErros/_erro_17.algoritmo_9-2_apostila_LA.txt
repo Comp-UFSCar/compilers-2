@@ -4,6 +4,8 @@ Linha 13: atribuicao nao compativel para valor1
 Linha 14: identificador racional nao declarado
 Linha 14: atribuicao nao compativel para valor2
 Linha 22: identificador racional nao declarado
+Linha 22: atribuicao nao compativel para racional
 Linha 23: identificador racional nao declarado
+Linha 23: atribuicao nao compativel para racional
 Linha 28: tipo tRacional nao declarado
 Fim da compilacao

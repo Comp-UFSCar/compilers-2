@@ -92,8 +92,9 @@ identificador returns [String name, int line]
       ('.' IDENT)* dimensao outros_ident
     ;
 
-ponteiros_opcionais
-    : '^'*
+ponteiros_opcionais returns [ String pointers ]
+    @init { $pointers = ""; }
+    : ('^' { $pointers += "^"; } )*
     ;
 
 dimensao
@@ -110,7 +111,9 @@ tipo returns [ String type ]
     ;
 
 tipo_estendido returns [ String type ]
-    : ponteiros_opcionais tipo_basico_ident { $type = $tipo_basico_ident.type; }
+    @init { $type = ""; }
+    : ponteiros_opcionais { $type += $ponteiros_opcionais.pointers; }
+      tipo_basico_ident   { $type += $tipo_basico_ident.type;         }
     ;
 
 mais_ident returns [List<String> identifiers]
@@ -221,8 +224,20 @@ cmd
         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
         }
+
+        // Logs semantic error if variable wasnt declared as a pointer
+        String type = pilhaDeTabelas.retornaTipo($IDENT.getText());
+        if (!type.substring(0, 1).equals("^")) {
+            SemanticErrorListener.MisuseOfCaretOperator($IDENT.line, $IDENT.getText());
+        }
+        type = type.substring(1, type.length());
     }
       outros_ident dimensao '<-' expressao
+      {
+        if (!RelationalMap.CanAttribute(type, $expressao.type)) {
+            SemanticErrorListener.AttributionNotAllowed($IDENT.getLine(), "^" + $IDENT.getText());
+        }
+      }
     |
       IDENT
     
@@ -234,10 +249,7 @@ cmd
       '(' argumentos_opcional ')'
     | IDENT outros_ident dimensao '<-' expressao
       {
-        if (!RelationalMap.CanAttribute(
-            pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase()),
-            $expressao.type
-        )) {
+        if (!RelationalMap.CanAttribute(pilhaDeTabelas.retornaTipo($IDENT.getText()), $expressao.type)) {
             SemanticErrorListener.AttributionNotAllowed($IDENT.getLine(), $IDENT.getText());
         }
       }
@@ -334,7 +346,7 @@ parcela returns [ String type ]
             SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
          }
          
-         $type = pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
+         $type = '^' + pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
       }
       outros_ident dimensao
     | CADEIA { $type = "literal"; }
@@ -347,6 +359,7 @@ parcela_unario returns [ String type ]
             SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
          }
          $type = pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
+         $type = $type.substring(1, $type.length());
       }
       outros_ident dimensao
     | IDENT 
