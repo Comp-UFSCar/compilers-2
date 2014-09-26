@@ -24,13 +24,8 @@ programa
     : {
          pilhaDeTabelas.empilhar(new TabelaDeSimbolos("global"));
       }
-      declaracoes 
+      declaracoes 'algoritmo' corpo 'fim_algoritmo'
       {
-         Gerador.addText("#include <stdio.h>\n#include <stdlib.h>\n\nint main {\n");
-      }
-      'algoritmo' corpo 'fim_algoritmo'
-      { 
-         Gerador.addText("return 0;\n}");
          pilhaDeTabelas.desempilhar();
       }
     ;
@@ -46,8 +41,7 @@ decl_local_global
 
 declaracao_local
     : 'declare' variavel 
-    | 'constante' IDENT 
-      ':' tipo_basico
+    | 'constante' IDENT ':' tipo_basico
     {
         // A constant has been consumed:
         // if it has been declared before, logs semantic error.
@@ -97,18 +91,6 @@ variavel
     dimensao)*
     ':' tipo
     {
-       for (String current : declared) {
-          if ($tipo.type == null) {
-             continue;
-          } else if ($tipo.type.equals("inteiro"))
-             Gerador.addText("int " + current + ";\n");
-          else if ($tipo.type.equals("real"))
-             Gerador.addText("float " + current + ";\n");
-          else if ($tipo.type.equals("literal"))
-             Gerador.addText("char " + current + ";\n");
-          else if ($tipo.type.equals("logico"))
-             Gerador.addText("int " + current + ";\n");
-       }
        // Add all variables to the nearest simbol table
        for (String current : declared) {
           pilhaDeTabelas.topo().adicionarSimbolo(current, "variavel", $tipo.type);
@@ -158,7 +140,7 @@ tipo_basico returns [ String type, int linha ]
 tipo_basico_ident returns [ String type ]
     : tipo_basico { $type = $tipo_basico.type; }
     | IDENT 
-    {
+    { //Verificao para ver se existe o tipo especificado
       $type = $IDENT.getText();
       if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
           SemanticErrorListener.TypeDoesntExist($IDENT.line, $IDENT.getText());
@@ -180,12 +162,10 @@ registro
 
 declaracao_global
     : { pilhaDeTabelas.empilhar(new TabelaDeSimbolos("procedimento")); }
-      'procedimento' IDENT
-      '(' parametros_opcional ')' declaracoes_locais comandos 'fim_procedimento'
+      'procedimento' IDENT '(' parametros_opcional ')' declaracoes_locais comandos 'fim_procedimento'
       { pilhaDeTabelas.desempilhar(); }
     | { pilhaDeTabelas.empilhar(new TabelaDeSimbolos("funcao")); }
-      'funcao' IDENT
-      '(' parametros_opcional '):' tipo_estendido declaracoes_locais comandos 'fim_funcao'
+      'funcao' IDENT '(' parametros_opcional '):' tipo_estendido declaracoes_locais comandos 'fim_funcao'
       { pilhaDeTabelas.desempilhar(); }
     ;
 
@@ -215,45 +195,21 @@ comandos
 
 cmd
     : 'leia' '(' identificador
-    {
+    {   //Caso o identificador nao exista na tabela, mostra o erro
         if (!pilhaDeTabelas.existeSimbolo($identificador.name.toLowerCase())) {
             SemanticErrorListener.VariableDoesntExist($identificador.line, $identificador.name);
         }
     }
       mais_ident
-    {
+    {   //Caso os identificadores nao existam na tabela, mostra o erro
         for (String ident : $mais_ident.identifiers) {
             if (!pilhaDeTabelas.existeSimbolo(ident.toLowerCase())) {
                 SemanticErrorListener.VariableDoesntExist($identificador.line, ident);
             }
         }
-        
-        String variavel = $identificador.name;
-        String tipo2 = pilhaDeTabelas.retornaTipo(variavel);
-        if (tipo2.equals("inteiro"))
-           Gerador.addText("scanf(\"%d\",&"+variavel+");\n");
-        else if (tipo2.equals("real"))
-           Gerador.addText("scanf(\"%f\",&"+variavel+");\n");
-        else if (tipo2.equals("literal"))
-           Gerador.addText("scanf(\"%s\",&"+variavel+");\n");
-        else if (tipo2.equals("logico"))
-           Gerador.addText("scanf(\"%d\",&"+variavel+");\n");
     }
       ')'
     | 'escreva' '(' expressao mais_expressao ')'
-      {
-         String nome = Gerador.getNome();
-         String tipo = Gerador.getTipo();
-         if (nome != null && tipo != null)
-           if (tipo.equals("inteiro"))
-             Gerador.addText("printf(\"%d\"," + nome + ");\n");
-           else if (tipo.equals("real"))
-             Gerador.addText("printf(\"%f\"," + nome + ");\n");
-           else if (tipo.equals("literal"))
-             Gerador.addText("printf(\"%s\"," + nome + ");\n");
-           else 
-             Gerador.addText("vazio;\n");
-      }
     | 'se' expressao 'entao' comandos senao_opcional 'fim_se'
     | 'caso' exp_aritmetica 'seja' selecao senao_opcional 'fim_caso'
     | 'para'
@@ -287,7 +243,7 @@ cmd
     }
       chamada_atribuicao
     | RETORNAR expressao
-      {
+      {  //A palavra retorne so eh possivel com funcao
          String escopo = pilhaDeTabelas.topo().getEscopo();
          if (!escopo.equals("funcao")) {
             SemanticErrorListener.ScopeNotAllowed($RETORNAR.line);
@@ -380,8 +336,6 @@ parcela_unario
          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
          }
-         Gerador.addTipo(pilhaDeTabelas.retornaTipo($IDENT.getText()));
-         Gerador.addNome($IDENT.getText());
       }
       outros_ident dimensao
     | IDENT 

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package infrastructure;
+package gerador;
 
 import java.util.LinkedList;
 

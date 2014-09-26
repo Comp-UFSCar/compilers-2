@@ -1,14 +1,11 @@
 package runner;
 
-import infrastructure.ErrorListeners.LexicalErrorListener;
+import gerador.*;
 import infrastructure.CompilationResultWriter;
-import infrastructure.ErrorListeners.SemanticErrorListener;
+import infrastructure.ErrorListeners.*;
 import infrastructure.MessageBag;
-import infrastructure.ErrorListeners.SyntaticErrorListener;
-import infrastructure.Gerador;
 import java.io.FileInputStream;
-import laparser.LaLexer;
-import laparser.LaParser;
+import laparser.*;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -31,13 +28,18 @@ public class Runner {
      */
     public void start(String inputFile, String outputFile) throws Exception {
 
-        ANTLRInputStream in    = new ANTLRInputStream(new FileInputStream(inputFile));
+        ANTLRInputStream in        = new ANTLRInputStream(new FileInputStream(inputFile));
+        ANTLRInputStream inGerador = new ANTLRInputStream(new FileInputStream(inputFile));
         MessageBag lexicalAndSintaticBag = new MessageBag();
         MessageBag semanticBag = new MessageBag();
 
         LaLexer lexer   = new LaLexer(in);
         LaParser parser = new LaParser(new CommonTokenStream(lexer));
+        LaGeradorLexer  lexerGerador  = new LaGeradorLexer(inGerador);
+        LaGeradorParser parserGerador = new LaGeradorParser(new CommonTokenStream(lexerGerador));
 
+        parser.removeErrorListeners();
+        lexer .removeErrorListeners();
         parser.removeErrorListeners();
         lexer .removeErrorListeners();
 
@@ -48,7 +50,8 @@ public class Runner {
         parser.addErrorListener(syntatic);
         lexer .addErrorListener(lexical);
 
-        LaParser.ProgramaContext result = parser.programa();
+        parser.programa();
+        parserGerador.programa();
 
         CompilationResultWriter writer = new CompilationResultWriter(outputFile);
 
