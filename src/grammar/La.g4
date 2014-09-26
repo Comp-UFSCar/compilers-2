@@ -11,23 +11,12 @@
 
 grammar La;
 
-@header {
-    import infrastructure.*;
-    import infrastructure.ErrorListeners.*;
-}
-
-@members {
-    PilhaDeTabelas pilhaDeTabelas = new PilhaDeTabelas();
-}
+@members { PilhaDeTabelas pilhaDeTabelas = new PilhaDeTabelas(); }
 
 programa
-    : {
-         pilhaDeTabelas.empilhar(new TabelaDeSimbolos("global"));
-      }
-      declaracoes 'algoritmo' corpo 'fim_algoritmo'
-      {
-         pilhaDeTabelas.desempilhar();
-      }
+    : { pilhaDeTabelas.empilhar(new TabelaDeSimbolos("global")); }
+      decl_local_global* 'algoritmo' corpo 'fim_algoritmo'
+      { pilhaDeTabelas.desempilhar(); }
     ;
 
 declaracoes
@@ -49,7 +38,7 @@ declaracao_local
         if(pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             SemanticErrorListener.VariableAlreadyExists($IDENT.line, $IDENT.getText());
 	} else {
-            pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "constante", $tipo_basico.type);
+            pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "constante", $tipo_basico.type, null);
         }
     }
       '=' valor_constante
@@ -61,7 +50,7 @@ declaracao_local
         if (pilhaDeTabelas.existeSimbolo($tipo.type.toLowerCase())) {
             SemanticErrorListener.TypeDoesntExist($IDENT.getLine(), $tipo.type);
         } else {
-            pilhaDeTabelas.topo().adicionarSimbolo($tipo.type.toLowerCase(), "tipo", $tipo.type.toLowerCase());
+            pilhaDeTabelas.topo().adicionarSimbolo($tipo.type.toLowerCase(), "tipo", $tipo.type.toLowerCase(), null);
         }
     }
     ;
@@ -93,7 +82,7 @@ variavel
     {
        // Add all variables to the nearest simbol table
        for (String current : declared) {
-          pilhaDeTabelas.topo().adicionarSimbolo(current, "variavel", $tipo.type);
+          pilhaDeTabelas.topo().adicionarSimbolo(current, "variavel", $tipo.type, null);
        }
     }
     ;
@@ -106,35 +95,27 @@ identificador returns [String name, int line]
 ponteiros_opcionais
     : '^'*
     ;
- 
-outros_ident
-    : ('.' identificador)?
-    ;
 
 dimensao
     : ('[' exp_aritmetica ']' dimensao)?
     ;
 
+outros_ident
+    : ('.' identificador)?
+    ;
+
 tipo returns [ String type ]
-    : registro       { $type = "registro";               }
+    : registro       { $type = "registro";           }
     | tipo_estendido { $type = $tipo_estendido.type; }
     ;
 
 tipo_estendido returns [ String type ]
-    : ponteiros_opcionais
-      tipo_basico_ident { $type = $tipo_basico_ident.type; }
+    : ponteiros_opcionais tipo_basico_ident { $type = $tipo_basico_ident.type; }
     ;
 
 mais_ident returns [List<String> identifiers]
     : { $identifiers = new ArrayList<>(); }
       (',' identificador { $identifiers.add($identificador.name); })*
-    ;
-
-tipo_basico returns [ String type, int linha ]
-    : 'literal' { $type = "literal"; }
-    | 'inteiro' { $type = "inteiro"; }
-    | 'real'    { $type = "real";    }
-    | 'logico'  { $type = "logico";  }
     ;
 
 tipo_basico_ident returns [ String type ]
@@ -148,6 +129,13 @@ tipo_basico_ident returns [ String type ]
     }
     ;
 
+tipo_basico returns [ String type, int linha ]
+    : 'literal' { $type = "literal"; }
+    | 'inteiro' { $type = "inteiro"; }
+    | 'real'    { $type = "real";    }
+    | 'logico'  { $type = "logico";  }
+    ;
+
 valor_constante
     : CADEIA
     | NUM_INT
@@ -156,8 +144,12 @@ valor_constante
     | 'falso'
     ;
 
-registro
-    : 'registro' variavel+ 'fim_registro'
+registro returns [ TabelaDeSimbolos tabela ]
+    : 'registro'
+      { pilhaDeTabelas.empilhar(new TabelaDeSimbolos("registro")); }
+      variavel+
+      { $tabela = pilhaDeTabelas.topo(); pilhaDeTabelas.desempilhar(); }
+      'fim_registro'
     ;
 
 declaracao_global
@@ -174,11 +166,7 @@ parametros_opcional
     ;
 
 parametro
-    : var_opcional identificador mais_ident ':' tipo_estendido (',' parametro)?
-    ;
-
-var_opcional
-    : 'var'?
+    : 'var'? identificador mais_ident ':' tipo_estendido (',' parametro)?
     ;
 
 declaracoes_locais
@@ -190,7 +178,7 @@ corpo
     ;
 
 comandos
-    : (cmd comandos)?
+    : cmd*
     ;
 
 cmd
@@ -216,7 +204,7 @@ cmd
       {   //Empilha (Cria) um novo escopo para o FOR
           pilhaDeTabelas.empilhar(new TabelaDeSimbolos("para"));
       }
-      IDENT 
+      IDENT
       {   // Logs semantic error if variable wasnt found in any of the simbol tables
           if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
                SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
@@ -235,13 +223,24 @@ cmd
         }
     }
       outros_ident dimensao '<-' expressao
-    | IDENT
-    {   // Logs semantic error if variable wasnt found in any of the simbol tables
+    |
+      IDENT
+    
+      {   // Logs semantic error if variable wasnt found in any of the simbol tables
         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
         }
-    }
-      chamada_atribuicao
+      }
+      '(' argumentos_opcional ')'
+    | IDENT outros_ident dimensao '<-' expressao
+      {
+        if (!RelationalMap.CanAttribute(
+            pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase()),
+            $expressao.type
+        )) {
+            SemanticErrorListener.AttributionNotAllowed($IDENT.getLine(), $IDENT.getText());
+        }
+      }
     | RETORNAR expressao
       {  //A palavra retorne so eh possivel com funcao
          String escopo = pilhaDeTabelas.topo().getEscopo();
@@ -259,9 +258,8 @@ senao_opcional
     : ('senao' comandos)?
     ;
 
-chamada_atribuicao
-    : '(' argumentos_opcional ')'
-    | outros_ident dimensao '<-' expressao
+chamada_atribuicao returns [ String $type ]
+    : 
     ;
 
 argumentos_opcional
@@ -269,11 +267,7 @@ argumentos_opcional
     ;
 
 selecao
-    : constantes ':' comandos mais_selecao
-    ;
-
-mais_selecao
-    : (selecao)?
+    : (constantes ':' comandos)+
     ;
 
 constantes
@@ -296,39 +290,63 @@ op_unario
     : '-'?
     ;
 
-exp_aritmetica
-    : termo (op_adicao termo)*
+exp_aritmetica returns [ String type ]
+    : termo { $type = $termo.type; }
+      (('+' | '-') termo
+    {
+        if (!RelationalMap.CanAdd($type, $termo.type)) {
+            $type = null;
+        } else if ($termo.type.toLowerCase().equals("real")) {
+            $type = "real";
+        }
+    }
+      )*
     ;
 
-op_multiplicacao
-    : '*'
-    | '/'
+termo returns [ String type ]
+    : fator { $type = $fator.type; } (('*' | '/')
+    {
+        if (!RelationalMap.CanMultiply($type, $termo.type)) {
+            $type = null;
+        } else if ($termo.type.toLowerCase().equals("real")) {
+            $type = "real";
+        }
+    }
+      fator)*
     ;
 
-op_adicao
-    : '+'
-    | '-'
+fator returns [ String type ]
+    : parcela { $type = $parcela.type; } ('%' parcela
+    {
+        if (!RelationalMap.CanMod($type, $parcela.type)) {
+            $type = null;
+        } else {
+            $type = "inteiro";
+        }
+    })*
     ;
 
-termo
-    : fator (op_multiplicacao fator)*
+parcela returns [ String type ]
+    : op_unario parcela_unario { $type = $parcela_unario.type; }
+    | '&' IDENT
+      {
+         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
+            SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
+         }
+         
+         $type = pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
+      }
+      outros_ident dimensao
+    | CADEIA { $type = "literal"; }
     ;
 
-fator
-    : parcela ('%' parcela)*
-    ;
-
-parcela
-    :  op_unario parcela_unario
-    |  parcela_nao_unario
-    ;
-
-parcela_unario
+parcela_unario returns [ String type ]
     : '^' IDENT 
       {
          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
          }
+         $type = pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
       }
       outros_ident dimensao
     | IDENT 
@@ -336,6 +354,7 @@ parcela_unario
          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
          }
+         $type = pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
       }
       outros_ident dimensao
     | IDENT 
@@ -343,26 +362,12 @@ parcela_unario
          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
          }
+         $type = pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
       }
       '(' expressao mais_expressao ')'
-    | NUM_INT
-    | NUM_REAL
-    | '(' expressao ')'
-    ;
-
-parcela_nao_unario
-    : '&' IDENT
-      {
-         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
-            SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
-         }
-      }
-      outros_ident dimensao
-    | CADEIA
-    ;
-
-op_opcional
-    : (op_relacional exp_aritmetica)?
+    | NUM_INT           { $type = "inteiro";       }
+    | NUM_REAL          { $type = "real";          }
+    | '(' expressao ')' { $type = $expressao.type; }
     ;
 
 op_relacional
@@ -374,30 +379,61 @@ op_relacional
     | '<'
     ;
 
-expressao
-    : termo_logico ('ou' termo_logico)*
+expressao returns [ String type ]
+    : termo_logico { $type = $termo_logico.type; }
+      ('ou' termo_logico
+    {
+        $type
+            = RelationalMap.CanLogic($type, $termo_logico.type)
+            ? "logico"
+            : null
+            ;
+    }
+      )*
     ;
 
-termo_logico
-    : fator_logico ('e' fator_logico)*
+termo_logico returns [ String type ]
+    : fator_logico { $type = $fator_logico.type; }
+      ('e' fator_logico
+    {
+        $type
+            = RelationalMap.CanLogic($type, $fator_logico.type)
+            ? "logico"
+            : null
+            ;
+    }
+      )*
     ;
 
-fator_logico
+fator_logico returns [ String type ]
     : op_nao parcela_logica
+    {
+        if (!$op_nao.happens || ($parcela_logica.type != null && $parcela_logica.type.equals("logico"))) {
+            $type = $parcela_logica.type;
+        }
+    }
     ;
 
-op_nao
-    : ('nao')?
+op_nao returns [ boolean happens ]
+    : ('nao' { $happens = true; })?
     ;
 
-parcela_logica
-    : 'verdadeiro'
-    | 'falso'
-    | exp_relacional
+parcela_logica returns [ String type ]
+    : 'verdadeiro'   { $type = "logico"; }
+    | 'falso'        { $type = "logico"; }
+    | exp_relacional { $type = $exp_relacional.type; }
     ;
 
-exp_relacional
-    : exp_aritmetica op_opcional
+exp_relacional returns [ String type ]
+    : exp_aritmetica { $type = $exp_aritmetica.type; }
+      (op_relacional exp_aritmetica
+    {
+        $type = RelationalMap.CanBeArithmeticallyCompared($type, $exp_aritmetica.type)
+              ? "logico"
+              : null
+              ;
+    }
+      )?
     ;
 
 RETORNAR
