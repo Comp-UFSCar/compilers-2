@@ -12,12 +12,12 @@ public interface LaListener extends ParseTreeListener {
 	 * Enter a parse tree produced by {@link LaParser#chamada_atribuicao}.
 	 * @param ctx the parse tree
 	 */
-	void enterChamada_atribuicao(@NotNull LaParser.Chamada_atribuicaoContext ctx);
+	//void enterChamada_atribuicao(@NotNull LaParser.Chamada_atribuicaoContext ctx);
 	/**
 	 * Exit a parse tree produced by {@link LaParser#chamada_atribuicao}.
 	 * @param ctx the parse tree
 	 */
-	void exitChamada_atribuicao(@NotNull LaParser.Chamada_atribuicaoContext ctx);
+	//void exitChamada_atribuicao(@NotNull LaParser.Chamada_atribuicaoContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link LaParser#argumentos_opcional}.
@@ -331,12 +331,12 @@ public interface LaListener extends ParseTreeListener {
 	 * Enter a parse tree produced by {@link LaParser#mais_constantes}.
 	 * @param ctx the parse tree
 	 */
-	void enterMais_constantes(@NotNull LaParser.Mais_constantesContext ctx);
+	//void enterMais_constantes(@NotNull LaParser.Mais_constantesContext ctx);
 	/**
 	 * Exit a parse tree produced by {@link LaParser#mais_constantes}.
 	 * @param ctx the parse tree
 	 */
-	void exitMais_constantes(@NotNull LaParser.Mais_constantesContext ctx);
+	//void exitMais_constantes(@NotNull LaParser.Mais_constantesContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link LaParser#declaracao_global}.

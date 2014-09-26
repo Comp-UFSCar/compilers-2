@@ -2,6 +2,8 @@
 package gerador;
 
     import infrastructure.*;
+    import infrastructure.Simbols.*;
+    import gerador.*;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -107,7 +109,7 @@ public class LaGeradorParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			 pilhaDeTabelas.empilhar(new TabelaDeSimbolos("global")); 
+			 pilhaDeTabelas.empilhar(new SimbolTable("global")); 
 			setState(103); declaracoes();
 
 			         Gerador.addText("#include <stdio.h>\n#include <stdlib.h>\n\nint main {\n");
@@ -1276,8 +1278,8 @@ public class LaGeradorParser extends Parser {
 
 				        String variavel = ((CmdContext)_localctx).identificador.name;
 				        String tipo2 = pilhaDeTabelas.retornaTipo(variavel);
-                                        if (tipo2 == null);
-                                        else if (tipo2.equals("inteiro"))
+				        if (tipo2 == null);
+				        else if (tipo2.equals("inteiro"))
 				           Gerador.addText("scanf(\"%d\",&"+variavel+");\n");
 				        else if (tipo2.equals("real"))
 				           Gerador.addText("scanf(\"%f\",&"+variavel+");\n");

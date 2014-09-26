@@ -11,6 +11,12 @@
 
 grammar La;
 
+@header {
+    import infrastructure.*;
+    import infrastructure.ErrorListeners.*;
+    import infrastructure.Simbols.*;
+}
+
 @members { PilhaDeTabelas pilhaDeTabelas = new PilhaDeTabelas(); }
 
 programa

@@ -13,6 +13,8 @@ grammar LaGerador;
 
 @header {
     import infrastructure.*;
+    import infrastructure.Simbols.*;
+    import gerador.*;
 }
 
 @members {
@@ -20,8 +22,8 @@ grammar LaGerador;
 }
 
 programa
-    : { pilhaDeTabelas.empilhar(new TabelaDeSimbolos("global")); }
-      declaracoes 
+    : { pilhaDeTabelas.empilhar(new SimbolTable("global")); }
+      declaracoes
       {
          Gerador.addText("#include <stdio.h>\n#include <stdlib.h>\n\nint main {\n");
       }
