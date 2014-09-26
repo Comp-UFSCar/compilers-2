@@ -37,11 +37,14 @@ public class PilhaDeTabelas {
     }
     
     public String retornaTipo(String nome) {
-        for (TabelaDeSimbolos ts : pilha) {
-            String tipo = ts.retornaTipo(nome);
-            if (!tipo.equals("vazio")) {
-                return tipo;
+        try {
+            for (TabelaDeSimbolos ts : pilha) {
+                String tipo = ts.retornaTipo(nome);
+                if (!tipo.equals("vazio")) {
+                    return tipo;
+                }
             }
+        } catch (NullPointerException e) {
         }
         return "vazio";
     }

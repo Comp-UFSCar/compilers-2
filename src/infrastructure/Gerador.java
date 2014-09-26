@@ -29,9 +29,13 @@ public class Gerador {
     }
     
     public static String getNome(){
-        String strTemp = nomes.peek();
-        nomes.pop();
-        return strTemp;
+        try {
+            String strTemp = nomes.peek();
+            nomes.pop();
+            return strTemp;
+        } catch (Exception e) {
+        }
+        return "vazio";
     }
     
     public static void addTipo(String str){
@@ -39,8 +43,12 @@ public class Gerador {
     }
     
     public static String getTipo(){
-        String strTemp = tipos.peek();
-        tipos.pop();
-        return strTemp;
+        try {
+            String strTemp = tipos.peek();
+            tipos.pop();
+            return strTemp;
+        } catch (Exception e) {
+        }
+        return "vazio";
     }
 }

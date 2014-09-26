@@ -421,11 +421,11 @@ op_relacional
     ;
 
 expressao
-    : termo_logico
+    : termo_logico ('ou' termo_logico)*
     ;
 
 termo_logico
-    : fator_logico
+    : fator_logico ('e' fator_logico)*
     ;
 
 fator_logico
