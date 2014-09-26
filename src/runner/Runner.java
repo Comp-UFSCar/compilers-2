@@ -5,7 +5,7 @@ import infrastructure.CompilationResultWriter;
 import infrastructure.ErrorListeners.SemanticErrorListener;
 import infrastructure.MessageBag;
 import infrastructure.ErrorListeners.SyntaticErrorListener;
-import infrastructure.Mensagens;
+import infrastructure.Gerador;
 import java.io.FileInputStream;
 import laparser.LaLexer;
 import laparser.LaParser;
@@ -68,7 +68,7 @@ public class Runner {
             }
             writer.put("Fim da compilacao").close();
         } else {
-            writer.put(Mensagens.getText());
+            writer.put(Gerador.getText());
             writer.close();
             //System.out.println(Mensagens.getText());
         }

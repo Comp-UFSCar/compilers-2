@@ -11,6 +11,11 @@
 
 grammar La;
 
+@header {
+    import infrastructure.*;
+    import infrastructure.ErrorListeners.*;
+}
+
 @members {
     PilhaDeTabelas pilhaDeTabelas = new PilhaDeTabelas();
 }
@@ -21,11 +26,11 @@ programa
       }
       declaracoes 
       {
-         Mensagens.addText("#include <stdio.h\n#include <stdlib.h>\n\nint main {\n");
+         Gerador.addText("#include <stdio.h>\n#include <stdlib.h>\n\nint main {\n");
       }
       'algoritmo' corpo 'fim_algoritmo'
       { 
-         Mensagens.addText("return 0\n}");
+         Gerador.addText("return 0;\n}");
          pilhaDeTabelas.desempilhar();
       }
     ;
@@ -96,13 +101,13 @@ variavel
           if ($tipo.type == null) {
              continue;
           } else if ($tipo.type.equals("inteiro"))
-             Mensagens.addText("int " + current + ";\n");
+             Gerador.addText("int " + current + ";\n");
           else if ($tipo.type.equals("real"))
-             Mensagens.addText("float " + current + ";\n");
+             Gerador.addText("float " + current + ";\n");
           else if ($tipo.type.equals("literal"))
-             Mensagens.addText("char " + current + ";\n");
+             Gerador.addText("char " + current + ";\n");
           else if ($tipo.type.equals("logico"))
-             Mensagens.addText("int " + current + ";\n");
+             Gerador.addText("int " + current + ";\n");
        }
        // Add all variables to the nearest simbol table
        for (String current : declared) {
@@ -226,16 +231,29 @@ cmd
         String variavel = $identificador.name;
         String tipo2 = pilhaDeTabelas.retornaTipo(variavel);
         if (tipo2.equals("inteiro"))
-           Mensagens.addText("scanf(\"%d\",&"+variavel+");\n");
+           Gerador.addText("scanf(\"%d\",&"+variavel+");\n");
         else if (tipo2.equals("real"))
-           Mensagens.addText("scanf(\"%f\",&"+variavel+");\n");
+           Gerador.addText("scanf(\"%f\",&"+variavel+");\n");
         else if (tipo2.equals("literal"))
-           Mensagens.addText("scanf(\"%s\",&"+variavel+");\n");
+           Gerador.addText("scanf(\"%s\",&"+variavel+");\n");
         else if (tipo2.equals("logico"))
-           Mensagens.addText("scanf(\"%d\",&"+variavel+");\n");
+           Gerador.addText("scanf(\"%d\",&"+variavel+");\n");
     }
       ')'
     | 'escreva' '(' expressao mais_expressao ')'
+      {
+         String nome = Gerador.getNome();
+         String tipo = Gerador.getTipo();
+         if (nome != null && tipo != null)
+           if (tipo.equals("inteiro"))
+             Gerador.addText("printf(\"%d\"," + nome + ");\n");
+           else if (tipo.equals("real"))
+             Gerador.addText("printf(\"%f\"," + nome + ");\n");
+           else if (tipo.equals("literal"))
+             Gerador.addText("printf(\"%s\"," + nome + ");\n");
+           else 
+             Gerador.addText("vazio;\n");
+      }
     | 'se' expressao 'entao' comandos senao_opcional 'fim_se'
     | 'caso' exp_aritmetica 'seja' selecao senao_opcional 'fim_caso'
     | 'para'
@@ -345,8 +363,8 @@ fator
     ;
 
 parcela
-    : op_unario parcela_unario
-    | parcela_nao_unario
+    :  op_unario parcela_unario
+    |  parcela_nao_unario
     ;
 
 parcela_unario
@@ -362,6 +380,8 @@ parcela_unario
          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
          }
+         Gerador.addTipo(pilhaDeTabelas.retornaTipo($IDENT.getText()));
+         Gerador.addNome($IDENT.getText());
       }
       outros_ident dimensao
     | IDENT 
@@ -401,11 +421,11 @@ op_relacional
     ;
 
 expressao
-    : termo_logico ('ou' termo_logico)*
+    : termo_logico
     ;
 
 termo_logico
-    : fator_logico ('e' fator_logico)*
+    : fator_logico
     ;
 
 fator_logico
@@ -416,7 +436,7 @@ op_nao
     : ('nao')?
     ;
 
-parcela_logica 
+parcela_logica
     : 'verdadeiro'
     | 'falso'
     | exp_relacional
