@@ -1,0 +1,8 @@
+Instrucoes de como executar o nosso projeto:
+
+Execute o corretorTrabalho1.jar por linha de comando incluindo o caminho para o laparser.jar localizado em dist, os casos de testes estao localizados em src\testcases
+
+Usamos o Netbeans 8.0 e o antlr-4.4-complete.
+
+Caso nao execute adequadamente, pode gerar os arquivos pelo AntlrWorks, o La.g4 tem que ser gerado no caminho ~\Compilers-2-assignment-1\src\laparser e tem que estar no package laparser e o LaGerador.g4 tem que ser gerado no caminho ~\Compilers-2-assignment-1\src\gerador e tem que estar no package gerador
+Apos gerados, limpe e construa o projeto e tente novamente executar o corretor.
