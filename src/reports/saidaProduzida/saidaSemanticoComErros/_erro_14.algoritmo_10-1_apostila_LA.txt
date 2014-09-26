@@ -1,3 +1,0 @@
-Linha 11: atribuicao nao compativel para valor
-Linha 19: atribuicao nao compativel para media_final
-Fim da compilacao

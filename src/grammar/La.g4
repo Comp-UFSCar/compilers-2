@@ -89,7 +89,7 @@ variavel
 
 identificador returns [String name, int line]
     : ponteiros_opcionais IDENT { $name = $IDENT.getText(); $line = $IDENT.getLine(); }
-      ('.' IDENT)* dimensao outros_ident
+      ('.' IDENT { $name = "." + $IDENT.getText(); })* dimensao outros_ident
     ;
 
 ponteiros_opcionais returns [ String pointers ]
@@ -97,12 +97,13 @@ ponteiros_opcionais returns [ String pointers ]
     : ('^' { $pointers += "^"; } )*
     ;
 
-dimensao
-    : ('[' exp_aritmetica ']' dimensao)?
+dimensao returns [ String index ]
+    : ('[' exp_aritmetica ']' { $index = $exp_aritmetica.index; })*
     ;
 
-outros_ident
-    : ('.' identificador)?
+outros_ident returns [ String name ]
+    @init { $name = ""; }
+    : ('.' identificador { $name += $identificador.name; })?
     ;
 
 tipo returns [ String type ]
@@ -280,16 +281,24 @@ cmd
     |
       IDENT
     
-      {   // Logs semantic error if variable wasnt found in any of the simbol tables
+      { // Logs semantic error if variable wasnt found in any of the simbol tables
         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             SemanticErrorListener.VariableDoesntExist($IDENT.getLine(),$IDENT.getText());
         }
       }
       '(' argumentos_opcional ')'
     | IDENT outros_ident dimensao '<-' expressao
-      {
-        if (!RelationalMap.CanAttribute(pilhaDeTabelas.retornaTipo($IDENT.getText()), $expressao.type)) {
-            SemanticErrorListener.AttributionNotAllowed($IDENT.getLine(), $IDENT.getText());
+      { // Logs semantic error if variable wasnt found in any of the simbol tables
+        if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
+            SemanticErrorListener.VariableDoesntExist($IDENT.getLine(),$IDENT.getText());
+        } else if (!RelationalMap.CanAttribute(pilhaDeTabelas.retornaTipo($IDENT.getText()), $expressao.type)) {
+            
+            String fullName = $IDENT.getText();
+            if ($dimensao.index != null) {
+                fullName += "[" + $dimensao.index + "]";
+            }
+            
+            SemanticErrorListener.AttributionNotAllowed($IDENT.getLine(), fullName);
         }
       }
     | RETORNAR expressao
@@ -334,8 +343,12 @@ op_unario
     : '-'?
     ;
 
-exp_aritmetica returns [ String type ]
-    : termo { $type = $termo.type; }
+exp_aritmetica returns [ String type, String index ]
+    : termo
+    {
+        $type = $termo.type;
+        $index = $termo.index;
+    }
       (('+' | '-') termo
     {
         if (!RelationalMap.CanAdd($type, $termo.type)) {
@@ -343,35 +356,41 @@ exp_aritmetica returns [ String type ]
         } else if ($termo.type.toLowerCase().equals("real")) {
             $type = "real";
         }
+        
+        $index = null;
     }
       )*
     ;
 
-termo returns [ String type ]
-    : fator { $type = $fator.type; } (('*' | '/')
+termo returns [ String type, String index ]
+    : fator { $type = $fator.type; $index = $fator.index; } (('*' | '/')
     {
         if (!RelationalMap.CanMultiply($type, $termo.type)) {
             $type = null;
         } else if ($termo.type.toLowerCase().equals("real")) {
             $type = "real";
         }
+        $index = null;
     }
       fator)*
     ;
 
-fator returns [ String type ]
-    : parcela { $type = $parcela.type; } ('%' parcela
+fator returns [ String type, String index ]
+    : parcela { $type = $parcela.type; $index = $parcela.index; }
+      ('%' parcela
     {
         if (!RelationalMap.CanMod($type, $parcela.type)) {
             $type = null;
         } else {
             $type = "inteiro";
         }
+
+        $index = null;
     })*
     ;
 
-parcela returns [ String type ]
-    : op_unario parcela_unario { $type = $parcela_unario.type; }
+parcela returns [ String type, String index ]
+    : op_unario parcela_unario { $type = $parcela_unario.type; $index = $parcela_unario.index; }
     | '&' IDENT
       {
          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
@@ -384,7 +403,7 @@ parcela returns [ String type ]
     | CADEIA { $type = "literal"; }
     ;
 
-parcela_unario returns [ String type ]
+parcela_unario returns [ String type, String index ]
     : '^' IDENT 
       {
          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
@@ -419,7 +438,7 @@ parcela_unario returns [ String type ]
               SemanticErrorListener.ArgumentIncompatibility($IDENT.getLine(), $IDENT.getText());
           }
       }
-    | NUM_INT           { $type = "inteiro";       }
+    | NUM_INT           { $type = "inteiro"; $index = $NUM_INT.getText();  }
     | NUM_REAL          { $type = "real";          }
     | '(' expressao ')' { $type = $expressao.type; }
     ;

@@ -1,3 +1,6 @@
-Linha 2: identificador mensagem nao declarado
-Linha 6: identificador proc_imprime nao declarado
-Fim da compilacao
+#include <stdio.h>
+#include <stdlib.h>
+
+int main {
+return 0;
+}

@@ -1,3 +1,6 @@
-Linha 2: identificador x nao declarado
-Linha 6: identificador dobro nao declarado
-Fim da compilacao
+#include <stdio.h>
+#include <stdlib.h>
+
+int main {
+return 0;
+}
