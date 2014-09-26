@@ -33,8 +33,12 @@ public class SemanticErrorListener {
     public static void AttributionNotAllowed(int line, String variable) {
         bag.add("Linha " + line + ": atribuicao nao compativel para " + variable);
     }
-    
+
     public static void MisuseOfCaretOperator(int line, String variable) {
         bag.add("Linha " + line + ": uso indevido do ^ em " + variable);
+    }
+
+    public static void ArgumentIncompatibility(int line, String function) {
+        bag.add("Linha " + line + ": incompatibilidade de parametros na chamada de " + function);
     }
 }

@@ -2,16 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package infrastructure;
+package infrastructure.Simbols;
 
 /**
  *
  * @author daniel
  */
-public class EntradaTabelaDeSimbolos {
+public class Entry {
     private String nome, tipo1, tipo2;
     
-    public EntradaTabelaDeSimbolos(String nome, String tipo1, String tipo2) {
+    public Entry(String nome, String tipo1, String tipo2) {
         this.nome = nome;
         this.tipo1 = tipo1;
         this.tipo2 = tipo2;

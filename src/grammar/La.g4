@@ -14,7 +14,7 @@ grammar La;
 @members { PilhaDeTabelas pilhaDeTabelas = new PilhaDeTabelas(); }
 
 programa
-    : { pilhaDeTabelas.empilhar(new TabelaDeSimbolos("global")); }
+    : { pilhaDeTabelas.empilhar(new SimbolTable("global")); }
       decl_local_global* 'algoritmo' corpo 'fim_algoritmo'
       { pilhaDeTabelas.desempilhar(); }
     ;
@@ -36,7 +36,7 @@ declaracao_local
         // if it has been declared before, logs semantic error.
         // Otherwise, add it to the current simbol table.
         if(pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
-            SemanticErrorListener.VariableAlreadyExists($IDENT.line, $IDENT.getText());
+            SemanticErrorListener.VariableAlreadyExists($IDENT.getLine(), $IDENT.getText());
 	} else {
             pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "constante", $tipo_basico.type);
         }
@@ -62,7 +62,7 @@ variavel
         List<String> declared = new ArrayList<>();
 
         if(pilhaDeTabelas.topo().existeSimbolo($IDENT.getText().toLowerCase())) {
-            SemanticErrorListener.VariableAlreadyExists($IDENT.line, $IDENT.getText());
+            SemanticErrorListener.VariableAlreadyExists($IDENT.getLine(), $IDENT.getText());
         } else {
            declared.add($IDENT.getText().toLowerCase());
         }
@@ -72,7 +72,7 @@ variavel
         // if any of these were declared already, logs a semantic error.
         if(pilhaDeTabelas.topo().existeSimbolo($IDENT.getText().toLowerCase())
            || declared.contains($IDENT.getText().toLowerCase())) {
-            SemanticErrorListener.VariableAlreadyExists($IDENT.line, $IDENT.getText());
+            SemanticErrorListener.VariableAlreadyExists($IDENT.getLine(), $IDENT.getText());
         } else {
             declared.add($IDENT.getText().toLowerCase());
         }
@@ -117,8 +117,8 @@ tipo_estendido returns [ String type ]
     ;
 
 mais_ident returns [List<String> identifiers]
-    : { $identifiers = new ArrayList<>(); }
-      (',' identificador { $identifiers.add($identificador.name); })*
+    @init { $identifiers = new ArrayList<>(); }
+    : (',' identificador { $identifiers.add($identificador.name); })*
     ;
 
 tipo_basico_ident returns [ String type ]
@@ -127,7 +127,7 @@ tipo_basico_ident returns [ String type ]
     { //Verificao para ver se existe o tipo especificado
       $type = $IDENT.getText();
       if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
-          SemanticErrorListener.TypeDoesntExist($IDENT.line, $IDENT.getText());
+          SemanticErrorListener.TypeDoesntExist($IDENT.getLine(), $IDENT.getText());
       }
     }
     ;
@@ -147,29 +147,68 @@ valor_constante
     | 'falso'
     ;
 
-registro returns [ TabelaDeSimbolos tabela ]
+registro returns [ SimbolTable tabela ]
     : 'registro'
-      { pilhaDeTabelas.empilhar(new TabelaDeSimbolos("registro")); }
+      { pilhaDeTabelas.empilhar(new SimbolTable("registro")); }
       variavel+
       { $tabela = pilhaDeTabelas.topo(); pilhaDeTabelas.desempilhar(); }
       'fim_registro'
     ;
 
 declaracao_global
-    : { pilhaDeTabelas.empilhar(new TabelaDeSimbolos("procedimento")); }
-      'procedimento' IDENT '(' parametros_opcional ')' declaracoes_locais comandos 'fim_procedimento'
+    : 
+      'procedimento' IDENT
+    {
+        pilhaDeTabelas.empilhar(new SimbolTable("procedimento"));
+    }
+      '(' parametros_opcional ')'
+    {
+        pilhaDeTabelas.subtopo().addProcedure($IDENT.getText().toLowerCase(), $parametros_opcional.types);
+    }
+      declaracoes_locais comandos
+    { pilhaDeTabelas.desempilhar(); }
+      'fim_procedimento'
+
+    |
+      'funcao' IDENT
+    { pilhaDeTabelas.empilhar(new SimbolTable("funcao")); }
+      '(' parametros_opcional '):' tipo_estendido
+    {
+        // add to the second scope, considering the first one is the function itself
+        pilhaDeTabelas.subtopo().addFunction($IDENT.getText().toLowerCase(), $parametros_opcional.types, $tipo_estendido.type);
+    }
+      declaracoes_locais comandos
       { pilhaDeTabelas.desempilhar(); }
-    | { pilhaDeTabelas.empilhar(new TabelaDeSimbolos("funcao")); }
-      'funcao' IDENT '(' parametros_opcional '):' tipo_estendido declaracoes_locais comandos 'fim_funcao'
-      { pilhaDeTabelas.desempilhar(); }
+      'fim_funcao'
     ;
 
-parametros_opcional
-    : (parametro)?
+parametros_opcional returns [ List<String> types ]
+    : (parametro { $types = $parametro.types; })?
     ;
 
-parametro
-    : 'var'? identificador mais_ident ':' tipo_estendido (',' parametro)?
+parametro returns [ List<String> types ]
+    @init
+    {
+        $types = new ArrayList<>();
+        List<String> parameters = new ArrayList<>();
+    }
+    : 'var'? identificador mais_ident ':' tipo_estendido
+      
+    {
+        parameters.add($identificador.name);
+        parameters.addAll($mais_ident.identifiers);
+      
+        for (String parameter : parameters) {
+            if(pilhaDeTabelas.topo().existeSimbolo(parameter.toLowerCase())) {
+                SemanticErrorListener.VariableAlreadyExists($identificador.line, $identificador.name);
+            } else {
+                pilhaDeTabelas.topo().adicionarSimbolo(parameter, "parametro", $tipo_estendido.type);
+                $types.add($tipo_estendido.type);
+            }
+        }
+    }
+      
+      (',' parametro { $types.addAll($parametro.types); })?
     ;
 
 declaracoes_locais
@@ -205,12 +244,12 @@ cmd
     | 'caso' exp_aritmetica 'seja' selecao senao_opcional 'fim_caso'
     | 'para'
       {   //Empilha (Cria) um novo escopo para o FOR
-          pilhaDeTabelas.empilhar(new TabelaDeSimbolos("para"));
+          pilhaDeTabelas.empilhar(new SimbolTable("para"));
       }
       IDENT
       {   // Logs semantic error if variable wasnt found in any of the simbol tables
           if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
-               SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
+               SemanticErrorListener.VariableDoesntExist($IDENT.getLine(),$IDENT.getText());
           }
       }
       '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' comandos 'fim_para'
@@ -222,13 +261,13 @@ cmd
     | '^' IDENT
     {   // Logs semantic error if variable wasnt found in any of the simbol tables
         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
-            SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
+            SemanticErrorListener.VariableDoesntExist($IDENT.getLine(),$IDENT.getText());
         }
 
         // Logs semantic error if variable wasnt declared as a pointer
         String type = pilhaDeTabelas.retornaTipo($IDENT.getText());
         if (!type.substring(0, 1).equals("^")) {
-            SemanticErrorListener.MisuseOfCaretOperator($IDENT.line, $IDENT.getText());
+            SemanticErrorListener.MisuseOfCaretOperator($IDENT.getLine(), $IDENT.getText());
         }
         type = type.substring(1, type.length());
     }
@@ -243,7 +282,7 @@ cmd
     
       {   // Logs semantic error if variable wasnt found in any of the simbol tables
         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
-            SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
+            SemanticErrorListener.VariableDoesntExist($IDENT.getLine(),$IDENT.getText());
         }
       }
       '(' argumentos_opcional ')'
@@ -262,16 +301,13 @@ cmd
       }
     ;
 
-mais_expressao
-    : (',' expressao mais_expressao)?
+mais_expressao returns [ List<String> types ]
+    @init { $types = new ArrayList<>(); }
+    : (',' expressao { $types.add($expressao.type); })*
     ;
 
 senao_opcional
     : ('senao' comandos)?
-    ;
-
-chamada_atribuicao returns [ String $type ]
-    : 
     ;
 
 argumentos_opcional
@@ -283,11 +319,7 @@ selecao
     ;
 
 constantes
-    : numero_intervalo mais_constantes
-    ;
-
-mais_constantes
-    : (',' constantes)?
+    : numero_intervalo (',' constantes)?
     ;
 
 numero_intervalo
@@ -343,7 +375,7 @@ parcela returns [ String type ]
     | '&' IDENT
       {
          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
-            SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
+            SemanticErrorListener.VariableDoesntExist($IDENT.getLine(),$IDENT.getText());
          }
          
          $type = '^' + pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
@@ -356,28 +388,37 @@ parcela_unario returns [ String type ]
     : '^' IDENT 
       {
          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
-            SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
+            SemanticErrorListener.VariableDoesntExist($IDENT.getLine(),$IDENT.getText());
          }
          $type = pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
          $type = $type.substring(1, $type.length());
       }
       outros_ident dimensao
     | IDENT 
-      {
-         if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
-            SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
-         }
-         $type = pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
-      }
+    {
+        if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
+           SemanticErrorListener.VariableDoesntExist($IDENT.getLine(),$IDENT.getText());
+        }
+        $type = pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
+    }
       outros_ident dimensao
     | IDENT 
       {
          if (!pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
-            SemanticErrorListener.VariableDoesntExist($IDENT.line,$IDENT.getText());
+            SemanticErrorListener.VariableDoesntExist($IDENT.getLine(),$IDENT.getText());
          }
          $type = pilhaDeTabelas.retornaTipo($IDENT.getText().toLowerCase());
       }
       '(' expressao mais_expressao ')'
+      {
+          List<String> parameters = pilhaDeTabelas.getParametersOf($IDENT.getText());
+          List<String> arguments  = $mais_expressao.types;
+          arguments.add(0, $expressao.type);
+          
+          if (!RelationalMap.CanBeUsedAsArgument(parameters, arguments)) {
+              SemanticErrorListener.ArgumentIncompatibility($IDENT.getLine(), $IDENT.getText());
+          }
+      }
     | NUM_INT           { $type = "inteiro";       }
     | NUM_REAL          { $type = "real";          }
     | '(' expressao ')' { $type = $expressao.type; }

@@ -4,6 +4,8 @@
  */
 package infrastructure;
 
+import infrastructure.Simbols.Entry;
+import infrastructure.Simbols.SimbolTable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,22 +15,26 @@ import java.util.List;
  */
 public class PilhaDeTabelas {
 
-    private LinkedList<TabelaDeSimbolos> pilha;
+    private LinkedList<SimbolTable> pilha;
 
     public PilhaDeTabelas() {
         pilha = new LinkedList<>();
     }
 
-    public void empilhar(TabelaDeSimbolos ts) {
+    public void empilhar(SimbolTable ts) {
         pilha.push(ts);
     }
 
-    public TabelaDeSimbolos topo() {
+    public SimbolTable topo() {
         return pilha.peek();
+    }
+    
+    public SimbolTable subtopo() {
+        return pilha.get(1);
     }
 
     public boolean existeSimbolo(String nome) {
-        for (TabelaDeSimbolos ts : pilha) {
+        for (SimbolTable ts : pilha) {
             if (ts.existeSimbolo(nome)) {
                 return true;
             }
@@ -38,7 +44,7 @@ public class PilhaDeTabelas {
 
     public String retornaTipo(String nome) {
         try {
-            for (TabelaDeSimbolos ts : pilha) {
+            for (SimbolTable ts : pilha) {
                 String tipo = ts.retornaTipo(nome);
                 if (tipo != null) {
                     return tipo;
@@ -57,10 +63,10 @@ public class PilhaDeTabelas {
      * @return simbol with the a name as defined in
      * @name
      */
-    public EntradaTabelaDeSimbolos getSimbol(String name) {
+    public Entry getSimbol(String name) {
 
-        for (TabelaDeSimbolos current : pilha) {
-            EntradaTabelaDeSimbolos entry = current.getSimbol(name);
+        for (SimbolTable current : pilha) {
+            Entry entry = current.getSimbol(name);
 
             if (entry != null) {
                 return entry;
@@ -69,9 +75,22 @@ public class PilhaDeTabelas {
 
         return null;
     }
+    
+    public List<String> getParametersOf(String name) {
+        
+        for (SimbolTable table : pilha) {
+            List<String> parameters = table.getParametersOf(name);
+            
+            if (parameters != null) {
+                return parameters;
+            }
+        }
+        
+        return null;
+    }
 
     public void desempilhar() {
-        TabelaDeSimbolos ret = pilha.pop();
+        SimbolTable ret = pilha.pop();
     }
 
     public List getTodasTabelas() {

@@ -1,6 +1,7 @@
 package infrastructure;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -43,6 +44,23 @@ public class RelationalMap {
     public static boolean CanBeArithmeticallyCompared(String a, String b) {
         initArithmetic();
         return Can(a, b, arithmetic);
+    }
+
+    public static boolean CanBeUsedAsArgument(List<String> a, List<String> b) {
+        if (a != null || b != null) {
+            if (a == null || b == null || a.size() != b.size()) {
+                return false;
+            }
+
+            int i = 0;
+            for (String parameter : a) {
+                if (!parameter.toLowerCase().equals(b.get(i++).toLowerCase())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     protected static boolean Can(String a, String b, HashMap<String, String[]> map) {
