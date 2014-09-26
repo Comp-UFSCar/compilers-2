@@ -1,8 +1,9 @@
-#include <stdio.h
+#include <stdio.h>
 #include <stdlib.h>
 
 int main {
 int valor;
 int ponteiro;
-return 0
+printf("%d",valor);
+return 0;
 }

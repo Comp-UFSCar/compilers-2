@@ -1,8 +1,3 @@
-#include <stdio.h
-#include <stdlib.h>
-
-int main {
-char nome;
-int idade;
-return 0
-}
+Linha 7: atribuicao nao compativel para reg
+Linha 8: atribuicao nao compativel para reg
+Fim da compilacao

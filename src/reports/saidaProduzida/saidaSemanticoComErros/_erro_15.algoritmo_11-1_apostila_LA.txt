@@ -25,8 +25,10 @@ Linha 65: identificador maximoElementos nao declarado
 Linha 65: tipo tVinho nao declarado
 Linha 74: identificador leiaVinho nao declarado
 Linha 75: identificador calculeVendas nao declarado
+Linha 75: atribuicao nao compativel para somaVendas
 Linha 76: identificador calculeVendas nao declarado
 Linha 77: identificador calculeVendas nao declarado
+Linha 77: atribuicao nao compativel para maiorVenda
 Linha 85: identificador calculeVendas nao declarado
 Linha 86: identificador escrevaVinho nao declarado
 Linha 93: identificador calculeVendas nao declarado

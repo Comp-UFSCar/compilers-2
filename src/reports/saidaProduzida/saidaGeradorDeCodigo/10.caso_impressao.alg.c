@@ -1,6 +1,10 @@
-#include <stdio.h
+#include <stdio.h>
 #include <stdlib.h>
 
 int main {
-return 0
+vazio;
+vazio;
+vazio;
+vazio;
+return 0;
 }

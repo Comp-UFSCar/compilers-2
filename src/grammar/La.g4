@@ -38,7 +38,7 @@ declaracao_local
         if(pilhaDeTabelas.existeSimbolo($IDENT.getText().toLowerCase())) {
             SemanticErrorListener.VariableAlreadyExists($IDENT.line, $IDENT.getText());
 	} else {
-            pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "constante", $tipo_basico.type, null);
+            pilhaDeTabelas.topo().adicionarSimbolo($IDENT.getText(), "constante", $tipo_basico.type);
         }
     }
       '=' valor_constante
@@ -50,7 +50,7 @@ declaracao_local
         if (pilhaDeTabelas.existeSimbolo($tipo.type.toLowerCase())) {
             SemanticErrorListener.TypeDoesntExist($IDENT.getLine(), $tipo.type);
         } else {
-            pilhaDeTabelas.topo().adicionarSimbolo($tipo.type.toLowerCase(), "tipo", $tipo.type.toLowerCase(), null);
+            pilhaDeTabelas.topo().adicionarSimbolo($tipo.type.toLowerCase(), "tipo", $tipo.type.toLowerCase());
         }
     }
     ;
@@ -82,7 +82,7 @@ variavel
     {
        // Add all variables to the nearest simbol table
        for (String current : declared) {
-          pilhaDeTabelas.topo().adicionarSimbolo(current, "variavel", $tipo.type, null);
+          pilhaDeTabelas.topo().adicionarSimbolo(current, "variavel", $tipo.type);
        }
     }
     ;

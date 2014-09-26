@@ -1,9 +1,2 @@
-#include <stdio.h
-#include <stdlib.h>
-
-int main {
-float x;
-float y;
-float z;
-return 0
-}
+Linha 9: atribuicao nao compativel para ponto1
+Fim da compilacao

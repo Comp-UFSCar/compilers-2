@@ -1,8 +1,9 @@
-#include <stdio.h
+#include <stdio.h>
 #include <stdlib.h>
 
 int main {
 char x;
 scanf("%s",&x);
-return 0
+printf("%s",x);
+return 0;
 }

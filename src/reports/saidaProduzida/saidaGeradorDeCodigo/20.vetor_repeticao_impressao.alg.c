@@ -1,8 +1,9 @@
-#include <stdio.h
+#include <stdio.h>
 #include <stdlib.h>
 
 int main {
 int vetor;
 int i;
-return 0
+printf("%d",i);
+return 0;
 }
