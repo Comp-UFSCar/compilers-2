@@ -73,7 +73,6 @@ public class Runner {
         } else {
             writer.put(Gerador.getText());
             writer.close();
-            //System.out.println(Mensagens.getText());
         }
     }
 

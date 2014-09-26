@@ -1,2 +1,0 @@
-Linha 7: tipo inteir nao declarado
-Fim da compilacao
