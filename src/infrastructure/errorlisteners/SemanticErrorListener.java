@@ -1,6 +1,6 @@
-package infrastructure.ErrorListeners;
+package infrastructure.errorlisteners;
 
-import infrastructure.MessageBag;
+import infrastructure.messagebag.MessageBag;
 
 /**
  *
@@ -24,6 +24,10 @@ public class SemanticErrorListener {
 
     public static void TypeDoesntExist(int line, String type) {
         bag.add("Linha " + line + ": tipo " + type + " nao declarado");
+    }
+    
+    public static void TypeAlreadyExists(int line, String type) {
+        bag.add("Linha " + line + ": tipo " + type + " ja declarado anteriormente");
     }
 
     public static void ScopeNotAllowed(int line) {

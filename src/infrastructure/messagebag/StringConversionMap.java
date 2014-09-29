@@ -1,5 +1,5 @@
 
-package infrastructure;
+package infrastructure.messagebag;
 
 import java.util.HashMap;
 

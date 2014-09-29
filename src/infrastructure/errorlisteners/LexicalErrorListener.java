@@ -1,7 +1,7 @@
-package infrastructure.ErrorListeners;
+package infrastructure.errorlisteners;
 
-import infrastructure.MessageBag;
-import infrastructure.StringConversionMap;
+import infrastructure.messagebag.MessageBag;
+import infrastructure.messagebag.StringConversionMap;
 import java.util.BitSet;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.Parser;
@@ -25,11 +25,11 @@ public class LexicalErrorListener implements ANTLRErrorListener {
         // extracting undentified token from message
         String token = string.substring(string.indexOf('\'')+1, string.lastIndexOf('\''));
         
-        if(tokens.containsKey(token)) {
-            token = tokens.value(token);
-        } else {
-            token = token.substring(0,1);
-        }
+        token
+            = tokens.containsKey(token)
+            ? tokens.value(token)
+            : token.substring(0,1)
+            ;
         
         if(token.equals("{")) {
             bag.add("Linha " + (i+1) + ": comentario nao fechado");

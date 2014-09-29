@@ -1,4 +1,4 @@
-package infrastructure.Simbols;
+package infrastructure.simbols;
 
 import java.util.List;
 

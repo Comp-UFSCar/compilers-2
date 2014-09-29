@@ -2,10 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package infrastructure;
+package infrastructure.simbols;
 
-import infrastructure.Simbols.Entry;
-import infrastructure.Simbols.SimbolTable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,39 +11,39 @@ import java.util.List;
  *
  * @author daniel
  */
-public class PilhaDeTabelas {
+public class TableStack {
 
-    private LinkedList<SimbolTable> pilha;
+    private LinkedList<SimbolTable> stack;
 
-    public PilhaDeTabelas() {
-        pilha = new LinkedList<>();
+    public TableStack() {
+        stack = new LinkedList<>();
     }
 
-    public void empilhar(SimbolTable ts) {
-        pilha.push(ts);
+    public void push(SimbolTable ts) {
+        stack.push(ts);
     }
 
-    public SimbolTable topo() {
-        return pilha.peek();
+    public SimbolTable top() {
+        return stack.peek();
     }
     
-    public SimbolTable subtopo() {
-        return pilha.get(1);
+    public SimbolTable subtop() {
+        return stack.get(1);
     }
 
-    public boolean existeSimbolo(String nome) {
-        for (SimbolTable ts : pilha) {
-            if (ts.existeSimbolo(nome)) {
+    public boolean has(String nome) {        
+        for (SimbolTable ts : stack) {
+            if (ts.has(nome)) {
                 return true;
             }
         }
         return false;
     }
 
-    public String retornaTipo(String nome) {
+    public String typeOf(String name) {
         try {
-            for (SimbolTable ts : pilha) {
-                String tipo = ts.retornaTipo(nome);
+            for (SimbolTable ts : stack) {
+                String tipo = ts.typeOf(name);
                 if (tipo != null) {
                     return tipo;
                 }
@@ -63,10 +61,10 @@ public class PilhaDeTabelas {
      * @return simbol with the a name as defined in
      * @name
      */
-    public Entry getSimbol(String name) {
+    public Entry get(String name) {
 
-        for (SimbolTable current : pilha) {
-            Entry entry = current.getSimbol(name);
+        for (SimbolTable current : stack) {
+            Entry entry = current.get(name);
 
             if (entry != null) {
                 return entry;
@@ -76,10 +74,10 @@ public class PilhaDeTabelas {
         return null;
     }
     
-    public List<String> getParametersOf(String name) {
+    public List<String> parametersOf(String name) {
         
-        for (SimbolTable table : pilha) {
-            List<String> parameters = table.getParametersOf(name);
+        for (SimbolTable table : stack) {
+            List<String> parameters = table.parametersOf(name);
             
             if (parameters != null) {
                 return parameters;
@@ -89,11 +87,7 @@ public class PilhaDeTabelas {
         return null;
     }
 
-    public void desempilhar() {
-        SimbolTable ret = pilha.pop();
-    }
-
-    public List getTodasTabelas() {
-        return pilha;
+    public void pop() {
+        SimbolTable ret = stack.pop();
     }
 }

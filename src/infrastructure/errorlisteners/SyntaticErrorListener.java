@@ -1,7 +1,7 @@
-package infrastructure.ErrorListeners;
+package infrastructure.errorlisteners;
 
-import infrastructure.MessageBag;
-import infrastructure.StringConversionMap;
+import infrastructure.messagebag.MessageBag;
+import infrastructure.messagebag.StringConversionMap;
 import java.util.BitSet;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.CommonToken;
@@ -18,7 +18,6 @@ public class SyntaticErrorListener implements ANTLRErrorListener {
 
     public SyntaticErrorListener(MessageBag bag) {
         this.bag = bag;
-
         tokens = new StringConversionMap();
     }
 
