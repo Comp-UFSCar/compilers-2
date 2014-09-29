@@ -1,9 +1,11 @@
 package runner;
 
+import infrastructure.errorlisteners.SemanticErrorListener;
+import infrastructure.errorlisteners.SyntaticErrorListener;
+import infrastructure.errorlisteners.LexicalErrorListener;
 import gerador.*;
 import infrastructure.CompilationResultWriter;
-import infrastructure.ErrorListeners.*;
-import infrastructure.MessageBag;
+import infrastructure.messagebag.MessageBag;
 import java.io.FileInputStream;
 import laparser.*;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -28,49 +30,62 @@ public class Runner {
      */
     public void start(String inputFile, String outputFile) throws Exception {
 
-        ANTLRInputStream in        = new ANTLRInputStream(new FileInputStream(inputFile));
-        ANTLRInputStream inGerador = new ANTLRInputStream(new FileInputStream(inputFile));
-        MessageBag lexicalAndSintaticBag = new MessageBag();
-        MessageBag semanticBag = new MessageBag();
+        ANTLRInputStream in = new ANTLRInputStream(new FileInputStream(inputFile));
+
+        MessageBag  firstBag = new MessageBag();
+        MessageBag secondBag = new MessageBag();
 
         LaLexer lexer   = new LaLexer(in);
         LaParser parser = new LaParser(new CommonTokenStream(lexer));
-        LaGeradorLexer  lexerGerador  = new LaGeradorLexer(inGerador);
-        LaGeradorParser parserGerador = new LaGeradorParser(new CommonTokenStream(lexerGerador));
 
+        lexer.removeErrorListeners();
         parser.removeErrorListeners();
-        lexer .removeErrorListeners();
-        parser.removeErrorListeners();
-        lexer .removeErrorListeners();
 
-        LexicalErrorListener  lexical  = new LexicalErrorListener(lexicalAndSintaticBag);
-        SyntaticErrorListener syntatic = new SyntaticErrorListener(lexicalAndSintaticBag);
-        SemanticErrorListener.DefineMessageBag(semanticBag);
+        LexicalErrorListener   lexical = new  LexicalErrorListener(firstBag);
+        SyntaticErrorListener syntatic = new SyntaticErrorListener(firstBag);
+        SemanticErrorListener.DefineMessageBag(secondBag);
 
         parser.addErrorListener(syntatic);
         lexer .addErrorListener(lexical);
-
-        parser.programa();
-        parserGerador.programa();
+        
+        try {
+            parser.programa();
+        } catch (Exception e) {
+            // In this point, it's impossible to say if the input program
+            // is corect or not. The program should execute under a try catch. 
+        }
 
         CompilationResultWriter writer = new CompilationResultWriter(outputFile);
 
         // put the first lexic/sintatic error in the writer's buffer
-        if (lexicalAndSintaticBag.all().size() > 0) {
+        if (firstBag.all().size() > 0) {
             writer
-                .put(lexicalAndSintaticBag.first())
+                .put(firstBag.first())
                 .put("Fim da compilacao")
                 .close();
         }
         
         // or, case there none lexic/sintatic error, put all semantic errors
         // in the writer's buffer
-        else if (semanticBag.all().size() > 0) {
-            for (String message : semanticBag.all()) {
+        else if (secondBag.all().size() > 0) {
+            for (String message : secondBag.all()) {
                 writer.put(message);
             }
-            writer.put("Fim da compilacao").close();
-        } else {
+            writer
+                .put("Fim da compilacao")
+                .close();
+        }
+        
+        // Reached this point. The code does not have any errors.
+        // Translate it into C.
+        else {
+            LaGeradorLexer lexerGerador = new LaGeradorLexer(in);
+            LaGeradorParser parserGerador = new LaGeradorParser(new CommonTokenStream(lexerGerador));
+            lexerGerador.removeErrorListeners();
+            parserGerador.removeErrorListeners();
+
+            parserGerador.programa();
+
             writer.put(Gerador.getText());
             writer.close();
         }
