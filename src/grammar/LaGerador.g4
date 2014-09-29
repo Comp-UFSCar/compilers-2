@@ -13,16 +13,16 @@ grammar LaGerador;
 
 @header {
     import infrastructure.*;
-    import infrastructure.Simbols.*;
+    import infrastructure.simbols.*;
     import gerador.*;
 }
 
 @members {
-    PilhaDeTabelas pilhaDeTabelas = new PilhaDeTabelas();
+    TableStack stack = new TableStack();
 }
 
 programa
-    : { pilhaDeTabelas.empilhar(new SimbolTable("global")); }
+    : { stack.push(new SimbolTable("global")); }
       declaracoes
       {
          Gerador.addText("#include <stdio.h>\n#include <stdlib.h>\n\nint main {\n");
@@ -30,7 +30,7 @@ programa
       'algoritmo' corpo 'fim_algoritmo'
       { 
          Gerador.addText("return 0;\n}");
-         pilhaDeTabelas.desempilhar();
+         stack.pop();
       }
     ;
 
@@ -73,7 +73,7 @@ variavel
              Gerador.addText("int " + current + ";\n");
        }
        for (String current : declared) {
-          pilhaDeTabelas.topo().adicionarSimbolo(current, "variavel", $tipo.type);
+          stack.top().add(current, "variavel", $tipo.type);
        }
     }
     ;
@@ -167,7 +167,7 @@ cmd
     : 'leia' '(' identificador mais_ident
     {
         String variavel = $identificador.name;
-        String tipo2 = pilhaDeTabelas.retornaTipo(variavel);
+        String tipo2 = stack.typeOf(variavel);
         if (tipo2 == null);
         else if (tipo2.equals("inteiro"))
            Gerador.addText("scanf(\"%d\",&"+variavel+");\n");
@@ -279,7 +279,7 @@ parcela_unario
     : '^' IDENT outros_ident dimensao
     | IDENT 
       {
-         Gerador.addTipo(pilhaDeTabelas.retornaTipo($IDENT.getText()));
+         Gerador.addTipo(stack.typeOf($IDENT.getText()));
          Gerador.addNome($IDENT.getText());
       }
       outros_ident dimensao
