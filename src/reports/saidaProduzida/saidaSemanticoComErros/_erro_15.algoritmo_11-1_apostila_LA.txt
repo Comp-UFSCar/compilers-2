@@ -1,4 +1,3 @@
-Linha 16: tipo tVinho nao declarado
 Linha 20: identificador .nome nao declarado
 Linha 22: identificador .nomeFabricante nao declarado
 Linha 24: identificador .nomeDistribuidor nao declarado
@@ -7,8 +6,5 @@ Linha 28: identificador .anoSafra nao declarado
 Linha 30: identificador .anoEnvasamento nao declarado
 Linha 32: identificador .preco nao declarado
 Linha 34: identificador .unidades nao declarado
-Linha 38: tipo tVinho nao declarado
 Linha 49: comando retorne nao permitido nesse escopo
-Linha 52: tipo tVinho nao declarado
-Linha 65: tipo tVinho nao declarado
 Fim da compilacao
