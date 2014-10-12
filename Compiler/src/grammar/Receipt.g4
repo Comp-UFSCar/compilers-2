@@ -2,7 +2,7 @@
 grammar Receipt;
 
 receipt
-    : . COST .
+    : COST
     ;
 
 COST
@@ -16,7 +16,7 @@ CAPITAL_LETTER
 
 fragment
 DIGIT
-    : ('0'..'9')
+    : [0-9]
     ;
 
 WHITESPACE

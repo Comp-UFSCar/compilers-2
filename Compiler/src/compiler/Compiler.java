@@ -1,5 +1,13 @@
 package compiler;
 
+import grammar.ReceiptLexer;
+import grammar.ReceiptParser;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+
 /**
  *
  * @author Lucas
@@ -8,9 +16,9 @@ public class Compiler {
 
     String in;
     String out;
-
+    
     Compiler() {
-        this("src/input/test.txt", "src/json/test.txt");
+        this("src/input/test.txt", "src/json/test.json");
     }
 
     Compiler(String in, String out) {
@@ -28,8 +36,9 @@ public class Compiler {
 
     /**
      * @param args the command line arguments
+     * @throws java.lang.Exception
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         
         Compiler compiler;
 
@@ -42,8 +51,12 @@ public class Compiler {
         compiler.start();
     }
 
-    private void start() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void start() throws IOException {
+        ANTLRInputStream inputStream = new ANTLRInputStream(new FileInputStream(in));
+        
+        ReceiptLexer   lexer = new ReceiptLexer(inputStream);
+        ReceiptParser parser = new ReceiptParser(new CommonTokenStream(lexer));
+        
+        parser.receipt();
     }
-
 }
