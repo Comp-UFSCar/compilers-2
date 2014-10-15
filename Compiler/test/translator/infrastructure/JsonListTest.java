@@ -6,8 +6,8 @@
 
 package translator.infrastructure;
 
-import infrastructure.JsonElement;
-import infrastructure.JsonList;
+import json.infrastructure.JsonElement;
+import json.infrastructure.JsonStructure;
 import java.util.HashSet;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -31,8 +31,8 @@ public class JsonListTest {
         list2.add(new JsonElement("name", "What a nice name you have"));
         list2.add(new JsonElement("age", 24));
         
-        JsonList jList1 = new JsonList("person", list1);
-        JsonList jList2 = new JsonList("person", list2);
+        JsonStructure jList1 = new JsonStructure("person", list1);
+        JsonStructure jList2 = new JsonStructure("person", list2);
         
         assertEquals(jList1, jList2);
     }
@@ -49,8 +49,8 @@ public class JsonListTest {
         list2.add(new JsonElement("mame", "A totally different person"));
         list2.add(new JsonElement("age", 24));
         
-        JsonList jList1 = new JsonList("person", list1);
-        JsonList jList2 = new JsonList("person", list2);
+        JsonStructure jList1 = new JsonStructure("person", list1);
+        JsonStructure jList2 = new JsonStructure("person", list2);
         
         assertFalse(jList1.equals(jList2));
     }

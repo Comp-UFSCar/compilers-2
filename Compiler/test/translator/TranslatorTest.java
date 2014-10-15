@@ -3,8 +3,8 @@ package translator;
 import java.util.HashSet;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import infrastructure.JsonElement;
-import infrastructure.JsonList;
+import json.infrastructure.JsonElement;
+import json.infrastructure.JsonStructure;
 import translator.infrastructure.exception.TranslationException;
 
 /**
@@ -24,18 +24,16 @@ public class TranslatorTest {
     public void methodRunWithValidBase() {
 
         HashSet<JsonElement> set = new HashSet<>();
-
         set.add(new JsonElement("name", "John Hall"));
 
-        JsonList element = new JsonList("receipt", set);
+        JsonStructure element = new JsonStructure("receipt", set);
 
-        Translator translator = new Translator(element);
+        Translator translator = new Translator(element)
+            .run();
 
-        translator.run();
-
-        String result = translator.export();
-        String expected = "receipt: {\n\tname: 'John Hall',\n}\n";
-
+        String result   = translator.export();
+        String expected = "{\n\t\"name\": \"John Hall\",\n}\n";
+        
         assertTrue(result.equals(expected));
     }
 
@@ -51,24 +49,23 @@ public class TranslatorTest {
         HashSet<JsonElement> set = new HashSet<>();
         set.add(new JsonElement("id", 1));
         set.add(new JsonElement("name", "John Hall"));
-        set.add(new JsonList("address", address));
+        set.add(new JsonStructure("address", address));
 
-        JsonList element = new JsonList("receipt", set);
+        JsonStructure element = new JsonStructure("receipt", set);
 
-        Translator translator = new Translator(element);
-
-        translator.run();
+        Translator translator = new Translator(element)
+            .run();
 
         String result = translator.export();
-        String expected = "receipt: {\n"
-                + "\tid: '1',\n"
-                + "\tname: 'John Hall',\n"
-                + "\taddress: {\n"
-                + "\t\tCountry: 'USA',\n"
-                + "\t\tCity: 'Philadelphia',\n"
-                + "\t\tState: 'Pennsylvania',\n"
-                + "\t\tStreet: '3200 Race St. 19104',\n"
-                + "\t}\n"
+        String expected = "{\n"
+                + "\t\"id\": \"1\",\n"
+                + "\t\"name\": \"John Hall\",\n"
+                + "\t\"address\": {\n"
+                + "\t\t\"Country\": \"USA\",\n"
+                + "\t\t\"City\": \"Philadelphia\",\n"
+                + "\t\t\"State\": \"Pennsylvania\",\n"
+                + "\t\t\"Street\": \"3200 Race St. 19104\",\n"
+                + "\t},\n"
                 + "}\n";
         
         assertTrue(result.equals(expected));

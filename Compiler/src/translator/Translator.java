@@ -1,7 +1,7 @@
 package translator;
 
-import infrastructure.JsonElement;
-import infrastructure.JsonList;
+import json.infrastructure.JsonElement;
+import json.infrastructure.JsonStructure;
 import translator.infrastructure.exception.TranslationException;
 
 /**
@@ -10,18 +10,18 @@ import translator.infrastructure.exception.TranslationException;
  */
 public class Translator {
 
-    protected JsonList base;
+    protected JsonStructure base;
     protected String exported;
 
     public Translator() {
         reset(null);
     }
 
-    public Translator(JsonList base) {
+    public Translator(JsonStructure base) {
         reset(base);
     }
     
-    public final Translator reset(JsonList base) {
+    public final Translator reset(JsonStructure base) {
         this.base = base;
         exported = null;
         
@@ -36,9 +36,7 @@ public class Translator {
             throw new TranslationException("The current translator has already been executed. Export the code using Translator.export().");
         }
 
-        exported = "";
-        describeJsonList(base);
-
+        describeBase(base);
         return this;
     }
 
@@ -49,26 +47,43 @@ public class Translator {
 
         return exported;
     }
+    
+    protected Translator describeBase(JsonStructure node) {
+        exported = "";
+        
+        enterScope();
+
+        for (JsonElement el : node.values) {
+            if (el instanceof JsonStructure) {
+                describeJsonList((JsonStructure) el, 1);
+            } else {
+                describeJsonItem(el, 1);
+            }
+        }
+
+        exported += "}\n";
+        return this;
+    }
 
     protected Translator describeJsonItem(JsonElement node, int scope) {
         tabScope(scope);
         
-        exported += node.name + ": " + "'" + node.value + "',\n";
+        exported += '"' + node.name + "\": " +  '"' + node.value + "\",\n";
         return this;
     }
     
-    protected Translator describeJsonList(JsonList node) {
+    protected Translator describeJsonList(JsonStructure node) {
         return describeJsonList(node, 0);
     }
 
-    protected Translator describeJsonList(JsonList node, int scope) {
+    protected Translator describeJsonList(JsonStructure node, int scope) {
         tabScope(scope);
-        exported += node.name + ": ";
+        exported += '"' + node.name + "\": ";
         enterScope();
 
         for (JsonElement el : node.values) {
-            if (el instanceof JsonList) {
-                describeJsonList((JsonList) el, scope + 1);
+            if (el instanceof JsonStructure) {
+                describeJsonList((JsonStructure) el, scope + 1);
             } else {
                 describeJsonItem(el, scope + 1);
             }
@@ -86,7 +101,7 @@ public class Translator {
 
     protected Translator exitScope(int scope) {
         tabScope(scope);
-        exported += "}\n";
+        exported += "},\n";
 
         return this;
     }

@@ -1,6 +1,6 @@
 package translator.infrastructure;
 
-import infrastructure.JsonElement;
+import json.infrastructure.JsonElement;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
