@@ -4,12 +4,12 @@
 grammar Receipt;
 
 @header {
-    import infrastructure.*;
+    import json.infrastructure.*;
 }
 
 receipt
-    returns [JsonList e]
-    @init      { $e = new JsonList("receipt"); }
+    returns [JsonStructure e]
+    @init      { $e = new JsonStructure("receipt"); }
     : id       { $e.add($id.e);       }
       company  { $e.add($company.e);  }
     ( buyer    { $e.add($buyer.e);    } )?
@@ -25,8 +25,8 @@ id
     ;
 
 company
-    returns [JsonList e]
-    @init     { $e = new JsonList("company"); }
+    returns [JsonStructure e]
+    @init     { $e = new JsonStructure("company"); }
     : entity  { $e.add($entity.e);  }
     ( address { $e.add($address.e); }
       HIFEN?
@@ -37,8 +37,8 @@ company
     ;
 
 buyer
-    returns [JsonList e]
-    @init     { $e = new JsonList("buyer"); }    
+    returns [JsonStructure e]
+    @init     { $e = new JsonStructure("buyer"); }    
     : entity  { $e.add($entity.e);  }
       address { $e.add($address.e); }
       state   { $e.add($state.e);   }
@@ -59,8 +59,8 @@ date
     ;
 
 products
-    returns [JsonList e]
-    @init { $e = new JsonList("products"); }
+    returns [JsonStructure e]
+    @init { $e = new JsonStructure("products"); }
     : (NAME INT? DECIMAL)+
     ;
 
@@ -75,8 +75,8 @@ total
     ;
 
 entity
-    returns [JsonList e]
-    @init { $e = new JsonList("entity"); }
+    returns [JsonStructure e]
+    @init { $e = new JsonStructure("entity"); }
     : NAME IDNUMBER {
         $e
             .add(new JsonElement("id", $IDNUMBER.getText()))

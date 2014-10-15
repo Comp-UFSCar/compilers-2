@@ -1,8 +1,7 @@
 // Generated from D:\Repositories\Compilers-2-assignment-2\Compiler\src\grammar\Receipt.g4 by ANTLR 4.1
 package grammar;
 
-import infrastructure.JsonElement;
-import infrastructure.JsonList;
+import json.infrastructure.*;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -58,7 +57,7 @@ public class ReceiptParser extends Parser {
 
     public static class ReceiptContext extends ParserRuleContext {
 
-        public JsonList e;
+        public JsonStructure e;
         public IdContext id;
         public CompanyContext company;
         public BuyerContext buyer;
@@ -122,7 +121,7 @@ public class ReceiptParser extends Parser {
     public final ReceiptContext receipt() throws RecognitionException {
         ReceiptContext _localctx = new ReceiptContext(_ctx, getState());
         enterRule(_localctx, 0, RULE_receipt);
-        ((ReceiptContext) _localctx).e = new JsonList("receipt");
+        ((ReceiptContext) _localctx).e = new JsonStructure("receipt");
         int _la;
         try {
             enterOuterAlt(_localctx, 1);
@@ -235,7 +234,7 @@ public class ReceiptParser extends Parser {
 
     public static class CompanyContext extends ParserRuleContext {
 
-        public JsonList e;
+        public JsonStructure e;
         public EntityContext entity;
         public AddressContext address;
         public ZipcodeContext zipcode;
@@ -293,7 +292,7 @@ public class ReceiptParser extends Parser {
     public final CompanyContext company() throws RecognitionException {
         CompanyContext _localctx = new CompanyContext(_ctx, getState());
         enterRule(_localctx, 4, RULE_company);
-        ((CompanyContext) _localctx).e = new JsonList("company");
+        ((CompanyContext) _localctx).e = new JsonStructure("company");
         int _la;
         try {
             enterOuterAlt(_localctx, 1);
@@ -341,7 +340,7 @@ public class ReceiptParser extends Parser {
 
     public static class BuyerContext extends ParserRuleContext {
 
-        public JsonList e;
+        public JsonStructure e;
         public EntityContext entity;
         public AddressContext address;
         public StateContext state;
@@ -385,7 +384,7 @@ public class ReceiptParser extends Parser {
     public final BuyerContext buyer() throws RecognitionException {
         BuyerContext _localctx = new BuyerContext(_ctx, getState());
         enterRule(_localctx, 6, RULE_buyer);
-        ((BuyerContext) _localctx).e = new JsonList("buyer");
+        ((BuyerContext) _localctx).e = new JsonStructure("buyer");
         try {
             enterOuterAlt(_localctx, 1);
             {
@@ -533,7 +532,7 @@ public class ReceiptParser extends Parser {
 
     public static class ProductsContext extends ParserRuleContext {
 
-        public JsonList e;
+        public JsonStructure e;
 
         public TerminalNode NAME(int i) {
             return getToken(ReceiptParser.NAME, i);
@@ -586,7 +585,7 @@ public class ReceiptParser extends Parser {
     public final ProductsContext products() throws RecognitionException {
         ProductsContext _localctx = new ProductsContext(_ctx, getState());
         enterRule(_localctx, 10, RULE_products);
-        ((ProductsContext) _localctx).e = new JsonList("products");
+        ((ProductsContext) _localctx).e = new JsonStructure("products");
         int _la;
         try {
             enterOuterAlt(_localctx, 1);
@@ -782,7 +781,7 @@ public class ReceiptParser extends Parser {
 
     public static class EntityContext extends ParserRuleContext {
 
-        public JsonList e;
+        public JsonStructure e;
         public Token NAME;
         public Token IDNUMBER;
 
@@ -821,7 +820,7 @@ public class ReceiptParser extends Parser {
     public final EntityContext entity() throws RecognitionException {
         EntityContext _localctx = new EntityContext(_ctx, getState());
         enterRule(_localctx, 16, RULE_entity);
-        ((EntityContext) _localctx).e = new JsonList("entity");
+        ((EntityContext) _localctx).e = new JsonStructure("entity");
         try {
             setState(128);
             switch (_input.LA(1)) {
