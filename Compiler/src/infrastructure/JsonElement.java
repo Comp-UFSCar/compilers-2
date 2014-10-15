@@ -1,4 +1,4 @@
-package translator.infrastructure;
+package infrastructure;
 
 import java.util.Objects;
 
@@ -10,13 +10,13 @@ public class JsonElement {
 
     public String name;
     public Object value;
-    
+
     protected JsonElement() {
         //
     }
 
     public JsonElement(String name, Object value) {
-        this.name  = name;
+        this.name = name;
         this.value = value;
     }
 

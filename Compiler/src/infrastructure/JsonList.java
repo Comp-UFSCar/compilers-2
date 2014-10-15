@@ -1,4 +1,4 @@
-package translator.infrastructure;
+package infrastructure;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -12,9 +12,28 @@ public class JsonList extends JsonElement {
 
     public HashSet<JsonElement> values;
 
+    public JsonList(String name) {
+        this(name, null);
+    }
+
     public JsonList(String name, Collection<JsonElement> values) {
-        this.name   = name;
-        this.values = new HashSet<>(values);
+        this.values
+            = values == null || values.isEmpty()
+            ? new HashSet<>()
+            : new HashSet<>(values)
+            ;
+
+        this.name = name;
+    }
+
+    public JsonList add(JsonElement el) {
+        values.add(el);
+        return this;
+    }
+
+    public JsonList remove(JsonElement el) {
+        values.remove(el);
+        return this;
     }
 
     @Override
