@@ -1,4 +1,4 @@
-package infrastructure;
+package json.infrastructure;
 
 import java.util.Objects;
 
