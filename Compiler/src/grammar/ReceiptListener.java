@@ -1,5 +1,7 @@
 // Generated from D:\Repositories\Compilers-2-assignment-2\Compiler\src\grammar\Receipt.g4 by ANTLR 4.1
 package grammar;
+
+
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -53,17 +55,6 @@ public interface ReceiptListener extends ParseTreeListener {
 	void exitTax(@NotNull ReceiptParser.TaxContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link ReceiptParser#cnpj}.
-	 * @param ctx the parse tree
-	 */
-	void enterCnpj(@NotNull ReceiptParser.CnpjContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ReceiptParser#cnpj}.
-	 * @param ctx the parse tree
-	 */
-	void exitCnpj(@NotNull ReceiptParser.CnpjContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link ReceiptParser#buyer}.
 	 * @param ctx the parse tree
 	 */
@@ -73,17 +64,6 @@ public interface ReceiptListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBuyer(@NotNull ReceiptParser.BuyerContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link ReceiptParser#ssn}.
-	 * @param ctx the parse tree
-	 */
-	void enterSsn(@NotNull ReceiptParser.SsnContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ReceiptParser#ssn}.
-	 * @param ctx the parse tree
-	 */
-	void exitSsn(@NotNull ReceiptParser.SsnContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link ReceiptParser#products}.
@@ -117,39 +97,6 @@ public interface ReceiptListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTotal(@NotNull ReceiptParser.TotalContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link ReceiptParser#identification}.
-	 * @param ctx the parse tree
-	 */
-	void enterIdentification(@NotNull ReceiptParser.IdentificationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ReceiptParser#identification}.
-	 * @param ctx the parse tree
-	 */
-	void exitIdentification(@NotNull ReceiptParser.IdentificationContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link ReceiptParser#cpf}.
-	 * @param ctx the parse tree
-	 */
-	void enterCpf(@NotNull ReceiptParser.CpfContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ReceiptParser#cpf}.
-	 * @param ctx the parse tree
-	 */
-	void exitCpf(@NotNull ReceiptParser.CpfContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link ReceiptParser#name}.
-	 * @param ctx the parse tree
-	 */
-	void enterName(@NotNull ReceiptParser.NameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ReceiptParser#name}.
-	 * @param ctx the parse tree
-	 */
-	void exitName(@NotNull ReceiptParser.NameContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link ReceiptParser#receipt}.

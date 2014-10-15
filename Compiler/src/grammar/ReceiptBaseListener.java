@@ -1,6 +1,8 @@
 // Generated from D:\Repositories\Compilers-2-assignment-2\Compiler\src\grammar\Receipt.g4 by ANTLR 4.1
 package grammar;
 
+
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -69,19 +71,6 @@ public class ReceiptBaseListener implements ReceiptListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterCnpj(@NotNull ReceiptParser.CnpjContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitCnpj(@NotNull ReceiptParser.CnpjContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
 	@Override public void enterBuyer(@NotNull ReceiptParser.BuyerContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -89,19 +78,6 @@ public class ReceiptBaseListener implements ReceiptListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitBuyer(@NotNull ReceiptParser.BuyerContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterSsn(@NotNull ReceiptParser.SsnContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitSsn(@NotNull ReceiptParser.SsnContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -141,45 +117,6 @@ public class ReceiptBaseListener implements ReceiptListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitTotal(@NotNull ReceiptParser.TotalContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterIdentification(@NotNull ReceiptParser.IdentificationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitIdentification(@NotNull ReceiptParser.IdentificationContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterCpf(@NotNull ReceiptParser.CpfContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitCpf(@NotNull ReceiptParser.CpfContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterName(@NotNull ReceiptParser.NameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitName(@NotNull ReceiptParser.NameContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
