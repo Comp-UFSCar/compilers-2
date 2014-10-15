@@ -3,8 +3,8 @@ package translator;
 import java.util.HashSet;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import translator.infrastructure.JsonElement;
-import translator.infrastructure.JsonList;
+import infrastructure.JsonElement;
+import infrastructure.JsonList;
 import translator.infrastructure.exception.TranslationException;
 
 /**

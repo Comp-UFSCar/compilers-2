@@ -1,7 +1,7 @@
 package translator;
 
-import translator.infrastructure.JsonElement;
-import translator.infrastructure.JsonList;
+import infrastructure.JsonElement;
+import infrastructure.JsonList;
 import translator.infrastructure.exception.TranslationException;
 
 /**
@@ -14,12 +14,18 @@ public class Translator {
     protected String exported;
 
     public Translator() {
-        exported = null;
-        base = null;
+        reset(null);
     }
 
     public Translator(JsonList base) {
+        reset(base);
+    }
+    
+    public final Translator reset(JsonList base) {
         this.base = base;
+        exported = null;
+        
+        return this;
     }
 
     public Translator run() {
