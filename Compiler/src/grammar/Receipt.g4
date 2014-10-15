@@ -10,13 +10,19 @@ grammar Receipt;
 receipt
     returns [JsonStructure e]
     @init      { $e = new JsonStructure("receipt"); }
-    : id       { $e.add($id.e);       }
-      company  { $e.add($company.e);  }
-    ( buyer    { $e.add($buyer.e);    } )?
-      date     { $e.add($date.e);     }
-    ( products { $e.add($products.e); } )?
-    ( tax      { $e.add($tax.e);      } )?
-      total    { $e.add($total.e);    }
+    :
+    ( basic { $e.add($basic.e); } )+
+    ;
+
+basic
+    returns [JsonElement e]
+    : id       { $e = $id.e;       }
+    | company  { $e = $company.e;  }
+    | buyer    { $e = $buyer.e;    }
+    | date     { $e = $date.e;     }
+    | products { $e = $products.e; }
+    | tax      { $e = $tax.e;      }
+    | total    { $e = $total.e;    }
     ;
 
 id
@@ -47,7 +53,7 @@ buyer
 date
     returns [JsonElement e]
     @init { String t; }
-    : KEYWORD_DATE? COLON?
+    : (KEYWORD_DATE COLON?)?
       INT   { t = $INT.getText(); }
     ( SLASH { t += '/'; } )?
       INT   { t += $INT.getText(); }
@@ -61,17 +67,17 @@ date
 products
     returns [JsonStructure e]
     @init { $e = new JsonStructure("products"); }
-    : (NAME INT? DECIMAL)+
+    : (KEYWORD_PRODUCTS COLON?)? (NAME INT? DECIMAL)+
     ;
 
 tax
     returns [JsonElement e]
-    : KEYWORD_TAX COLON? DECIMAL { $e = new JsonElement("tax", $DECIMAL.getText()); }
+    : (KEYWORD_TOTAL COLON?)? DECIMAL { $e = new JsonElement("tax", $DECIMAL.getText()); }
     ;
 
 total
     returns [JsonElement e]
-    : KEYWORD_TOTAL? COLON? DECIMAL { $e = new JsonElement("total", $DECIMAL.getText()); }
+    : (KEYWORD_TOTAL COLON?)? DECIMAL { $e = new JsonElement("total", $DECIMAL.getText()); }
     ;
 
 entity
@@ -159,11 +165,11 @@ DOT
     ;
 
 SLASH
-    : '/' 
+    : '/'
     ;
 
 KEYWORD_TAX
-    : 'tax'
+    : 'tax' | 'juros'
     ;
 
 KEYWORD_TOTAL
@@ -171,7 +177,11 @@ KEYWORD_TOTAL
     ;
 
 KEYWORD_DATE
-    : 'date'
+    : 'date' | 'data'
+    ;
+
+KEYWORD_PRODUCTS
+    : 'products' | 'produtos'
     ;
 
 COLON
