@@ -1,12 +1,14 @@
 package compiler;
 
+import filehandler.JsonWriter;
 import grammar.ReceiptLexer;
 import grammar.ReceiptParser;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
+import json.infrastructure.JsonStructure;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import translator.Translator;
 
 /**
  *
@@ -14,11 +16,11 @@ import org.antlr.v4.runtime.CommonTokenStream;
  */
 public class Compiler {
 
-    String in;
-    String out;
+    private String in;
+    private String out;
     
     Compiler() {
-        this("src/input/test.txt", "src/json/test.json");
+        this("src/input/test.txt", "src/output/test.json");
     }
 
     Compiler(String in, String out) {
@@ -39,7 +41,6 @@ public class Compiler {
      * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
-        
         Compiler compiler;
 
         if (args.length == 2) {
@@ -52,11 +53,19 @@ public class Compiler {
     }
 
     private void start() throws IOException {
+        System.out.println("Compilation proccess has started. File being compiled: " + in);
+        
         ANTLRInputStream inputStream = new ANTLRInputStream(new FileInputStream(in));
         
         ReceiptLexer   lexer = new ReceiptLexer(inputStream);
         ReceiptParser parser = new ReceiptParser(new CommonTokenStream(lexer));
         
-        parser.receipt();
+        JsonStructure tree = parser.receipt().e;
+        System.out.println("Parsing completed.");
+        
+        String result = new Translator(tree).run().export();
+        
+        new JsonWriter(out, result).export();
+        System.out.println("Finished!");
     }
 }
