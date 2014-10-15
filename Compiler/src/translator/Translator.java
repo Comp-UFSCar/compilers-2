@@ -20,11 +20,11 @@ public class Translator {
     public Translator(JsonStructure base) {
         reset(base);
     }
-    
+
     public final Translator reset(JsonStructure base) {
         this.base = base;
         exported = null;
-        
+
         return this;
     }
 
@@ -36,6 +36,7 @@ public class Translator {
             throw new TranslationException("The current translator has already been executed. Export the code using Translator.export().");
         }
 
+        exported = "";
         describeBase(base);
         return this;
     }
@@ -48,48 +49,38 @@ public class Translator {
         return exported;
     }
     
+    protected Translator describe(JsonElement node, int scope) {
+        tabScope(scope);
+        
+        try {
+            JsonStructure structure = (JsonStructure) node;
+            
+            exported += '"' + node.name + "\":";
+            enterScope();
+            
+            for (JsonElement child : structure.values) {
+                describe(child, scope + 1);
+                exported += ",\n";
+            }
+            exitScope(scope);
+        } catch(ClassCastException e) {
+            exported += '"' + node.name + "\": " + '"' + node.value + "\"";
+        }
+        
+        return this;
+    }
+
     protected Translator describeBase(JsonStructure node) {
         exported = "";
-        
+
         enterScope();
 
         for (JsonElement el : node.values) {
-            if (el instanceof JsonStructure) {
-                describeJsonList((JsonStructure) el, 1);
-            } else {
-                describeJsonItem(el, 1);
-            }
+            describe(el, 1);
+            exported += ",\n";
         }
 
         exported += "}\n";
-        return this;
-    }
-
-    protected Translator describeJsonItem(JsonElement node, int scope) {
-        tabScope(scope);
-        
-        exported += '"' + node.name + "\": " +  '"' + node.value + "\",\n";
-        return this;
-    }
-    
-    protected Translator describeJsonList(JsonStructure node) {
-        return describeJsonList(node, 0);
-    }
-
-    protected Translator describeJsonList(JsonStructure node, int scope) {
-        tabScope(scope);
-        exported += '"' + node.name + "\": ";
-        enterScope();
-
-        for (JsonElement el : node.values) {
-            if (el instanceof JsonStructure) {
-                describeJsonList((JsonStructure) el, scope + 1);
-            } else {
-                describeJsonItem(el, scope + 1);
-            }
-        }
-
-        exitScope(scope);
         return this;
     }
 
@@ -101,16 +92,16 @@ public class Translator {
 
     protected Translator exitScope(int scope) {
         tabScope(scope);
-        exported += "},\n";
+        exported += "}";
 
         return this;
     }
-    
+
     protected Translator tabScope(int scope) {
         for (int i = 0; i < scope; i++) {
             exported += '\t';
         }
-        
+
         return this;
     }
 }

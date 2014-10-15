@@ -19,10 +19,6 @@ public class Compiler {
     private String in;
     private String out;
     
-    Compiler() {
-        this("src/input/test.txt", "src/output/test.json");
-    }
-
     Compiler(String in, String out) {
         try {
             if (in.isEmpty() || out.isEmpty()) {
@@ -46,7 +42,7 @@ public class Compiler {
         if (args.length == 2) {
             compiler = new Compiler(args[0], args[1]);
         } else {
-            compiler = new Compiler();
+            compiler = new Compiler("src/input/test.txt", "src/output/test.json");
         }
 
         compiler.start();
@@ -63,9 +59,13 @@ public class Compiler {
         JsonStructure tree = parser.receipt().e;
         System.out.println("Parsing completed.");
         
-        String result = new Translator(tree).run().export();
+        String result = new Translator(tree)
+            .run()
+            .export();
         
-        new JsonWriter(out, result).export();
+        new JsonWriter(out, result)
+            .export();
+
         System.out.println("Finished!");
     }
 }
