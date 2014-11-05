@@ -32,7 +32,7 @@ id
 
 seller
     returns [JsonStructure e]
-    @init          { $e = new JsonStructure("company"); }
+    @init          { $e = new JsonStructure("seller"); }
     : entitySeller { $e.add($entitySeller.e);  }
     ( address      { $e.add($address.e); } )?
     ;
@@ -114,17 +114,19 @@ address
     : KEYWORD_ADDRESS COLON?
       NAME          { $e.add(new JsonElement("main", $NAME.getText())); }
     (zipcode { $e.add($zipcode.e); } )?
-    (city    { $e.add($city.e);    } )?
-    (state   { $e.add($state.e);   } )?
+    (
+        city    { $e.add($city.e);    }
+      ( state   { $e.add($state.e);   } )?
+    )?
     ;
 
 zipcode
     returns [JsonElement e]
     @init { String t = ""; }
-    :(DIGIT { t += $DIGIT.getText(); } )+
+    : INT { t += $INT.getText(); }
       HIFEN?
-     (DIGIT { t += $DIGIT.getText(); } )+
-     { $e = new JsonElement("zipcode", t); }
+      INT { t += $INT.getText(); }
+    { $e = new JsonElement("zipcode", t); }
     ;
 
 city
@@ -134,12 +136,7 @@ city
 
 state
     returns [JsonElement e]
-    @init { String t; }
-    : CAPITAL_LETTER { t = $CAPITAL_LETTER.getText(); }
-      CAPITAL_LETTER {
-        t += $CAPITAL_LETTER.getText();
-        $e = new JsonElement("state", t);
-    }
+    : NAME { $e = new JsonElement("state", $NAME.getText()); }
     ;
 
 IDNUMBER
