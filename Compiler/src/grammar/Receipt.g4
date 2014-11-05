@@ -9,7 +9,7 @@ grammar Receipt;
 
 receipt
     returns [JsonStructure e]
-    @init      { $e = new JsonStructure("receipt"); }
+    @init   { $e = new JsonStructure("receipt"); }
     :
     ( basic { $e.add($basic.e); } )+
     ;
@@ -17,7 +17,7 @@ receipt
 basic
     returns [JsonElement e]
     : id       { $e = $id.e;       }
-    | company  { $e = $company.e;  }
+    | seller   { $e = $seller.e;  }
     | buyer    { $e = $buyer.e;    }
     | date     { $e = $date.e;     }
     | products { $e = $products.e; }
@@ -30,24 +30,24 @@ id
     : INT { $e = new JsonElement("id", $INT.getText()); }
     ;
 
-company
+seller
     returns [JsonStructure e]
-    @init     { $e = new JsonStructure("company"); }
-    : entity  { $e.add($entity.e);  }
-    ( address { $e.add($address.e); }
+    @init          { $e = new JsonStructure("company"); }
+    : entitySeller { $e.add($entitySeller.e);  }
+    ( address      { $e.add($address.e); }
       HIFEN?
-      zipcode { $e.add($zipcode.e); }
-      city    { $e.add($city.e);    }
-      state   { $e.add($state.e);   }
+      zipcode      { $e.add($zipcode.e); }
+      city         { $e.add($city.e);    }
+      state        { $e.add($state.e);   }
     )?
     ;
 
 buyer
     returns [JsonStructure e]
-    @init     { $e = new JsonStructure("buyer"); }    
-    : entity  { $e.add($entity.e);  }
-      address { $e.add($address.e); }
-      state   { $e.add($state.e);   }
+    @init         { $e = new JsonStructure("buyer"); }    
+    : entityBuyer { $e.add($entityBuyer.e);  }
+      address     { $e.add($address.e); }
+      state       { $e.add($state.e);   }
     ;
 
 date
@@ -80,15 +80,22 @@ total
     : (KEYWORD_TOTAL COLON?)? DECIMAL { $e = new JsonElement("total", $DECIMAL.getText()); }
     ;
 
-entity
+entityBuyer
     returns [JsonStructure e]
     @init { $e = new JsonStructure("entity"); }
-    : NAME IDNUMBER {
+    : KEYWORD_BUYER (NAME IDNUMBER | IDNUMBER NAME)
+    {
         $e
             .add(new JsonElement("id", $IDNUMBER.getText()))
             .add(new JsonElement("name", $NAME.getText()));
     }
-    | IDNUMBER NAME {
+    ;
+
+entitySeller
+    returns [JsonStructure e]
+    @init { $e = new JsonStructure("entity"); }
+    : KEYWORD_SELLER (NAME IDNUMBER | IDNUMBER NAME)
+    {
         $e
             .add(new JsonElement("id", $IDNUMBER.getText()))
             .add(new JsonElement("name", $NAME.getText()));
@@ -166,6 +173,14 @@ DOT
 
 SLASH
     : '/'
+    ;
+
+KEYWORD_BUYER
+    : 'buyer' | 'comprador'
+    ;
+
+KEYWORD_SELLER
+    : 'seller' | 'vendedor'
     ;
 
 KEYWORD_TAX
