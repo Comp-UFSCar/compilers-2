@@ -16,19 +16,30 @@ public class JsonWriter {
     private String data;
 
     public JsonWriter(String data) {
-        this(new Date().toString(), data);
+        reset(data);
     }
     
     public JsonWriter(String out, String data) {
-        this.out = out;
+        reset(out, data);
+    }
+    
+    public final JsonWriter reset(String data) {
+        return reset(new Date().toString(), data);
+    }
+    
+    public final JsonWriter reset(String out, String data)
+    {
+        this.out  = out;
         this.data = data;
+
+        return this;
     }
 
     public JsonWriter export() throws IOException {
-        File file = new File(out);
-        BufferedWriter output = new BufferedWriter(new FileWriter(file));
+        BufferedWriter output = new BufferedWriter(new FileWriter(new File(out)));
         output.write(data);
         output.close();
+        
         return this;
     }
 }
