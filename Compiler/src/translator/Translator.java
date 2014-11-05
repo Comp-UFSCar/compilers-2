@@ -48,25 +48,26 @@ public class Translator {
 
         return exported;
     }
-    
+
     protected Translator describe(JsonElement node, int scope) {
-        tabScope(scope);
-        
-        try {
-            JsonStructure structure = (JsonStructure) node;
-            
-            exported += '"' + node.name + "\":";
-            enterScope();
-            
-            for (JsonElement child : structure.values) {
-                describe(child, scope + 1);
-                exported += ",\n";
+        if (node != null) {
+            tabScope(scope);
+
+            try {
+                JsonStructure structure = (JsonStructure) node;
+
+                exported += '"' + node.name + "\":";
+                enterScope();
+
+                for (JsonElement child : structure.values) {
+                    describe(child, scope + 1);
+                    exported += ",\n";
+                }
+                exitScope(scope);
+            } catch (ClassCastException e) {
+                exported += '"' + node.name + "\": " + '"' + node.value + "\"";
             }
-            exitScope(scope);
-        } catch(ClassCastException e) {
-            exported += '"' + node.name + "\": " + '"' + node.value + "\"";
         }
-        
         return this;
     }
 
