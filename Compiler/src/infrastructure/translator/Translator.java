@@ -1,8 +1,8 @@
-package translator;
+package infrastructure.translator;
 
-import json.infrastructure.JsonElement;
-import json.infrastructure.JsonStructure;
-import translator.infrastructure.exception.TranslationException;
+import infrastructure.json.JsonElement;
+import infrastructure.json.JsonStructure;
+import infrastructure.exceptions.TranslationException;
 
 /**
  *
@@ -56,12 +56,14 @@ public class Translator {
             try {
                 JsonStructure structure = (JsonStructure) node;
 
-                exported += '"' + node.name + "\":";
+                exported += '"' + node.name + "\": ";
                 enterScope();
 
                 for (JsonElement child : structure.values) {
-                    describe(child, scope + 1);
-                    exported += ",\n";
+                    if (child != null) {
+                        describe(child, scope + 1);
+                        exported += ",\n";
+                    }
                 }
                 exitScope(scope);
             } catch (ClassCastException e) {
@@ -77,8 +79,10 @@ public class Translator {
         enterScope();
 
         for (JsonElement el : node.values) {
-            describe(el, 1);
-            exported += ",\n";
+            if (el != null) {
+                describe(el, 1);
+                exported += ",\n";
+            }
         }
 
         exported += "}\n";

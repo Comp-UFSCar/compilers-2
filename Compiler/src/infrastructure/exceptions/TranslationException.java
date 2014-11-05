@@ -1,4 +1,4 @@
-package translator.infrastructure.exception;
+package infrastructure.exceptions;
 
 /**
  *
