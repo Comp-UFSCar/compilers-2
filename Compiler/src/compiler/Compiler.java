@@ -3,13 +3,13 @@ package compiler;
 import filehandler.JsonWriter;
 import grammar.ReceiptLexer;
 import grammar.ReceiptParser;
+import infrastructure.json.JsonStructure;
+import infrastructure.translator.Translator;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import json.infrastructure.JsonStructure;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import translator.Translator;
 
 /**
  *
@@ -66,7 +66,7 @@ public class Compiler {
                 String result = new Translator(tree)
                         .run()
                         .export();
-                
+
                 String inputStr = child.toString();
 
                 out = inputStr.substring(0, inputStr.indexOf("input"));
