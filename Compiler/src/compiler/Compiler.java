@@ -3,6 +3,7 @@ package compiler;
 import filehandler.JsonWriter;
 import grammar.ReceiptLexer;
 import grammar.ReceiptParser;
+import infrastructure.exceptions.JsonExportException;
 import infrastructure.exceptions.TranslationException;
 import infrastructure.json.JsonStructure;
 import infrastructure.translator.Translator;
@@ -33,7 +34,7 @@ public class Compiler {
             this.in = in;
             
             out = in.substring(0, in.indexOf("input"))
-                + "output/"
+                + "output\\"
                 + in.substring(in.indexOf("input") + 6, in.indexOf('.'))
                 + ".json"
                 ;
@@ -58,7 +59,6 @@ public class Compiler {
             File file = new File(args[0]);
             
             if (file.isDirectory()) {
-                
                 for (File child : file.listFiles()) {
                     filesToCompile.add(child.getPath());
                 }
@@ -77,13 +77,19 @@ public class Compiler {
                 System.err.println("The input file name is invalid: \"" + file + "\"");
             
             } catch (RecognitionException e) {
-                System.err.println("Recognition error on file \"" + file + "\"");
+                System.err.println("Recognition error on file \"" + file + "\": "
+                + e.getMessage());
 
             } catch (TranslationException e) {
-                System.err.println("Translation error on file \"" + file + "\"");
-
+                System.err.println("Translation error on file \"" + file + "\": "
+                    + e.getMessage());
+                
+            } catch (JsonExportException e) {
+                System.err.println("Json exportation error on file \"" + file + "\": "
+                    + e.getMessage());
             } catch (Exception e) {
-                System.err.println("An error has occured while compiling file \"" + file + "\"");
+                System.err.println("An error has occured while compiling file \"" + file + "\": "
+                    + e.getMessage());
             }
         }
     }
