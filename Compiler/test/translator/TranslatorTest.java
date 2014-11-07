@@ -1,11 +1,12 @@
 package translator;
 
+import infrastructure.exceptions.TranslationException;
+import infrastructure.json.JsonElement;
+import infrastructure.json.JsonStructure;
+import infrastructure.translator.Translator;
 import java.util.HashSet;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import json.infrastructure.JsonElement;
-import json.infrastructure.JsonStructure;
-import translator.infrastructure.exception.TranslationException;
 
 /**
  *
@@ -58,15 +59,16 @@ public class TranslatorTest {
 
         String result = translator.export();
         String expected = "{\n"
-                + "\t\"id\": \"1\",\n"
-                + "\t\"name\": \"John Hall\",\n"
-                + "\t\"address\": {\n"
-                + "\t\t\"Country\": \"USA\",\n"
-                + "\t\t\"City\": \"Philadelphia\",\n"
-                + "\t\t\"State\": \"Pennsylvania\",\n"
-                + "\t\t\"Street\": \"3200 Race St. 19104\",\n"
-                + "\t},\n"
-                + "}\n";
+                        + "\t\"id\": \"1\",\n"
+                        + "\t\"name\": \"John Hall\",\n"
+                        + "\t\"address\": {\n"
+                        + "\t\t\"Country\": \"USA\",\n"
+                        + "\t\t\"City\": \"Philadelphia\",\n"
+                        + "\t\t\"State\": \"Pennsylvania\",\n"
+                        + "\t\t\"Street\": \"3200 Race St. 19104\",\n"
+                        + "\t},\n"
+                        + "}\n"
+                        ;
         
         assertTrue(result.equals(expected));
     }

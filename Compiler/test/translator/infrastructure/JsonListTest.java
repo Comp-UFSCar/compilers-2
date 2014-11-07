@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package translator.infrastructure;
 
-import json.infrastructure.JsonElement;
-import json.infrastructure.JsonStructure;
+import infrastructure.json.JsonElement;
+import infrastructure.json.JsonStructure;
 import java.util.HashSet;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
 
 /**
  *
