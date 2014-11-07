@@ -28,7 +28,7 @@ public class Translator {
         return this;
     }
 
-    public Translator run() {
+    public Translator run() throws TranslationException {
         if (base == null) {
             throw new TranslationException("Cannot export unitialized translator. Try to set the property base first.");
         }
