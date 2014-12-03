@@ -31,15 +31,12 @@
 			"cost": "$1.99"
 		},
 		"soda": {
-			"quantity": "3",
 			"cost": "$3.45"
 		},
 		"mms": {
-			"quantity": "3",
 			"cost": "$1.86"
 		},
 		"subwayham": {
-			"quantity": "3",
 			"cost": "$5.85"
 		},
 		"hashimint": {
@@ -48,5 +45,5 @@
 		}
 	},
 	"tax": "$2.00",
-	"total": "$28.70"
+	"total": "$25.38"
 }
