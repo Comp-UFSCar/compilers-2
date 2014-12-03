@@ -9,13 +9,13 @@ import java.util.Objects;
 public class JsonElement {
 
     public String name;
-    public Object value;
+    public String value;
 
     protected JsonElement() {
         //
     }
 
-    public JsonElement(String name, Object value) {
+    public JsonElement(String name, String value) {
         this.name = name;
         this.value = value;
     }

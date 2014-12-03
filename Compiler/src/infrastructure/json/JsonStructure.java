@@ -36,6 +36,16 @@ public class JsonStructure extends JsonElement {
         values.remove(el);
         return this;
     }
+    
+    public JsonElement get(String name) {
+        for (JsonElement element : values) {
+            if (element.name.toLowerCase().equals(name)) {
+                return element;
+            }
+        }
+        
+        return null;
+    }
 
     @Override
     public boolean equals(Object obj) {
