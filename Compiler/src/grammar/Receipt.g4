@@ -61,18 +61,25 @@ date
 
 products
     returns [JsonStructure e]
-    @init { $e = new JsonStructure("products"); }
+    @init {
+        $e = new JsonStructure("products");
+        int quantity = -1;
+    }
     : KEYWORD_PRODUCTS COLON?
-      ( NAME INT? DECIMAL
+      ( NAME
+      (
+          INT { quantity = Integer.parseInt($INT.getText()); }
+      )? DECIMAL
     {
         JsonStructure current = new JsonStructure($NAME.getText());
         
-        if ($INT != null && $INT.getText() != null && !$INT.getText().isEmpty()) {
+        if (quantity != -1) {
             current.add(new JsonElement("quantity", $INT.getText()));
         }
         
         current.add(new JsonElement("cost", $DECIMAL.getText()));
         $e.add(current);
+        quantity = -1;
     } )+
     ;
 

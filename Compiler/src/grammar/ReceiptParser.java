@@ -2,6 +2,7 @@
 package grammar;
 
 import infrastructure.json.*;
+
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -680,7 +681,10 @@ public class ReceiptParser extends Parser {
     public final ProductsContext products() throws RecognitionException {
         ProductsContext _localctx = new ProductsContext(_ctx, getState());
         enterRule(_localctx, 12, RULE_products);
+
         ((ProductsContext) _localctx).e = new JsonStructure("products");
+        int quantity = -1;
+
         int _la;
         try {
             enterOuterAlt(_localctx, 1);
@@ -696,7 +700,7 @@ public class ReceiptParser extends Parser {
                     }
                 }
 
-                setState(112);
+                setState(113);
                 _errHandler.sync(this);
                 _la = _input.LA(1);
                 do {
@@ -704,30 +708,31 @@ public class ReceiptParser extends Parser {
                         {
                             setState(106);
                             ((ProductsContext) _localctx).NAME = match(NAME);
-                            setState(108);
+                            setState(109);
                             _la = _input.LA(1);
                             if (_la == INT) {
                                 {
                                     setState(107);
                                     ((ProductsContext) _localctx).INT = match(INT);
+                                    quantity = Integer.parseInt(((ProductsContext) _localctx).INT.getText());
                                 }
                             }
 
-                            setState(110);
+                            setState(111);
                             ((ProductsContext) _localctx).DECIMAL = match(DECIMAL);
 
                             JsonStructure current = new JsonStructure(((ProductsContext) _localctx).NAME.getText());
 
-                            if (((ProductsContext) _localctx).INT != null && ((ProductsContext) _localctx).INT.getText() != null && !((ProductsContext) _localctx).INT.getText().isEmpty()) {
+                            if (quantity != -1) {
                                 current.add(new JsonElement("quantity", ((ProductsContext) _localctx).INT.getText()));
                             }
 
                             current.add(new JsonElement("cost", ((ProductsContext) _localctx).DECIMAL.getText()));
                             _localctx.e.add(current);
-
+                            quantity = -1;
                         }
                     }
-                    setState(114);
+                    setState(115);
                     _errHandler.sync(this);
                     _la = _input.LA(1);
                 } while (_la == NAME);
@@ -790,18 +795,18 @@ public class ReceiptParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(116);
+                setState(117);
                 match(KEYWORD_TAX);
-                setState(118);
+                setState(119);
                 _la = _input.LA(1);
                 if (_la == COLON) {
                     {
-                        setState(117);
+                        setState(118);
                         match(COLON);
                     }
                 }
 
-                setState(120);
+                setState(121);
                 ((TaxContext) _localctx).DECIMAL = match(DECIMAL);
                 ((TaxContext) _localctx).e = new JsonElement("tax", ((TaxContext) _localctx).DECIMAL.getText());
             }
@@ -863,18 +868,18 @@ public class ReceiptParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(123);
+                setState(124);
                 match(KEYWORD_TOTAL);
-                setState(125);
+                setState(126);
                 _la = _input.LA(1);
                 if (_la == COLON) {
                     {
-                        setState(124);
+                        setState(125);
                         match(COLON);
                     }
                 }
 
-                setState(127);
+                setState(128);
                 ((TotalContext) _localctx).DECIMAL = match(DECIMAL);
                 ((TotalContext) _localctx).e = new JsonElement("total", ((TotalContext) _localctx).DECIMAL.getText());
             }
@@ -937,21 +942,21 @@ public class ReceiptParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(130);
+                setState(131);
                 match(KEYWORD_BUYER);
-                setState(135);
+                setState(136);
                 switch (_input.LA(1)) {
                     case NAME: {
-                        setState(131);
-                        ((EntityBuyerContext) _localctx).NAME = match(NAME);
                         setState(132);
+                        ((EntityBuyerContext) _localctx).NAME = match(NAME);
+                        setState(133);
                         ((EntityBuyerContext) _localctx).IDNUMBER = match(IDNUMBER);
                     }
                     break;
                     case IDNUMBER: {
-                        setState(133);
-                        ((EntityBuyerContext) _localctx).IDNUMBER = match(IDNUMBER);
                         setState(134);
+                        ((EntityBuyerContext) _localctx).IDNUMBER = match(IDNUMBER);
+                        setState(135);
                         ((EntityBuyerContext) _localctx).NAME = match(NAME);
                     }
                     break;
@@ -1024,18 +1029,18 @@ public class ReceiptParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(139);
+                setState(140);
                 match(KEYWORD_SELLER);
-                setState(148);
+                setState(149);
                 switch (getInterpreter().adaptivePredict(_input, 16, _ctx)) {
                     case 1: {
-                        setState(140);
+                        setState(141);
                         ((EntitySellerContext) _localctx).NAME = match(NAME);
-                        setState(142);
+                        setState(143);
                         _la = _input.LA(1);
                         if (_la == IDNUMBER) {
                             {
-                                setState(141);
+                                setState(142);
                                 ((EntitySellerContext) _localctx).IDNUMBER = match(IDNUMBER);
                             }
                         }
@@ -1044,16 +1049,16 @@ public class ReceiptParser extends Parser {
                     break;
 
                     case 2: {
-                        setState(145);
+                        setState(146);
                         _la = _input.LA(1);
                         if (_la == IDNUMBER) {
                             {
-                                setState(144);
+                                setState(145);
                                 ((EntitySellerContext) _localctx).IDNUMBER = match(IDNUMBER);
                             }
                         }
 
-                        setState(147);
+                        setState(148);
                         ((EntitySellerContext) _localctx).NAME = match(NAME);
                     }
                     break;
@@ -1138,41 +1143,41 @@ public class ReceiptParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(152);
+                setState(153);
                 match(KEYWORD_ADDRESS);
-                setState(154);
+                setState(155);
                 _la = _input.LA(1);
                 if (_la == COLON) {
                     {
-                        setState(153);
+                        setState(154);
                         match(COLON);
                     }
                 }
 
-                setState(156);
+                setState(157);
                 ((AddressContext) _localctx).NAME = match(NAME);
                 _localctx.e.add(new JsonElement("main", ((AddressContext) _localctx).NAME.getText()));
-                setState(161);
+                setState(162);
                 switch (getInterpreter().adaptivePredict(_input, 18, _ctx)) {
                     case 1: {
-                        setState(158);
+                        setState(159);
                         ((AddressContext) _localctx).zipcode = zipcode();
                         _localctx.e.add(((AddressContext) _localctx).zipcode.e);
                     }
                     break;
                 }
-                setState(170);
+                setState(171);
                 _la = _input.LA(1);
                 if (_la == NAME) {
                     {
-                        setState(163);
+                        setState(164);
                         ((AddressContext) _localctx).city = city();
                         _localctx.e.add(((AddressContext) _localctx).city.e);
-                        setState(168);
+                        setState(169);
                         _la = _input.LA(1);
                         if (_la == NAME) {
                             {
-                                setState(165);
+                                setState(166);
                                 ((AddressContext) _localctx).state = state();
                                 _localctx.e.add(((AddressContext) _localctx).state.e);
                             }
@@ -1241,19 +1246,19 @@ public class ReceiptParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(172);
+                setState(173);
                 ((ZipcodeContext) _localctx).INT = match(INT);
                 t += ((ZipcodeContext) _localctx).INT.getText();
-                setState(175);
+                setState(176);
                 _la = _input.LA(1);
                 if (_la == HIFEN) {
                     {
-                        setState(174);
+                        setState(175);
                         match(HIFEN);
                     }
                 }
 
-                setState(177);
+                setState(178);
                 ((ZipcodeContext) _localctx).INT = match(INT);
                 t += ((ZipcodeContext) _localctx).INT.getText();
                 ((ZipcodeContext) _localctx).e = new JsonElement("zipcode", t);
@@ -1307,7 +1312,7 @@ public class ReceiptParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(181);
+                setState(182);
                 ((CityContext) _localctx).NAME = match(NAME);
                 ((CityContext) _localctx).e = new JsonElement("city", ((CityContext) _localctx).NAME.getText());
             }
@@ -1360,7 +1365,7 @@ public class ReceiptParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(184);
+                setState(185);
                 ((StateContext) _localctx).NAME = match(NAME);
                 ((StateContext) _localctx).e = new JsonElement("state", ((StateContext) _localctx).NAME.getText());
             }
@@ -1375,23 +1380,23 @@ public class ReceiptParser extends Parser {
     }
 
     public static final String _serializedATN
-            = "\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\32\u00be\4\2\t\2"
+            = "\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\32\u00bf\4\2\t\2"
             + "\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"
             + "\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\3\2\3\2\3\2\6\2$\n"
             + "\2\r\2\16\2%\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"
             + "\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3=\n\3\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\5"
             + "\5G\n\5\3\6\3\6\3\6\3\6\3\6\5\6N\n\6\3\7\3\7\5\7R\n\7\5\7T\n\7\3\7\3\7"
             + "\3\7\3\7\3\7\3\7\5\7\\\n\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7d\n\7\3\7\3\7\3"
-            + "\7\3\b\3\b\5\bk\n\b\3\b\3\b\5\bo\n\b\3\b\3\b\6\bs\n\b\r\b\16\bt\3\t\3"
-            + "\t\5\ty\n\t\3\t\3\t\3\t\3\n\3\n\5\n\u0080\n\n\3\n\3\n\3\n\3\13\3\13\3"
-            + "\13\3\13\3\13\5\13\u008a\n\13\3\13\3\13\3\f\3\f\3\f\5\f\u0091\n\f\3\f"
-            + "\5\f\u0094\n\f\3\f\5\f\u0097\n\f\3\f\3\f\3\r\3\r\5\r\u009d\n\r\3\r\3\r"
-            + "\3\r\3\r\3\r\5\r\u00a4\n\r\3\r\3\r\3\r\3\r\3\r\5\r\u00ab\n\r\5\r\u00ad"
-            + "\n\r\3\16\3\16\3\16\5\16\u00b2\n\16\3\16\3\16\3\16\3\16\3\17\3\17\3\17"
-            + "\3\20\3\20\3\20\3\20\2\21\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36\2\2\u00cb"
+            + "\7\3\b\3\b\5\bk\n\b\3\b\3\b\3\b\5\bp\n\b\3\b\3\b\6\bt\n\b\r\b\16\bu\3"
+            + "\t\3\t\5\tz\n\t\3\t\3\t\3\t\3\n\3\n\5\n\u0081\n\n\3\n\3\n\3\n\3\13\3\13"
+            + "\3\13\3\13\3\13\5\13\u008b\n\13\3\13\3\13\3\f\3\f\3\f\5\f\u0092\n\f\3"
+            + "\f\5\f\u0095\n\f\3\f\5\f\u0098\n\f\3\f\3\f\3\r\3\r\5\r\u009e\n\r\3\r\3"
+            + "\r\3\r\3\r\3\r\5\r\u00a5\n\r\3\r\3\r\3\r\3\r\3\r\5\r\u00ac\n\r\5\r\u00ae"
+            + "\n\r\3\16\3\16\3\16\5\16\u00b3\n\16\3\16\3\16\3\16\3\16\3\17\3\17\3\17"
+            + "\3\20\3\20\3\20\3\20\2\21\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36\2\2\u00cc"
             + "\2#\3\2\2\2\4<\3\2\2\2\6>\3\2\2\2\bA\3\2\2\2\nH\3\2\2\2\fS\3\2\2\2\16"
-            + "h\3\2\2\2\20v\3\2\2\2\22}\3\2\2\2\24\u0084\3\2\2\2\26\u008d\3\2\2\2\30"
-            + "\u009a\3\2\2\2\32\u00ae\3\2\2\2\34\u00b7\3\2\2\2\36\u00ba\3\2\2\2 !\5"
+            + "h\3\2\2\2\20w\3\2\2\2\22~\3\2\2\2\24\u0085\3\2\2\2\26\u008e\3\2\2\2\30"
+            + "\u009b\3\2\2\2\32\u00af\3\2\2\2\34\u00b8\3\2\2\2\36\u00bb\3\2\2\2 !\5"
             + "\4\3\2!\"\b\2\1\2\"$\3\2\2\2# \3\2\2\2$%\3\2\2\2%#\3\2\2\2%&\3\2\2\2&"
             + "\3\3\2\2\2\'(\5\6\4\2()\b\3\1\2)=\3\2\2\2*+\5\b\5\2+,\b\3\1\2,=\3\2\2"
             + "\2-.\5\n\6\2./\b\3\1\2/=\3\2\2\2\60\61\5\f\7\2\61\62\b\3\1\2\62=\3\2\2"
@@ -1405,32 +1410,32 @@ public class ReceiptParser extends Parser {
             + "\2\2V[\b\7\1\2WX\7\f\2\2X\\\b\7\1\2YZ\7\n\2\2Z\\\b\7\1\2[W\3\2\2\2[Y\3"
             + "\2\2\2[\\\3\2\2\2\\]\3\2\2\2]^\7\t\2\2^c\b\7\1\2_`\7\f\2\2`d\b\7\1\2a"
             + "b\7\n\2\2bd\b\7\1\2c_\3\2\2\2ca\3\2\2\2cd\3\2\2\2de\3\2\2\2ef\7\t\2\2"
-            + "fg\b\7\1\2g\r\3\2\2\2hj\7\23\2\2ik\7\24\2\2ji\3\2\2\2jk\3\2\2\2kr\3\2"
-            + "\2\2ln\7\25\2\2mo\7\t\2\2nm\3\2\2\2no\3\2\2\2op\3\2\2\2pq\7\7\2\2qs\b"
-            + "\b\1\2rl\3\2\2\2st\3\2\2\2tr\3\2\2\2tu\3\2\2\2u\17\3\2\2\2vx\7\20\2\2"
-            + "wy\7\24\2\2xw\3\2\2\2xy\3\2\2\2yz\3\2\2\2z{\7\7\2\2{|\b\t\1\2|\21\3\2"
-            + "\2\2}\177\7\21\2\2~\u0080\7\24\2\2\177~\3\2\2\2\177\u0080\3\2\2\2\u0080"
-            + "\u0081\3\2\2\2\u0081\u0082\7\7\2\2\u0082\u0083\b\n\1\2\u0083\23\3\2\2"
-            + "\2\u0084\u0089\7\r\2\2\u0085\u0086\7\25\2\2\u0086\u008a\7\3\2\2\u0087"
-            + "\u0088\7\3\2\2\u0088\u008a\7\25\2\2\u0089\u0085\3\2\2\2\u0089\u0087\3"
-            + "\2\2\2\u008a\u008b\3\2\2\2\u008b\u008c\b\13\1\2\u008c\25\3\2\2\2\u008d"
-            + "\u0096\7\16\2\2\u008e\u0090\7\25\2\2\u008f\u0091\7\3\2\2\u0090\u008f\3"
-            + "\2\2\2\u0090\u0091\3\2\2\2\u0091\u0097\3\2\2\2\u0092\u0094\7\3\2\2\u0093"
-            + "\u0092\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u0097\7\25"
-            + "\2\2\u0096\u008e\3\2\2\2\u0096\u0093\3\2\2\2\u0097\u0098\3\2\2\2\u0098"
-            + "\u0099\b\f\1\2\u0099\27\3\2\2\2\u009a\u009c\7\17\2\2\u009b\u009d\7\24"
-            + "\2\2\u009c\u009b\3\2\2\2\u009c\u009d\3\2\2\2\u009d\u009e\3\2\2\2\u009e"
-            + "\u009f\7\25\2\2\u009f\u00a3\b\r\1\2\u00a0\u00a1\5\32\16\2\u00a1\u00a2"
-            + "\b\r\1\2\u00a2\u00a4\3\2\2\2\u00a3\u00a0\3\2\2\2\u00a3\u00a4\3\2\2\2\u00a4"
-            + "\u00ac\3\2\2\2\u00a5\u00a6\5\34\17\2\u00a6\u00aa\b\r\1\2\u00a7\u00a8\5"
-            + "\36\20\2\u00a8\u00a9\b\r\1\2\u00a9\u00ab\3\2\2\2\u00aa\u00a7\3\2\2\2\u00aa"
-            + "\u00ab\3\2\2\2\u00ab\u00ad\3\2\2\2\u00ac\u00a5\3\2\2\2\u00ac\u00ad\3\2"
-            + "\2\2\u00ad\31\3\2\2\2\u00ae\u00af\7\t\2\2\u00af\u00b1\b\16\1\2\u00b0\u00b2"
-            + "\7\n\2\2\u00b1\u00b0\3\2\2\2\u00b1\u00b2\3\2\2\2\u00b2\u00b3\3\2\2\2\u00b3"
-            + "\u00b4\7\t\2\2\u00b4\u00b5\b\16\1\2\u00b5\u00b6\b\16\1\2\u00b6\33\3\2"
-            + "\2\2\u00b7\u00b8\7\25\2\2\u00b8\u00b9\b\17\1\2\u00b9\35\3\2\2\2\u00ba"
-            + "\u00bb\7\25\2\2\u00bb\u00bc\b\20\1\2\u00bc\37\3\2\2\2\30%<FMQS[cjntx\177"
-            + "\u0089\u0090\u0093\u0096\u009c\u00a3\u00aa\u00ac\u00b1";
+            + "fg\b\7\1\2g\r\3\2\2\2hj\7\23\2\2ik\7\24\2\2ji\3\2\2\2jk\3\2\2\2ks\3\2"
+            + "\2\2lo\7\25\2\2mn\7\t\2\2np\b\b\1\2om\3\2\2\2op\3\2\2\2pq\3\2\2\2qr\7"
+            + "\7\2\2rt\b\b\1\2sl\3\2\2\2tu\3\2\2\2us\3\2\2\2uv\3\2\2\2v\17\3\2\2\2w"
+            + "y\7\20\2\2xz\7\24\2\2yx\3\2\2\2yz\3\2\2\2z{\3\2\2\2{|\7\7\2\2|}\b\t\1"
+            + "\2}\21\3\2\2\2~\u0080\7\21\2\2\177\u0081\7\24\2\2\u0080\177\3\2\2\2\u0080"
+            + "\u0081\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0083\7\7\2\2\u0083\u0084\b\n"
+            + "\1\2\u0084\23\3\2\2\2\u0085\u008a\7\r\2\2\u0086\u0087\7\25\2\2\u0087\u008b"
+            + "\7\3\2\2\u0088\u0089\7\3\2\2\u0089\u008b\7\25\2\2\u008a\u0086\3\2\2\2"
+            + "\u008a\u0088\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u008d\b\13\1\2\u008d\25"
+            + "\3\2\2\2\u008e\u0097\7\16\2\2\u008f\u0091\7\25\2\2\u0090\u0092\7\3\2\2"
+            + "\u0091\u0090\3\2\2\2\u0091\u0092\3\2\2\2\u0092\u0098\3\2\2\2\u0093\u0095"
+            + "\7\3\2\2\u0094\u0093\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u0096\3\2\2\2\u0096"
+            + "\u0098\7\25\2\2\u0097\u008f\3\2\2\2\u0097\u0094\3\2\2\2\u0098\u0099\3"
+            + "\2\2\2\u0099\u009a\b\f\1\2\u009a\27\3\2\2\2\u009b\u009d\7\17\2\2\u009c"
+            + "\u009e\7\24\2\2\u009d\u009c\3\2\2\2\u009d\u009e\3\2\2\2\u009e\u009f\3"
+            + "\2\2\2\u009f\u00a0\7\25\2\2\u00a0\u00a4\b\r\1\2\u00a1\u00a2\5\32\16\2"
+            + "\u00a2\u00a3\b\r\1\2\u00a3\u00a5\3\2\2\2\u00a4\u00a1\3\2\2\2\u00a4\u00a5"
+            + "\3\2\2\2\u00a5\u00ad\3\2\2\2\u00a6\u00a7\5\34\17\2\u00a7\u00ab\b\r\1\2"
+            + "\u00a8\u00a9\5\36\20\2\u00a9\u00aa\b\r\1\2\u00aa\u00ac\3\2\2\2\u00ab\u00a8"
+            + "\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac\u00ae\3\2\2\2\u00ad\u00a6\3\2\2\2\u00ad"
+            + "\u00ae\3\2\2\2\u00ae\31\3\2\2\2\u00af\u00b0\7\t\2\2\u00b0\u00b2\b\16\1"
+            + "\2\u00b1\u00b3\7\n\2\2\u00b2\u00b1\3\2\2\2\u00b2\u00b3\3\2\2\2\u00b3\u00b4"
+            + "\3\2\2\2\u00b4\u00b5\7\t\2\2\u00b5\u00b6\b\16\1\2\u00b6\u00b7\b\16\1\2"
+            + "\u00b7\33\3\2\2\2\u00b8\u00b9\7\25\2\2\u00b9\u00ba\b\17\1\2\u00ba\35\3"
+            + "\2\2\2\u00bb\u00bc\7\25\2\2\u00bc\u00bd\b\20\1\2\u00bd\37\3\2\2\2\30%"
+            + "<FMQS[cjouy\u0080\u008a\u0091\u0094\u0097\u009d\u00a4\u00ab\u00ad\u00b2";
     public static final ATN _ATN
             = ATNSimulator.deserialize(_serializedATN.toCharArray());
 
