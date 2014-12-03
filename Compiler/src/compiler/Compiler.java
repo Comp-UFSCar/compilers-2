@@ -4,13 +4,18 @@ import filehandler.JsonWriter;
 import grammar.ReceiptLexer;
 import grammar.ReceiptParser;
 import infrastructure.SemanticListener;
+import infrastructure.SyntacticalListener;
 import infrastructure.exceptions.JsonExportException;
+import infrastructure.exceptions.LexicalException;
 import infrastructure.exceptions.SemanticException;
+import infrastructure.exceptions.SyntacticalException;
 import infrastructure.exceptions.TranslationException;
 import infrastructure.json.JsonStructure;
+import infrastructure.messagebag.MessageBag;
 import infrastructure.translator.Translator;
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.ParseException;
 import java.util.LinkedList;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -87,9 +92,8 @@ public class Compiler {
                 System.err.println("Recognition error on file \"" + file + "\": "
                 + e.getMessage());
 
-            } catch (SemanticException e) {
-                System.err.println("Semantic error on file \"" + file + "\".\n"
-                        + "The compilation of this specific file cannot continue.");
+            } catch (LexicalException | SyntacticalException | SemanticException e) {
+                System.err.println("The compilation of this specific file cannot continue.");
 
             } catch (TranslationException e) {
                 System.err.println("Translation error on file \"" + file + "\": "
@@ -109,13 +113,34 @@ public class Compiler {
         System.out.println("\nInput file: " + in);
 
         System.out.print("Parsing has started... ");
+
         ANTLRInputStream inputStream = new ANTLRInputStream(new FileInputStream(in));
 
+        // instantiating error bag and listeners
+        MessageBag lexicalBag     = new MessageBag();
+        MessageBag syntacticalBag = new MessageBag();
+        
+        SyntacticalListener lexics     = new SyntacticalListener(lexicalBag);
+        SyntacticalListener syntactics = new SyntacticalListener(syntacticalBag);
+        
+        // injecting listeners
         ReceiptLexer lexer   = new ReceiptLexer(inputStream);
+        lexer.addErrorListener(lexics);
         ReceiptParser parser = new ReceiptParser(new CommonTokenStream(lexer));
+        parser.addErrorListener(syntactics);
 
         // parse input file and retrieve its JsonStructure
         JsonStructure tree = parser.receipt().e;
+
+        // stops compilation proccess if errors were found
+        if (!lexicalBag.isEmpty()) {
+            throw new LexicalException();
+        }
+
+        if (!syntacticalBag.isEmpty()) {
+            throw new SyntacticalException();
+        }
+        
         System.out.println("Done!");
         
         SemanticListener semantics = new SemanticListener(tree);
@@ -135,6 +160,7 @@ public class Compiler {
         String result = new Translator(tree)
                 .run()
                 .export();
+        
         System.out.println("Done!");
 
         System.out.print("Exporting .json file... ");
