@@ -4,17 +4,17 @@ package infrastructure.exceptions;
  *
  * @author Lucas
  */
-public class LexicalException extends RuntimeException {
+public class SemanticException extends RuntimeException {
 
-    public LexicalException() {
+    public SemanticException() {
         super();
     }
 
-    public LexicalException(String message) {
+    public SemanticException(String message) {
         super(message);
     }
 
-    public LexicalException(String message, Throwable cause) {
+    public SemanticException(String message, Throwable cause) {
         super(message, cause);
     }
 }

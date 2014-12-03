@@ -33,8 +33,9 @@ public class SemanticListener {
         if (!validate) {
             validate = true;
         
-            // does validation over root
+            // does validation over root node
             RuleOnlyOneFieldOfEachType();
+            RuleProductsPricesAndTaxesMatchTotal();
         }
         
         return new LinkedList<>(errors);
@@ -72,7 +73,43 @@ public class SemanticListener {
         return !hasErrors;
     }
     
+    protected boolean RuleProductsPricesAndTaxesMatchTotal() {
+        return RuleProductsPricesAndTaxesMatchTotal(root);
+    }
+    
     protected boolean RuleProductsPricesAndTaxesMatchTotal(JsonStructure node) {
-        return false;
+        
+        float         actualTotal = 0;
+        boolean       hasErrors   = false;
+        JsonStructure products    = (JsonStructure)node.get("products");
+
+        float tax = Float
+            .parseFloat(node.get("tax").value.substring(1));
+        float totalExpected = Float
+            .parseFloat(node.get("total").value.substring(1));
+
+        for (JsonElement element : products.values) {
+                JsonStructure product = (JsonStructure) element;
+                int quantity;
+                
+                try {
+                    quantity = Integer.parseInt(product.get("quantity").value);
+                } catch (NullPointerException e) {
+                    quantity = 1;
+                }
+                float cost     = Float.parseFloat(product
+                        .get("cost")
+                        .value
+                        .substring(1));
+
+                actualTotal += cost * quantity;
+        }
+
+        if (totalExpected != actualTotal + tax) {
+            errors.add("Total cost of receipt differs from sum of individual values of items plus taxes. Expected: "
+                    + totalExpected + ". Actual: " + (actualTotal + tax));
+        }
+        
+        return !hasErrors;
     }
 }
