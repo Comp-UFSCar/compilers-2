@@ -48,7 +48,7 @@ public class TranslatorTest {
         address.add(new JsonElement("Country", "USA"));
 
         HashSet<JsonElement> set = new HashSet<>();
-        set.add(new JsonElement("id", 1));
+        set.add(new JsonElement("id", "1"));
         set.add(new JsonElement("name", "John Hall"));
         set.add(new JsonStructure("address", address));
 

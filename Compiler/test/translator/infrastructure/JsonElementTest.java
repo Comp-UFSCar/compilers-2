@@ -19,15 +19,15 @@ public class JsonElementTest {
     
     @Test
     public void testEqualsForEqualJsonElements() {
-        JsonElement el1 = new JsonElement("id", 10);
-        JsonElement el2 = new JsonElement("id", 10);
+        JsonElement el1 = new JsonElement("id", "10");
+        JsonElement el2 = new JsonElement("id", "10");
         
         assertEquals(el1, el2);
     }
     
     @Test
     public void testEqualsForDifferentJsonElements() {
-        JsonElement el1 = new JsonElement("id", 10);
+        JsonElement el1 = new JsonElement("id", "10");
         JsonElement el2 = new JsonElement("id", "a nice random value");
         
         assertFalse(el1.equals(el2));
