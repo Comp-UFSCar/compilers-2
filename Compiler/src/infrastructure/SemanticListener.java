@@ -21,28 +21,31 @@ public class SemanticListener {
         validate = false;
     }
 
-    public boolean isValid() {
-        Validate();
-        return errors.isEmpty();
+    public boolean hasErrors() {
+        return !Validate().isEmpty();
     }
     
-    public LinkedList<String> Validate() {
+    public List<String> errors() {
+        return Validate();
+    }
+    
+    public List<String> Validate() {
         if (!validate) {
             validate = true;
         
             // does validation over root
-            RuleOnlyOneField();
+            RuleOnlyOneFieldOfEachType();
         }
         
         return new LinkedList<>(errors);
     }
 
     
-    protected boolean RuleOnlyOneField() {
-        return RuleOnlyOneField(root);
+    protected boolean RuleOnlyOneFieldOfEachType() {
+        return RuleOnlyOneFieldOfEachType(root);
     }
     
-    protected boolean RuleOnlyOneField(JsonStructure node) {
+    protected boolean RuleOnlyOneFieldOfEachType(JsonStructure node) {
 
         boolean hasErrors = false;
         List<JsonElement> innerElements = new LinkedList<>(node.values);
@@ -56,12 +59,14 @@ public class SemanticListener {
                 
                 if (pivot.name.toLowerCase().equals(current.name.toLowerCase())) {
                     hasErrors = true;
-                    errors.add("Semantic error: redeclaration of field \"" + pivot.name + "\".");
+                    errors.add("The field \"" + pivot.name + "\" has already been declared.");
                     innerElements.remove(i);
                 } else {
                     i++;
                 }
             }
+            
+            innerElements.remove(0);
         }
 
         return !hasErrors;
