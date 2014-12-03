@@ -7,15 +7,26 @@ define([
 ],
 function ($, Boot, D3, Data, Interface) {
 
+	function spin() {
+		if (!Data.ready)
+			setTimeout(spin, 200);
+		else
+			Continue();
+	}
+
+	function Continue() {
+		Interface.ApplicationStart();
+
+		for (var receipt in Data.receipts ) {
+			Interface.AddReceiptToList(Data.receipts[receipt]);
+		}
+	}
+
 	function Start() {
 		console.log("Application initiated.");
 
-		setTimeout(function () {
-			console.log(Data);
-		}, 1000);
-
-		$('#loading-sign').fadeOut();
-		$('#main').fadeIn();
+		// wait until Data is filled
+		spin();
 	}
 
 	return {

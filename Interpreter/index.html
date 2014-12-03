@@ -11,17 +11,37 @@
 <body>
 	<div id="header" class="container">
 		<h1>
-			Interpreter
+			<a href="index.html">
+				Interpreter
+			</a>
 		</h1>
 	</div>
 
-	<div id="main-container" class="container">
+	<div id="app-loading" class="container">
+		<h1>
+			<span class="glyphicon glyphicon-tower"></span>
+			Hold on...
+			<small>The application is being loaded.</small>
+		</h1>
+	</div>
+
+	<div id="data-loading" class="container" style="display:none">
+		<h1>
+		<span class="glyphicon glyphicon-book"></span>
+			Hold on...
+			<small>The data is being gathered.</small>
+		</h1>
+	</div>
+
+	<div id="main" class="container" style="display:none">
 		<div class="row">
-			<div class="col-md-8"></div>
+			<div class="col-md-8">
+				<svg id="svg-container"></svg>
+			</div>
 			<div class="col-md-4">
 				<div class="panel panel-warning">
 				  <div class="panel-heading">
-				    <h3 class="panel-title">Panel title</h3>
+				    <h3 class="panel-title">Receipts</h3>
 				  </div>
 				  <div class="panel-body">
 				    <table class="table table-hover table-striped">
@@ -32,28 +52,12 @@
 					    		<th>Date</th>
 					    	</tr>
 					    </thead>
-					    <tbody>
-					    	<tr><td>1029302</td><td>$10.00</td><td>date</td></tr>
-					    	<tr><td>1029302</td><td>$10.00</td><td>date</td></tr>
-					    	<tr><td>1029302</td><td>$10.00</td><td>date</td></tr>
+					    <tbody id="receipts-table">
 					    </tbody>
   					</table>
-				</div>
-
-				
+				</div>	
 			</div>
 		</div>
-		<svg id="svg-container"></svg>
 	</div>
-
-	<div id="loading-app-sign" class="container" style="float:left">
-		<h1>
-			Hold on...<br />
-			<small>
-				The application is being loaded.
-			</small>
-		</h1>
-	</div>
-	
 </body>
 </html>
