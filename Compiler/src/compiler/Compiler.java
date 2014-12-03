@@ -106,8 +106,9 @@ public class Compiler {
     }
 
     private void start() throws Exception {
-        System.out.println("\nCompilation proccess has started. File being compiled: " + in);
+        System.out.println("\nInput file: " + in);
 
+        System.out.print("Parsing has started... ");
         ANTLRInputStream inputStream = new ANTLRInputStream(new FileInputStream(in));
 
         ReceiptLexer lexer   = new ReceiptLexer(inputStream);
@@ -115,11 +116,12 @@ public class Compiler {
 
         // parse input file and retrieve its JsonStructure
         JsonStructure tree = parser.receipt().e;
+        System.out.println("Done!");
         
         SemanticListener semantics = new SemanticListener(tree);
         
         if(semantics.hasErrors()) {
-            System.err.println("\nSemantic errors were found:");
+            System.err.println("Semantic errors were found:");
             
             for (String error : semantics.errors()) {
                 System.err.println(error);
@@ -128,17 +130,19 @@ public class Compiler {
             throw new SemanticException();
         }
 
-        System.out.println("Parsing completed.");
-
+        System.out.print("Translation has started... ");
         // print JsonStructure to the String result
         String result = new Translator(tree)
                 .run()
                 .export();
+        System.out.println("Done!");
+
+        System.out.print("Exporting .json file... ");
 
         // export file with printed JsonStructure
         new JsonWriter(out, result)
                 .export();
 
-        System.out.println("Finished!");
+        System.out.println("Done!");
     }
 }
