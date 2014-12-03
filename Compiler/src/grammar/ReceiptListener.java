@@ -1,7 +1,7 @@
 // Generated from D:\Repositories\Compilers-2-assignment-2\Compiler\src\grammar\Receipt.g4 by ANTLR 4.1
 package grammar;
 
-    import json.infrastructure.*;
+    import infrastructure.json.*;
 
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -11,6 +11,17 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  * {@link ReceiptParser}.
  */
 public interface ReceiptListener extends ParseTreeListener {
+	/**
+	 * Enter a parse tree produced by {@link ReceiptParser#seller}.
+	 * @param ctx the parse tree
+	 */
+	void enterSeller(@NotNull ReceiptParser.SellerContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ReceiptParser#seller}.
+	 * @param ctx the parse tree
+	 */
+	void exitSeller(@NotNull ReceiptParser.SellerContext ctx);
+
 	/**
 	 * Enter a parse tree produced by {@link ReceiptParser#date}.
 	 * @param ctx the parse tree
@@ -78,6 +89,17 @@ public interface ReceiptListener extends ParseTreeListener {
 	void exitProducts(@NotNull ReceiptParser.ProductsContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link ReceiptParser#entitySeller}.
+	 * @param ctx the parse tree
+	 */
+	void enterEntitySeller(@NotNull ReceiptParser.EntitySellerContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ReceiptParser#entitySeller}.
+	 * @param ctx the parse tree
+	 */
+	void exitEntitySeller(@NotNull ReceiptParser.EntitySellerContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link ReceiptParser#zipcode}.
 	 * @param ctx the parse tree
 	 */
@@ -109,17 +131,6 @@ public interface ReceiptListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitReceipt(@NotNull ReceiptParser.ReceiptContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link ReceiptParser#company}.
-	 * @param ctx the parse tree
-	 */
-	void enterCompany(@NotNull ReceiptParser.CompanyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ReceiptParser#company}.
-	 * @param ctx the parse tree
-	 */
-	void exitCompany(@NotNull ReceiptParser.CompanyContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link ReceiptParser#id}.
@@ -155,13 +166,13 @@ public interface ReceiptListener extends ParseTreeListener {
 	void exitBasic(@NotNull ReceiptParser.BasicContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link ReceiptParser#entity}.
+	 * Enter a parse tree produced by {@link ReceiptParser#entityBuyer}.
 	 * @param ctx the parse tree
 	 */
-	void enterEntity(@NotNull ReceiptParser.EntityContext ctx);
+	void enterEntityBuyer(@NotNull ReceiptParser.EntityBuyerContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ReceiptParser#entity}.
+	 * Exit a parse tree produced by {@link ReceiptParser#entityBuyer}.
 	 * @param ctx the parse tree
 	 */
-	void exitEntity(@NotNull ReceiptParser.EntityContext ctx);
+	void exitEntityBuyer(@NotNull ReceiptParser.EntityBuyerContext ctx);
 }

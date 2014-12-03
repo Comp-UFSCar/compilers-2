@@ -1,7 +1,7 @@
 // Generated from D:\Repositories\Compilers-2-assignment-2\Compiler\src\grammar\Receipt.g4 by ANTLR 4.1
 package grammar;
 
-    import json.infrastructure.*;
+    import infrastructure.json.*;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -15,6 +15,19 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 public class ReceiptBaseListener implements ReceiptListener {
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterSeller(@NotNull ReceiptParser.SellerContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitSeller(@NotNull ReceiptParser.SellerContext ctx) { }
+
 	/**
 	 * {@inheritDoc}
 	 * <p/>
@@ -98,6 +111,19 @@ public class ReceiptBaseListener implements ReceiptListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterEntitySeller(@NotNull ReceiptParser.EntitySellerContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitEntitySeller(@NotNull ReceiptParser.EntitySellerContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterZipcode(@NotNull ReceiptParser.ZipcodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -131,19 +157,6 @@ public class ReceiptBaseListener implements ReceiptListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitReceipt(@NotNull ReceiptParser.ReceiptContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterCompany(@NotNull ReceiptParser.CompanyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitCompany(@NotNull ReceiptParser.CompanyContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -189,13 +202,13 @@ public class ReceiptBaseListener implements ReceiptListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterEntity(@NotNull ReceiptParser.EntityContext ctx) { }
+	@Override public void enterEntityBuyer(@NotNull ReceiptParser.EntityBuyerContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitEntity(@NotNull ReceiptParser.EntityContext ctx) { }
+	@Override public void exitEntityBuyer(@NotNull ReceiptParser.EntityBuyerContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
