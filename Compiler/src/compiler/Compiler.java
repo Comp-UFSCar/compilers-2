@@ -3,7 +3,9 @@ package compiler;
 import filehandler.JsonWriter;
 import grammar.ReceiptLexer;
 import grammar.ReceiptParser;
+import infrastructure.SemanticListener;
 import infrastructure.exceptions.JsonExportException;
+import infrastructure.exceptions.SemanticException;
 import infrastructure.exceptions.TranslationException;
 import infrastructure.json.JsonStructure;
 import infrastructure.translator.Translator;
@@ -67,6 +69,7 @@ public class Compiler {
                 for (File child : file.listFiles()) {
                     filesToCompile.add(child.getPath());
                 }
+            } else {
                 filesToCompile.add(file.getPath());
             }
         } else {
@@ -83,6 +86,10 @@ public class Compiler {
             } catch (RecognitionException e) {
                 System.err.println("Recognition error on file \"" + file + "\": "
                 + e.getMessage());
+
+            } catch (SemanticException e) {
+                System.err.println("Semantic error on file \"" + file + "\".\n"
+                        + "The compilation of this specific file cannot continue.");
 
             } catch (TranslationException e) {
                 System.err.println("Translation error on file \"" + file + "\": "
@@ -103,11 +110,23 @@ public class Compiler {
 
         ANTLRInputStream inputStream = new ANTLRInputStream(new FileInputStream(in));
 
-        ReceiptLexer lexer = new ReceiptLexer(inputStream);
+        ReceiptLexer lexer   = new ReceiptLexer(inputStream);
         ReceiptParser parser = new ReceiptParser(new CommonTokenStream(lexer));
 
         // parse input file and retrieve its JsonStructure
         JsonStructure tree = parser.receipt().e;
+        
+        SemanticListener semantics = new SemanticListener(tree);
+        
+        if(semantics.hasErrors()) {
+            System.err.println("\nSemantic errors were found:");
+            
+            for (String error : semantics.errors()) {
+                System.err.println(error);
+            }
+            
+            throw new SemanticException();
+        }
 
         System.out.println("Parsing completed.");
 
