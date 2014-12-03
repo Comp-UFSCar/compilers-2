@@ -4,17 +4,17 @@ package infrastructure.exceptions;
  *
  * @author Lucas
  */
-public class SemanticException extends RuntimeException {
+public class SyntacticalException extends RuntimeException {
 
-    public SemanticException() {
+    public SyntacticalException() {
         super();
     }
 
-    public SemanticException(String message) {
+    public SyntacticalException(String message) {
         super(message);
     }
 
-    public SemanticException(String message, Throwable cause) {
+    public SyntacticalException(String message, Throwable cause) {
         super(message, cause);
     }
 }
