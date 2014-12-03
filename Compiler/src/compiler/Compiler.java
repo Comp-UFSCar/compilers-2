@@ -24,6 +24,8 @@ public class Compiler {
 
     private String in;
     private String out;
+    
+    private static int Id;
 
     Compiler(String in) {
         try {
@@ -33,11 +35,14 @@ public class Compiler {
 
             this.in = in;
             
-            out = in.substring(0, in.indexOf("input"))
-                + "output\\"
-                + in.substring(in.indexOf("input") + 6, in.indexOf('.'))
-                + ".json"
-                ;
+            String parent = new File(in).getParentFile().getName();
+            out = in.substring(0, in.indexOf("input")) + "output\\";
+            
+            if (!parent.equals("input")) {
+                out += parent + "\\";
+            }
+            
+            out += (++Id) + ".json";
         } catch (NullPointerException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -62,7 +67,6 @@ public class Compiler {
                 for (File child : file.listFiles()) {
                     filesToCompile.add(child.getPath());
                 }
-            } else {
                 filesToCompile.add(file.getPath());
             }
         } else {
@@ -95,8 +99,6 @@ public class Compiler {
     }
 
     private void start() throws Exception {
-        File input = new File(in);
-
         System.out.println("\nCompilation proccess has started. File being compiled: " + in);
 
         ANTLRInputStream inputStream = new ANTLRInputStream(new FileInputStream(in));

@@ -38,6 +38,7 @@ public class Translator {
 
         exported = "";
         describeBase(base);
+        
         return this;
     }
 
@@ -58,13 +59,22 @@ public class Translator {
 
                 exported += '"' + node.name + "\": ";
                 enterScope();
-
-                for (JsonElement child : structure.values) {
-                    if (child != null) {
-                        describe(child, scope + 1);
+                
+                int last = structure.values.size() -1;
+                
+                for (int i = 0; i < last; i++) {
+                    if (structure.values.get(i) != null) {
+                        describe(structure.values.get(i), scope + 1);
                         exported += ",\n";
                     }
                 }
+                
+                // describes last item without a comma
+                if (structure.values.get(last) != null) {
+                    describe(structure.values.get(last), scope + 1);
+                    exported += "\n";
+                }
+
                 exitScope(scope);
             } catch (ClassCastException e) {
                 exported += '"' + node.name + "\": " + '"' + node.value + "\"";
@@ -78,11 +88,18 @@ public class Translator {
 
         enterScope();
 
-        for (JsonElement el : node.values) {
-            if (el != null) {
-                describe(el, 1);
+        int last = node.values.size() -1;
+        for (int i = 0; i < node.values.size() -1; i++) {
+            if (node.values.get(i) != null) {
+                describe(node.values.get(i), 1);
                 exported += ",\n";
             }
+        }
+
+        // describes last item without a comma
+        if (node.values.get(last) != null) {
+            describe(node.values.get(last), 1);
+            exported += "\n";
         }
 
         exported += "}\n";

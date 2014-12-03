@@ -1,7 +1,8 @@
 package infrastructure.json;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Objects;
  */
 public class JsonStructure extends JsonElement {
 
-    public HashSet<JsonElement> values;
+    public List<JsonElement> values;
 
     public JsonStructure(String name) {
         this(name, null);
@@ -19,8 +20,8 @@ public class JsonStructure extends JsonElement {
     public JsonStructure(String name, Collection<JsonElement> values) {
         this.values
             = values == null || values.isEmpty()
-            ? new HashSet<>()
-            : new HashSet<>(values)
+            ? new ArrayList<>()
+            : new ArrayList<>(values)
             ;
 
         this.name = name;
