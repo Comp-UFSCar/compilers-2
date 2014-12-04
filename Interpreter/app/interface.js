@@ -93,33 +93,37 @@ function($) {
 		// sort by date
 		receipts.sort(function(a, b) { return new Date(a.date) - new Date(b.date); });
 
-        var width = 562,
-            barHeight = 40;
+        var width    = 940,
+            height   = 500,
+            barWidth = width / receipts.length;
 
-        var x = d3.scale.linear()
+        var y = d3.scale.linear()
             .domain([0, d3.max(receipts, function(d) { return +d.total.substring(1, d.total.length); })])
-            .range([0, width]);
+            .range([height, 0]);
 
         var chart = d3.select(".chart")
             .attr("width", width)
-            .attr("height", barHeight * receipts.length);
+            .attr("height", height);
 
         var bar = chart.selectAll("g")
             .data(receipts)
           .enter().append("g")
-            .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+            .attr("transform", function(d, i) { return "translate(" + i * barWidth + ", 0)"; });
 
         bar.append("rect")
-            .attr("width", function(d) { return x(+d.total.substring(1, d.total.length)); })
-            .attr("height", barHeight - 1);
+            .attr("y", 		function(d) { return y(+d.total.substring(1, d.total.length)); })
+            .attr("height", function(d) { return height - y(+d.total.substring(1, d.total.length)); })
+            .attr("width", barWidth - 1);
 
         bar.append("text")
-            .attr("x", function(d) { return x(+d.total.substring(1, d.total.length)) - 3; })
-            .attr("y", barHeight / 2)
-            .attr("dy", ".35em")
+            .attr("x", 300)
+            .attr("y", function(d) { return 0; })
+            .attr("dy", "-1.1em")
+            .attr("transform", function(d, i) { return "rotate(90)"; })
             .text(function(d) {
             	return d.seller.entity.name + " - " + d.date + ": " + d.total;
-        	});
+        	})
+            ;
 	}
 
 	return {
