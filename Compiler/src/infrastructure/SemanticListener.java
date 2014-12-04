@@ -36,6 +36,8 @@ public class SemanticListener {
             // does validation over root node
             RuleOnlyOneFieldOfEachType();
             RuleProductsPricesAndTaxesMatchTotal();
+            RuleZipCode();
+            RuleDate();
         }
         
         return new LinkedList<>(errors);
@@ -106,10 +108,46 @@ public class SemanticListener {
         }
 
         if (totalExpected != actualTotal + tax) {
+            hasErrors = true;
             errors.add("Total cost of receipt differs from sum of individual values of items plus taxes. Expected: "
                     + totalExpected + ". Actual: " + (actualTotal + tax));
         }
         
         return !hasErrors;
+    }
+    
+    protected boolean RuleZipCode() {
+        return RuleZipCode(root);
+    }
+    
+    public boolean RuleZipCode(JsonStructure node){
+        boolean       hasErrors = false;
+        String zipCode = node.get("zipcode").value.substring(1);
+        if (zipCode.length()==9){
+            if (zipCode.charAt(5)!='-'){
+                errors.add("Zipcode should be in the following format: XXXXX-XX or XXXXXXXX");
+                return false;
+            }
+        }
+        if (zipCode.length() != 8 && zipCode.length() != 9){
+            errors.add("Zipcode should be in the following format: XXXXX-XX or XXXXXXXX");
+            return false;
+        }
+        return true;
+    }
+    
+    protected boolean RuleDate() {
+        return RuleDate(root);
+    }
+    
+    public boolean RuleDate(JsonStructure node){
+        String date = node.get("date").value.substring(1);
+        if (date.length() == 8 || date.length() == 10){
+            if ((date.charAt(2) == '-' && date.charAt(5) == '-') || (date.charAt(2) == '/' && date.charAt(5) == '/')) {
+                return true;
+            }
+        }
+        errors.add("Date should be in one of the following formats:\nDD/MM/AAAA or DD/MM/AA\nDD-MM-AAAA or DD-MM-AA");
+        return false;
     }
 }
