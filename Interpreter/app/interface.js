@@ -1,5 +1,5 @@
 define(
-['jquery'],
+['jquery', 'd3'],
 function($) {
 
 	var Interface = {
@@ -76,6 +76,34 @@ function($) {
 			.remove();
 	}
 
+	Interface.DrawChart = function ( receipts ) {
+        var width = 1024,
+            barHeight = 40;
+
+        var x = d3.scale.linear()
+            .domain([0, d3.max(receipts, function(d) { return +d.total.substring(1, d.total.length); })])
+            .range([0, width]);
+
+        var chart = d3.select(".chart")
+            .attr("width", width)
+            .attr("height", barHeight * receipts.length);
+
+        var bar = chart.selectAll("g")
+            .data(receipts)
+          .enter().append("g")
+            .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+
+        bar.append("rect")
+            .attr("width", function(d) { return x(+d.total.substring(1, d.total.length)); })
+            .attr("height", barHeight - 1);
+
+        bar.append("text")
+            .attr("x", function(d) { return x(+d.total.substring(1, d.total.length)) - 3; })
+            .attr("y", barHeight / 2)
+            .attr("dy", ".35em")
+            .text(function(d) { return d.seller.entity.name + ": " + d.total; });
+	}
+
 	return {
 		HideAll	  : Interface.HideAll,
 		ShowAll	  : Interface.ShowAll,
@@ -94,6 +122,8 @@ function($) {
 		ApplicationStart : Interface.ApplicationStart,
 
 		AddReceiptToList 	  : Interface.AddReceiptToList,
-		RemoveReceiptFromList : Interface.RemoveReceiptFromList
+		RemoveReceiptFromList : Interface.RemoveReceiptFromList,
+
+		DrawChart : Interface.DrawChart
 	};
 });

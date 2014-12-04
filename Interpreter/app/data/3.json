@@ -26,14 +26,6 @@
 	},
 	"date": "5/11/2014",
 	"products": {
-		"toothbrush": {
-			"quantity": "3",
-			"cost": "$1.99"
-		},
-		"soda": {
-			"quantity": "3",
-			"cost": "$3.45"
-		},
 		"mms": {
 			"quantity": "3",
 			"cost": "$1.86"
@@ -48,5 +40,5 @@
 		}
 	},
 	"tax": "$2.00",
-	"total": "$28.70"
+	"total": "$31.38"
 }

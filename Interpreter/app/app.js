@@ -1,35 +1,41 @@
 define([
-	'jquery',
-	'bootstrap',
-	'd3',
-	'app/data.js',
-	'app/interface.js',
+    'jquery',
+    'bootstrap',
+    'd3',
+    'app/data.js',
+    'app/interface.js',
 ],
 function ($, Boot, D3, Data, Interface) {
 
-	function spin() {
-		if (!Data.ready)
-			setTimeout(spin, 200);
-		else
-			Continue();
-	}
+    function spin()
+    {
+        if (!Data.ready)
+            setTimeout(spin, 200);
+        else
+            Continue();
+    }
 
-	function Continue() {
-		Interface.ApplicationStart();
+    function Start()
+    {
+        console.log("Application initiated.");
 
-		for (var receipt in Data.receipts ) {
-			Interface.AddReceiptToList(Data.receipts[receipt]);
-		}
-	}
+        // wait until Data is filled
+        spin();
+    }
 
-	function Start() {
-		console.log("Application initiated.");
+    function Continue()
+    {
+        Interface.ApplicationStart();
 
-		// wait until Data is filled
-		spin();
-	}
+        for (var receipt in Data.receipts )
+        {
+            Interface.AddReceiptToList(Data.receipts[receipt]);
+        }
 
-	return {
-		Start: Start
-	};
+        Interface.DrawChart(Data.receipts);
+    }
+
+    return {
+        Start: Start
+    };
 });
