@@ -46,6 +46,20 @@ public class JsonStructure extends JsonElement {
         
         return null;
     }
+    
+    public JsonStructure getStructure(String name) {
+        for (JsonElement element : values) {
+            if (element.name.toLowerCase().equals(name)) {
+                try {
+                    return (JsonStructure)element;
+                } catch (ClassCastException e) {
+                    return null;
+                }
+            }
+        }
+        
+        return null;
+    }
 
     @Override
     public boolean equals(Object obj) {
