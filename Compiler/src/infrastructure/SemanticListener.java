@@ -45,10 +45,13 @@ public class SemanticListener extends BaseListener {
             // does validation over root node
             RuleOnlyOneFieldOfEachType();
             RuleProductsPricesAndTaxesMatchTotal();
+            
+            // seller has given their address
             if (root.getStructure("seller").get("address") != null) {
                 RuleZipCode(root.getStructure("seller").getStructure("address"));
             }
 
+            // buyer has given their address
             if (root.getStructure("buyer").get("address") != null) {
                 RuleZipCode(root.getStructure("buyer").getStructure("address"));
             }
