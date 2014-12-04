@@ -2,6 +2,7 @@ package infrastructure;
 
 import infrastructure.json.JsonElement;
 import infrastructure.json.JsonStructure;
+import infrastructure.messagebag.MessageBag;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,27 +15,30 @@ import java.util.List;
  *
  * @author Lucas
  */
-public class SemanticListener {
+public class SemanticListener extends BaseListener {
 
     protected JsonStructure root;
-    protected List<String> errors;
     protected boolean validate;
 
-    public SemanticListener(JsonStructure _root) {
-        root = _root;
-        errors = new LinkedList<>();
-        validate = false;
+    public SemanticListener(JsonStructure root, MessageBag bag) {
+        super(bag);
+        this.root = root;
+        validate  = false;
     }
-
+    
+    @Override
     public boolean hasErrors() {
+        // vazia => nao erros => false
+        // nao vazia => true
         return !Validate().isEmpty();
     }
-
+    
+    @Override
     public List<String> errors() {
-        return Validate();
+        return Validate().all();
     }
 
-    public List<String> Validate() {
+    public MessageBag Validate() {
         if (!validate) {
             validate = true;
 
@@ -52,7 +56,7 @@ public class SemanticListener {
             RuleDate();
         }
 
-        return new LinkedList<>(errors);
+        return bag;
     }
 
     protected boolean RuleOnlyOneFieldOfEachType() {
@@ -73,7 +77,7 @@ public class SemanticListener {
 
                 if (pivot.name.toLowerCase().equals(current.name.toLowerCase())) {
                     hasErrors = true;
-                    errors.add("The field \"" + pivot.name + "\" has already been declared.");
+                    bag.add("The field \"" + pivot.name + "\" has already been declared.");
                     innerElements.remove(i);
                 } else {
                     i++;
@@ -119,7 +123,7 @@ public class SemanticListener {
 
         if (totalExpected != actualTotal + tax) {
             hasErrors = true;
-            errors.add("Total cost of receipt differs from sum of individual values of items plus taxes. Expected: "
+            bag.add("Total cost of receipt differs from sum of individual values of items plus taxes. Expected: "
                     + totalExpected + ". Actual: " + (actualTotal + tax));
         }
 
@@ -161,19 +165,19 @@ public class SemanticListener {
                 date = format.parse(token);
                 
             } catch (ParseException secondE) {
-                errors.add("Actual date is in an unknown format or is invalid: " + token + ".");
+                bag.add("Actual date is in an unknown format or is invalid: " + token + ".");
                 return false;
             }
         }
         
         if (new Date().compareTo(date) < 0) {
-            errors.add("Actual date is after current date. Actual date: " + date
+            bag.add("Actual date is after current date. Actual date: " + date
                     + ". Current date: " + new Date());
             return false;
         }
         
         if (Calendar.YEAR - date.getYear() >= 100) {
-            errors.add("Actual date is way before current date. Actual date's year: " + date.getYear()
+            bag.add("Actual date is way before current date. Actual date's year: " + date.getYear()
                     + ". Current date's year: " + Calendar.YEAR);
             return false;
         }

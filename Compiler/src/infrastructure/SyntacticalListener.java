@@ -2,6 +2,7 @@ package infrastructure;
 
 import infrastructure.messagebag.MessageBag;
 import java.util.BitSet;
+import java.util.List;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Parser;
@@ -14,14 +15,12 @@ import org.antlr.v4.runtime.dfa.DFA;
  *
  * @author Lucas
  */
-public class SyntacticalListener implements ANTLRErrorListener {
-
-    MessageBag bag;
+public class SyntacticalListener extends BaseListener implements ANTLRErrorListener {
 
     public SyntacticalListener(MessageBag bag) {
-        this.bag = bag;
+        super(bag);
     }
-
+    
     @Override
     public void syntaxError(Recognizer<?, ?> rcgnzr, Object o, int i, int i1, String string, RecognitionException re) {
         String token = ((CommonToken) o).getText();

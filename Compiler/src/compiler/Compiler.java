@@ -3,7 +3,8 @@ package compiler;
 import filehandler.JsonWriter;
 import grammar.ReceiptLexer;
 import grammar.ReceiptParser;
-import infrastructure.*;
+import infrastructure.SemanticListener;
+import infrastructure.SyntacticalListener;
 import infrastructure.exceptions.*;
 import infrastructure.json.JsonStructure;
 import infrastructure.messagebag.MessageBag;
@@ -113,7 +114,8 @@ public class Compiler {
         // instantiating error bag and listeners
         MessageBag lexicalBag     = new MessageBag();
         MessageBag syntacticalBag = new MessageBag();
-        
+        MessageBag semanticBag    = new MessageBag();
+
         SyntacticalListener lexics     = new SyntacticalListener(lexicalBag);
         SyntacticalListener syntactics = new SyntacticalListener(syntacticalBag);
         
@@ -127,17 +129,17 @@ public class Compiler {
         JsonStructure tree = parser.receipt().e;
 
         // stops compilation proccess if errors were found
-        if (!lexicalBag.isEmpty()) {
+        if (lexics.hasErrors()) {
             throw new LexicalException();
         }
 
-        if (!syntacticalBag.isEmpty()) {
+        if (lexics.hasErrors()) {
             throw new SyntacticalException();
         }
         
         System.out.println("Done!");
         
-        SemanticListener semantics = new SemanticListener(tree);
+        SemanticListener semantics = new SemanticListener(tree, semanticBag);
         
         if(semantics.hasErrors()) {
             System.err.println("Semantic errors were found:");
