@@ -66,7 +66,19 @@ function($) {
 
 	Interface.AddReceiptToList = function ( receipt ) {
 		$(Interface.elements.receipts)
-			.append('<tr><td>' + receipt.id + '</td><td>' + receipt.total + '</td><td>' + receipt.date + '</td></tr>');
+			.append('<tr><td>' + receipt.id
+				+ '</td><td>' + receipt.seller.entity.name
+				+ '</td><td>' + receipt.buyer.entity.name
+				+ '</td><td>' + receipt.date
+				+ '</td><td>' + receipt.tax
+				+ '</td><td>' + receipt.total + '</td></tr>');
+
+		// <th>Id</th>
+		// <th>Seller</th>
+		// <th>Buyer</th>
+		// <th>Date</th>
+		// <th>Tax</th>
+		// <th>Total</th>
 	}
 
 	Interface.RemoveReceiptFromList = function ( index ) {
@@ -77,7 +89,11 @@ function($) {
 	}
 
 	Interface.DrawChart = function ( receipts ) {
-        var width = 1024,
+
+		// sort by date
+		receipts.sort(function(a, b) { return new Date(a.date) - new Date(b.date); });
+
+        var width = 562,
             barHeight = 40;
 
         var x = d3.scale.linear()
@@ -101,7 +117,9 @@ function($) {
             .attr("x", function(d) { return x(+d.total.substring(1, d.total.length)) - 3; })
             .attr("y", barHeight / 2)
             .attr("dy", ".35em")
-            .text(function(d) { return d.seller.entity.name + ": " + d.total; });
+            .text(function(d) {
+            	return d.seller.entity.name + " - " + d.date + ": " + d.total;
+        	});
 	}
 
 	return {
