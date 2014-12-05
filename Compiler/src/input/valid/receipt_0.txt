@@ -2,16 +2,16 @@
 
 seller
 Dell 405.301.1034/10-20
-address Avsaocarlos 135600-300 SAOCARLOS SP
+address Av_saocarlos 135600-300 Sao_Carlos SP
 
 buyer
 lucasdavid 105.102.945-40
-address RDominicana 135690-203 SAOCARLOS SP
+address Rua_Dominicana 135690-203 Sao_Carlos SP
 
 5/11/2012
 
 products
-delllaptop 1 $990.00
+delllaptop_x11 1 $990.00
 mousepad $4.00
 
 tax $50.00
