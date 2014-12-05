@@ -28,8 +28,6 @@ public class SemanticListener extends BaseListener {
     
     @Override
     public boolean hasErrors() {
-        // vazia => nao erros => false
-        // nao vazia => true
         return !Validate().isEmpty();
     }
     
@@ -150,7 +148,7 @@ public class SemanticListener extends BaseListener {
         // total differs from individual values + taxes
         if (totalExpected != actualTotal + tax) {
             hasErrors = true;
-            bag.add("Total cost of receipt differs from sum of individual values of items plus taxes. Expected: "
+            bag.add("Total cost of receipt differs from the sum of each item's cost multiplied its quantity, adding taxes. Expected: "
                     + totalExpected + ". Actual: " + (actualTotal + tax));
         }
 
