@@ -8,7 +8,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -161,11 +160,11 @@ public class SemanticListener extends BaseListener {
                 .value;
         
         try {
-            format = new SimpleDateFormat("mm/dd/yyyy");
+            format = new SimpleDateFormat("MM/dd/yyyy");
             date = format.parse(token);
         } catch (ParseException e) {
             try {
-                format = new SimpleDateFormat("dd/mm/yyyy");
+                format = new SimpleDateFormat("dd/MM/yyyy");
                 date = format.parse(token);
                 
             } catch (ParseException secondE) {
@@ -174,15 +173,15 @@ public class SemanticListener extends BaseListener {
             }
         }
         
-        if (new Date().compareTo(date) < 0) {
+        Calendar current = Calendar.getInstance();
+        Calendar actual  = Calendar.getInstance();
+        actual.setTime(date);
+        
+        if (current.compareTo(actual) < 0) {
             bag.add("Actual date is after current date. Actual date: " + date
                     + ". Current date: " + new Date());
             return false;
         }
-        
-        Calendar current = Calendar.getInstance();
-        Calendar actual  = Calendar.getInstance();
-        actual.setTime(date);
         
         if (current.get(Calendar.YEAR) - actual.get(Calendar.YEAR) >= 100) {
             bag.add("Actual date is way before current date. Actual date's year: " + actual.get(Calendar.YEAR)

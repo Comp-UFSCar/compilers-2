@@ -98,8 +98,8 @@ public class Compiler {
                 System.err.println("Json exportation error on file \"" + file + "\": "
                     + e.getMessage());
             } catch (Exception e) {
-                System.err.println("An error has occured while compiling file \"" + file + "\": "
-                    + e.getMessage());
+                System.err.println("An error has occured while compiling file \"" + file +
+                    (e.getMessage() != null ? "\": " + e.getMessage() : ""));
             }
         }
     }
