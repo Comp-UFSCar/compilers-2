@@ -1,9 +1,9 @@
 {
-	"id": "1020304050",
+	"id": "3",
 	"seller": {
 		"entity": {
 			"id": "405.301.1034/10-20",
-			"name": "Carrefour"
+			"name": "UniaoServe"
 		},
 		"address": {
 			"main": "Avsaocarlos",
@@ -24,29 +24,13 @@
 			"state": "SP"
 		}
 	},
-	"date": "5/11/2014",
+	"date": "10/06/2011",
 	"products": {
-		"toothbrush": {
-			"quantity": "3",
-			"cost": "$1.99"
-		},
-		"soda": {
-			"quantity": "3",
-			"cost": "$3.45"
-		},
-		"mms": {
-			"quantity": "3",
-			"cost": "$1.86"
-		},
-		"subwayham": {
-			"quantity": "3",
-			"cost": "$5.85"
-		},
-		"hashimint": {
-			"quantity": "5",
-			"cost": "$1.25"
+		"chocolate": {
+			"quantity": "2",
+			"cost": "$5.99"
 		}
 	},
-	"tax": "$2.00",
-	"total": "$28.70"
+	"tax": "$0.00",
+	"total": "$11.98"
 }
