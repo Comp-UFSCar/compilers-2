@@ -1,14 +1,14 @@
 {
-	"id": "1020304050",
+	"id": "1",
 	"seller": {
 		"entity": {
-			"id": "405.301.1034/10-20",
-			"name": "Carrefour"
+			"id": "135.750.6782/04-90",
+			"name": "Dell"
 		},
 		"address": {
 			"main": "Avsaocarlos",
 			"zipcode": "135600300",
-			"city": "SAOCARLOS",
+			"city": "Limeira",
 			"state": "SP"
 		}
 	},
@@ -20,30 +20,16 @@
 		"address": {
 			"main": "RDominicana",
 			"zipcode": "135690203",
-			"city": "SAOCARLOS",
+			"city": "RioDeJaneiro",
 			"state": "SP"
 		}
 	},
 	"date": "5/11/2014",
 	"products": {
-		"toothbrush": {
-			"quantity": "3",
-			"cost": "$1.99"
-		},
-		"soda": {
-			"cost": "$3.45"
-		},
-		"mms": {
-			"cost": "$1.86"
-		},
-		"subwayham": {
-			"cost": "$5.85"
-		},
-		"hashimint": {
-			"quantity": "5",
-			"cost": "$1.25"
+		"mousepad": {
+			"cost": "$2.99"
 		}
 	},
-	"tax": "$2.00",
-	"total": "$25.38"
+	"tax": "$0.00",
+	"total": "$2.99"
 }

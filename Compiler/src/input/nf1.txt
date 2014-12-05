@@ -1,6 +1,17 @@
+1
 
-Amazon
+seller
+Dell 135.750.6782/04-90
+address Avsaocarlos 135600-300 Limeira SP
 
-total: $1020.00
+buyer
+lucasdavid 105.102.945-40
+address RDominicana 135690-203 RioDeJaneiro SP
 
-1020102010
+5/11/100
+
+products
+mousepad $2.99
+
+tax $0.00
+total $2.99
