@@ -1,0 +1,21 @@
+1020304050
+
+seller
+Carrefour 405.301.1034/10-20
+address Avsaocarlos 135600-300 SAOCARLOS SP
+
+buyer
+lucasdavid 105.102.945-40
+address RDominicana 135690-203 SAOCARLOS SP
+
+12/12/2014
+
+products
+toothbrush 3 $1.99
+soda $3.45
+mms $1.86
+subwayham $5.85
+hashimint 5 $1.25
+
+tax $2.00
+total $25.38
