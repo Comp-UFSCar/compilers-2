@@ -218,8 +218,14 @@ COLON
     : ':'
     ;
 
+fragment
+UNDERSCORE
+    : '_'
+    ;
+
 NAME
-    : (LETTER | CAPITAL_LETTER)+
+    : (LETTER | CAPITAL_LETTER | UNDERSCORE)+
+      (LETTER | CAPITAL_LETTER | DIGIT | UNDERSCORE)*
     ;
 
 LETTER

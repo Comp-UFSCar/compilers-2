@@ -137,17 +137,18 @@ public class Compiler {
             throw new SyntacticalException();
         }
         
-        System.out.println("Done!");
-        
         SemanticListener semantics = new SemanticListener(tree, semanticBag);
         
         if(semantics.hasErrors()) {
+            System.out.println();
             for (String error : semantics.errors()) {
                 System.err.println(error);
             }
             
             throw new SemanticException();
         }
+
+        System.out.println("Done!");
 
         System.out.print("Translation has started... ");
         // print JsonStructure to the String result

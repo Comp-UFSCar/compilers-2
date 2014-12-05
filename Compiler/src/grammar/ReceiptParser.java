@@ -730,6 +730,7 @@ public class ReceiptParser extends Parser {
                             current.add(new JsonElement("cost", ((ProductsContext) _localctx).DECIMAL.getText()));
                             _localctx.e.add(current);
                             quantity = -1;
+
                         }
                     }
                     setState(115);
