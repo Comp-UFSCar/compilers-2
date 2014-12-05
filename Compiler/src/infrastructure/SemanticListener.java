@@ -139,11 +139,15 @@ public class SemanticListener extends BaseListener {
 
     protected boolean RuleZipCode(JsonStructure node) {
 
-        String zipCode = node
+        String zipcode = node
                 .get("zipcode").value;
 
-        // semantic validation for zipcode
-        // What exa
+        // if zipcode contains only zeros
+        if (zipcode.replace("0", "").isEmpty()) {
+            bag.add("The zipcode inserted is invalid: " + zipcode);
+            return false;
+        }
+
         return true;
     }
 
