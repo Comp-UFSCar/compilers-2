@@ -133,7 +133,7 @@ public class Compiler {
             throw new LexicalException();
         }
 
-        if (lexics.hasErrors()) {
+        if (syntactics.hasErrors()) {
             throw new SyntacticalException();
         }
         
