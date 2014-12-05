@@ -142,8 +142,6 @@ public class Compiler {
         SemanticListener semantics = new SemanticListener(tree, semanticBag);
         
         if(semantics.hasErrors()) {
-            System.err.println("Semantic errors were found:");
-            
             for (String error : semantics.errors()) {
                 System.err.println(error);
             }
