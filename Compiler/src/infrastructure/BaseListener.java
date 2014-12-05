@@ -9,6 +9,7 @@ import java.util.List;
  */
 public abstract class BaseListener {
     
+    // bag of errors found by the listener
     MessageBag bag;
 
     public BaseListener(MessageBag bag) {

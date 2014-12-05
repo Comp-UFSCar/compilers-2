@@ -38,6 +38,11 @@ public class SemanticListener extends BaseListener {
         return Validate().all();
     }
 
+    /**
+     * Validate @root using the rules defined below.
+     * 
+     * @return the bag of messages containing all errors found.
+     */
     public MessageBag Validate() {
         if (!validate) {
             validate = true;
@@ -66,6 +71,17 @@ public class SemanticListener extends BaseListener {
         return RuleOnlyOneFieldOfEachType(root);
     }
 
+    /**
+     * Asserts that JsonStructure @node only contains one field of each
+     * type.
+     * 
+     * Valid example:   { id, date, tax, total          }
+     * Invalid example: { id, id, date, tax, tax, total }
+     * 
+     * @param node that will be verified.
+     * @return true, if node contains only one field of each type.
+     * False, otherwise.
+     */
     protected boolean RuleOnlyOneFieldOfEachType(JsonStructure node) {
 
         boolean hasErrors = false;
@@ -97,6 +113,13 @@ public class SemanticListener extends BaseListener {
         return RuleProductsPricesAndTaxesMatchTotal(root);
     }
 
+    /**
+     * Asserts that sum(products.cost * products.quantity) + tax = total.
+     * 
+     * @param node JsonStructure which contains the
+     * fields @products, @tax and @total.
+     * @return true, if the equation is correct. False, otherwise.
+     */
     protected boolean RuleProductsPricesAndTaxesMatchTotal(JsonStructure node) {
 
         float actualTotal = 0;
@@ -124,6 +147,7 @@ public class SemanticListener extends BaseListener {
             actualTotal += cost * quantity;
         }
 
+        // total differs from individual values + taxes
         if (totalExpected != actualTotal + tax) {
             hasErrors = true;
             bag.add("Total cost of receipt differs from sum of individual values of items plus taxes. Expected: "
@@ -137,6 +161,11 @@ public class SemanticListener extends BaseListener {
         return RuleZipCode(root);
     }
 
+    /**
+     * Assert that the zip-code field contains valid data.
+     * @param node the JsonStructure which contains the field @zipcode
+     * @return true, if @zipcode is correct. False, otherwise.
+     */
     protected boolean RuleZipCode(JsonStructure node) {
 
         String zipcode = node
@@ -155,6 +184,12 @@ public class SemanticListener extends BaseListener {
         return RuleDate(root);
     }
 
+    /**
+     * Asserts that the date field in @node is correct.
+     * 
+     * @param node the JsonStructure which contains the field @date
+     * @return true, if date is correct. False, otherwise.
+     */
     protected boolean RuleDate(JsonStructure node) {
         
         DateFormat format;
@@ -182,18 +217,21 @@ public class SemanticListener extends BaseListener {
         Calendar actual  = Calendar.getInstance();
         actual.setTime(date);
         
+        // current date is before date in receipt
         if (current.compareTo(actual) < 0) {
             bag.add("Actual date is after current date. Actual date: " + date
                     + ". Current date: " + new Date());
             return false;
         }
         
+        // year differs from more than a 100 years.
         if (current.get(Calendar.YEAR) - actual.get(Calendar.YEAR) >= 100) {
             bag.add("Actual date is way before current date. Actual date's year: " + actual.get(Calendar.YEAR)
                     + ". Current date's year: " + current.get(Calendar.YEAR));
             return false;
         }
         
+        // Ok
         return true;
     }
 }
