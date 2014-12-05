@@ -143,6 +143,7 @@ public class SemanticListener extends BaseListener {
                 .get("zipcode").value;
 
         // semantic validation for zipcode
+        // What exa
         return true;
     }
 

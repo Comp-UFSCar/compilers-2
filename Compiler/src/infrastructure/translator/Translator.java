@@ -77,7 +77,7 @@ public class Translator {
 
                 exitScope(scope);
             } catch (ClassCastException e) {
-                exported += '"' + node.name + "\": " + '"' + node.value + "\"";
+                exported += '"' + node.name + "\": " + '"' + node.value.replace("_", " ") + "\"";
             }
         }
         return this;
