@@ -1,0 +1,17 @@
+1
+
+seller
+Dell 135.750.6782/04-90
+address Avsaocarlos 135600-300 Limeira SP
+
+buyer
+lucasdavid 105.102.945-40
+address RDominicana 135690-203 RioDeJaneiro SP
+
+12/5/2014
+
+products
+mousepad $2.99
+
+tax $0.00
+total $2.99

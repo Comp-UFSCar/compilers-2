@@ -1,0 +1,17 @@
+5
+
+seller
+Lenovo 405.301.1034/10-20
+address Avsaocarlos 135600-300 SAOCARLOS SP
+
+buyer
+lucasdavid 105.102.945-40
+address RDominicana 135690-203 SAOCARLOS SP
+
+5/11/2014
+
+products
+ideapad $1200.00
+
+tax $50.00
+total $1250.00

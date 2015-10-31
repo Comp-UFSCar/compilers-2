@@ -1,0 +1,17 @@
+4
+
+seller
+MercadoLivre 405.301.1034/10-20
+address Avsaocarlos 135600-300 SAOCARLOS SP
+
+buyer
+lucasdavid 105.102.945-40
+address RDominicana 135690-203 SAOCARLOS SP
+
+2/10/2014
+
+products
+bedpad 1 $100.00
+
+tax $4.38
+total $104.38
