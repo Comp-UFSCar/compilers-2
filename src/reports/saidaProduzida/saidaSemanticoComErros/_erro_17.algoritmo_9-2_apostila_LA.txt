@@ -1,0 +1,8 @@
+Linha 13: atribuicao nao compativel para valor1
+Linha 14: atribuicao nao compativel para valor2
+Linha 29: identificador simplifiqueRacional ja declarado anteriormente
+Linha 33: identificador .numerador nao declarado
+Linha 35: identificador .denominador nao declarado
+Linha 37: identificador .numerador nao declarado
+Linha 39: identificador .denominador nao declarado
+Fim da compilacao
